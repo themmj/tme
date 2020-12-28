@@ -1,0 +1,8 @@
+# build artifacts
+bin/
+build/
+
+# generated content
+coverage/
+doc/*/
+
