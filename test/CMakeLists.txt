@@ -59,7 +59,7 @@ add_custom_target(clean-gcda
 
 add_custom_target(coverage
     COMMAND mkdir -p ./test/coverage
-    COMMAND gcovr -r . -f src/ -e "\'(.+\/)?(main|.+_test)\.cpp\'" --branches --html --html-details -o ${CMAKE_SOURCE_DIR}/test/coverage/coverage.html 
+    COMMAND gcovr -r . -f src/ -e "\'(.+\/)?(main|.+_test)\.cpp\'" --branches --html --html-details -o ${CMAKE_SOURCE_DIR}/test/coverage/coverage.html --gcov-executable ${GCOVEXEC}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 add_dependencies(coverage test)

@@ -8,6 +8,10 @@ set(CXX_EXTENSIONS OFF)
 option(BUILD_DOC "Build documentation" OFF)
 option(BUILD_TESTS "Build tests" OFF)
 
+if (NOT DEFINED GCOVEXEC)
+    SET(GCOVEXEC gcov)
+endif()
+
 set(BINARY tme)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/bin)
 
