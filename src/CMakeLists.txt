@@ -15,7 +15,13 @@ add_library(${BINARY}-lib STATIC EXCLUDE_FROM_ALL ${SRC_FILES})
 
 target_compile_options(${BINARY}-lib PUBLIC
     -O0
-    --coverage
+    -fprofile-arcs
+    -ftest-coverage
+)
+
+target_link_options(
+    ${BINARY}-lib PUBLIC
+    --coverage    
 )
 
 add_custom_target(run

@@ -22,7 +22,6 @@ target_link_libraries(${BINARY}-test
     gtest
     gmock
     gtest_main
-    gcov
     ${BINARY}-lib
 )
 
@@ -35,6 +34,12 @@ set_target_properties(
 target_compile_options(
     ${BINARY}-test PUBLIC
     -O0
+    -fprofile-arcs
+    -ftest-coverage
+)
+
+target_link_options(
+    ${BINARY}-test PUBLIC
     --coverage
 )
 
@@ -43,15 +48,18 @@ add_custom_target(test
 )
 
 add_custom_target(clean-gcno
+    COMMAND find . -name "\"*.gcno\"" -type f -delete
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_custom_target(clean-gcda
     COMMAND find . -name "\"*.gcda\"" -type f -delete
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
-add_dependencies(test clean-gcno ${BINARY}-test)
-
 add_custom_target(coverage
     COMMAND mkdir -p ./test/coverage
-    COMMAND gcovr -r . -f src/ -e "\'(.+\/)?(main|.+_test)\.cpp\'" --branches --html --html-details -o ${CMAKE_SOURCE_DIR}/test/coverage/coverage.html
+    COMMAND gcovr -r . -f src/ -e "\'(.+\/)?(main|.+_test)\.cpp\'" --branches --html --html-details -o ${CMAKE_SOURCE_DIR}/test/coverage/coverage.html 
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 add_dependencies(coverage test)
