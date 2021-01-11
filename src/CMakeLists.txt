@@ -1,5 +1,6 @@
 set (SRC_FILES
     main.cpp
+    core/log.cpp
 )
 
 add_executable(${BINARY} ${SRC_FILES})
