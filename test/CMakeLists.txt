@@ -1,5 +1,5 @@
 #### Gtest
-add_subdirectory("${PROJECT_SOURCE_DIR}/third-party/googletest" "third-party/googletest")
+add_extern_directory(googletest)
 
 mark_as_advanced(
     BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS
@@ -16,7 +16,7 @@ set_target_properties(gmock_main PROPERTIES FOLDER extern)
 add_executable(${BINARY}-test main_test.cpp)
 
 target_include_directories(${BINARY}-test PUBLIC
-    ${CMAKE_SOURCE_DIR}/src
+    ${INCLUDE_DIRS}
 )
 target_link_libraries(${BINARY}-test
     gtest
@@ -33,14 +33,12 @@ set_target_properties(
 
 target_compile_options(
     ${BINARY}-test PUBLIC
-    -O0
-    -fprofile-arcs
-    -ftest-coverage
+    ${TEST_COMPILE_OPTIONS}
 )
 
 target_link_options(
     ${BINARY}-test PUBLIC
-    --coverage
+    ${TEST_LINK_OPTIONS}
 )
 
 add_custom_target(test

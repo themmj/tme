@@ -4,6 +4,18 @@ set (SRC_FILES
 
 add_executable(${BINARY} ${SRC_FILES})
 
+target_include_directories(${BINARY} PUBLIC
+    ${INCLUDE_DIRS}
+)
+
+target_link_libraries(${BINARY}
+    ${LIBRARIES}
+)
+
+target_compile_options(${BINARY} PUBLIC
+    ${BIN_COMPILE_OPTIONS}
+)
+
 set_target_properties(
     ${BINARY} PROPERTIES
 
@@ -13,15 +25,21 @@ set_target_properties(
 
 add_library(${BINARY}-lib STATIC EXCLUDE_FROM_ALL ${SRC_FILES})
 
+target_include_directories(${BINARY}-lib PUBLIC
+    ${INCLUDE_DIRS}
+)
+
+target_link_libraries(${BINARY}-lib
+    ${LIBRARIES}
+)
+
 target_compile_options(${BINARY}-lib PUBLIC
-    -O0
-    -fprofile-arcs
-    -ftest-coverage
+    ${TEST_COMPILE_OPTIONS}
 )
 
 target_link_options(
     ${BINARY}-lib PUBLIC
-    --coverage    
+    ${TEST_LINK_OPTIONS}
 )
 
 add_custom_target(run
