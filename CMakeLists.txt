@@ -22,6 +22,8 @@ set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/third-party)
 set(INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/src
     ${THIRD_PARTY_DIR}/spdlog/include
+    ${THIRD_PARTY_DIR}/googletest/googletest/include
+    ${THIRD_PARTY_DIR}/googletest/googlemock/include
 )
 
 # libraries
