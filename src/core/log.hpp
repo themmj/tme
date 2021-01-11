@@ -11,11 +11,26 @@ namespace tme {
         
         using LoggerHandle = std::shared_ptr<spdlog::logger>;
 
+        /**//**
+         * \brief Logger
+         *
+         * Singleton wrapper for splog logger.
+         * Initialize with init().
+         * Prefer TME_<LEVEL> macro calls for logging
+         * but instance can be accessed directly if needed.
+         */
         class Log {
             static LoggerHandle s_logger;
 
         public:
+            /**//**
+             * Initialize logger instance
+             */
             static void init();
+
+            /**//**
+             * Get logger instance
+             */
             static inline LoggerHandle& getInstance() { return s_logger; }
         };
 
