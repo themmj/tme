@@ -9,14 +9,34 @@ option(BUILD_DOC "Build documentation" OFF)
 option(BUILD_TESTS "Build tests" OFF)
 option(DEBUG_BUILD "Build in debug mode" OFF)
 
-if (NOT DEFINED GCOVEXEC)
-    SET(GCOVEXEC gcov)
-endif()
-
 # general settings
 set(BINARY tme)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/third-party)
+
+# gcov binary
+if (NOT DEFINED GCOVEXEC)
+    SET(GCOVEXEC gcov)
+endif()
+
+# helper to add third party cmake file
+macro(add_extern_directory)
+    add_subdirectory(${THIRD_PARTY_DIR}/${ARGV0} third-party/${ARGV0})
+endmacro()
+
+# spdlog
+add_extern_directory(spdlog)
+
+# opengl
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package( OpenGL REQUIRED )
+
+# glfw
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_extern_directory(glfw)
 
 # include dirs for bin and test
 set(INCLUDE_DIRS
@@ -24,11 +44,14 @@ set(INCLUDE_DIRS
     ${THIRD_PARTY_DIR}/spdlog/include
     ${THIRD_PARTY_DIR}/googletest/googletest/include
     ${THIRD_PARTY_DIR}/googletest/googlemock/include
+    ${OPENGL_INCLUDE_DIRS}
 )
 
 # libraries
 set(LIBRARIES
     spdlog
+    glfw
+    OpenGL::GL
 )
 
 # options for bin
@@ -66,12 +89,6 @@ set(TEST_LINK_OPTIONS
     --coverage
 )
 
-# helper to add third party cmake file
-macro(add_extern_directory)
-    add_subdirectory(${THIRD_PARTY_DIR}/${ARGV0} third-party/${ARGV0})
-endmacro()
-
-add_extern_directory(spdlog)
 add_subdirectory(src)
 
 if(${BUILD_DOC})
