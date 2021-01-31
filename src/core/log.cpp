@@ -1,3 +1,4 @@
+/** @file */
 #include "core/log.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/cfg/env.h"

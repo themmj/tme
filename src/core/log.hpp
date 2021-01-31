@@ -1,5 +1,6 @@
-#ifndef LOG_H
-#define LOG_H
+#ifndef _CORE_LOG_H
+#define _CORE_LOG_H
+/** @file */
 
 #include <memory>
 #include "spdlog/logger.h"
@@ -8,7 +9,8 @@
 
 namespace tme {
     namespace core {
-        
+
+        /// Smart handle to spd::logger
         using LoggerHandle = std::shared_ptr<spdlog::logger>;
 
         /**//**
@@ -38,12 +40,28 @@ namespace tme {
 }
 
 #ifdef TME_DEBUG
+/**//**
+ * \brief Log on trace level.
+ *
+ * @param ... Arguments which need to have an ostream& operator<<(ostream&, T) definded.
+ * First argument can be an spdlog format string followed by the needed arguments.
+ */
 #   define TME_TRACE(...)     ::tme::core::Log::getInstance()->trace(__VA_ARGS__)
+/// Log on info level. \sa #TME_TRACE(...)
 #   define TME_INFO(...)      ::tme::core::Log::getInstance()->info(__VA_ARGS__)
+/// Log on warning level. \sa #TME_TRACE(...)
 #   define TME_WARN(...)      ::tme::core::Log::getInstance()->warn(__VA_ARGS__)
+/// Log on error level. \sa #TME_TRACE(...)
 #   define TME_ERROR(...)     ::tme::core::Log::getInstance()->error(__VA_ARGS__)
+/// Log on critical level. \sa #TME_TRACE(...)
 #   define TME_CRITICAL(...)  ::tme::core::Log::getInstance()->critical(__VA_ARGS__)
 #   include <signal.h>
+/**//**
+ * Log on critical level and raise SIGTRAP if x is false.
+ *
+ * @param x Statement to be used in an if clause.
+ * @param ... \ref #TME_TRACE(...)
+ */
 #   define TME_ASSERT(x, ...) { if (!(x)) { TME_CRITICAL("Assertion failed: {0}", __VA_ARGS__); raise(SIGTRAP); } }
 #else
 #   define TME_TRACE(...)
