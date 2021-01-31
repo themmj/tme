@@ -4,6 +4,7 @@ project(tme-ase-project)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(BUILD_DOC "Build documentation" OFF)
 option(BUILD_TESTS "Build tests" OFF)
