@@ -16,7 +16,7 @@ namespace tme {
                 }
 
                 public:
-                _TestDispatcher() : m_hitMask(0) {}
+                _TestDispatcher() : Dispatcher(this), m_hitMask(0) {}
 
                 template<typename EventType>
                 bool hitEvent() const {
@@ -24,7 +24,7 @@ namespace tme {
                 }
 
                 void onEvent(Event& event) override {
-                    dispatchEvent<WindowClose>(event, this, &_TestDispatcher::handleEvent<WindowClose>);
+                    dispatchEvent<WindowClose>(event, &_TestDispatcher::handleEvent<WindowClose>);
                 }
             };
 
