@@ -16,10 +16,8 @@ namespace tme {
                 public:
                 WindowClose() {}
 
-                /// @cond INCLUDE_MACROS GCOVR_EXCL_START
-                EVENT_CLASS_TYPE(WindowClose);
-                EVENT_CLASS_CATEGORY(Application);
-                /// @endcond GCOVR_EXCL_STOP
+                EVENT_CLASS_TYPE(WindowClose)
+                EVENT_CLASS_CATEGORY(Application)
             };
 
             /**//**
@@ -46,16 +44,14 @@ namespace tme {
                  */
                 inline auto getHeight() const { return m_height; }
 
-                /// @cond INCLUDE_MACROS GCOVR_EXCL_START
                 std::string toString() const override {
                     std::stringstream ss;
                     ss << getName() << '(' << m_width << ',' << m_height << ')';
                     return ss.str();
                 }
 
-                EVENT_CLASS_TYPE(WindowResize);
-                EVENT_CLASS_CATEGORY(Application);
-                /// @endcond GCOVR_EXCL_STOP
+                EVENT_CLASS_TYPE(WindowResize)
+                EVENT_CLASS_CATEGORY(Application)
             };
 
         }

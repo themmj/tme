@@ -83,7 +83,7 @@ namespace tme {
                  * \brief Helper macro to generate override method for category
                  * @param category Event categories to be used.
                  */
-                #define EVENT_CLASS_CATEGORY(category) virtual Category getCategories() const override { return category; }
+                #define EVENT_CLASS_CATEGORY(category) virtual Category getCategories() const override { return static_cast<Category>(category); }
 
                 /**//**
                  * \brief Check if event is associated with category.
@@ -96,9 +96,7 @@ namespace tme {
                  */
                 inline bool isInCategory(Category category) const { return getCategories() & category; }
 
-                /// @cond INCLUDE_MACROS GCOVR_EXCL_START
                 virtual std::string toString() const override { return getName(); }
-                /// @endcond GCOVR_EXCL_STOP
             };
 
         }
