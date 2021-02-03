@@ -30,7 +30,7 @@ if (HPP2PUML_FOUND)
     set(PUML_DIR ${CMAKE_SOURCE_DIR}/doc/puml)
     add_custom_target(doc_puml ALL
         COMMAND mkdir -p ${PUML_DIR}
-        COMMAND hpp2plantuml -i "src/**.hpp" -o ${PUML_DIR}/output.puml
+        COMMAND hpp2plantuml -i \"src/**/*.hpp\" -o ${PUML_DIR}/output.puml
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 else()
