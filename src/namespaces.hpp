@@ -13,6 +13,9 @@ namespace tme {
 
     }
 
+    /// Platform specific specialisation of core components.
+    namespace platform{}
+
 }
 
 

@@ -1,7 +1,9 @@
+/** @file */
 #include "platform/glfw.hpp"
 #include "core/log.hpp"
 #include "core/window.hpp"
 #include "core/events/window.hpp"
+#include "core/events/key.hpp"
 
 namespace tme {
 
@@ -13,9 +15,19 @@ namespace tme {
 
         bool GlfwWindow::s_glfwInitialized = false;
 
+        /// code generation to get user data contained in the window instance and cast it accordingly
         #define GET_GLFW_DATA core::Window::Data& data = *static_cast<core::Window::Data*>(glfwGetWindowUserPointer(window))
 
+        int glfwToTmeKeyCode(int glfwKeyCode) {
+            auto result = glfwKeyMap.find(glfwKeyCode);
+            if (result == glfwKeyMap.end()) {
+                return TME_KEY_UNKNOWN;
+            }
+            return result->second;
+        }
+
         void GlfwWindow::init() {
+            TME_ASSERT(s_windowCount == 0, "cannot create more than one window");
             TME_TRACE("creating window {}", *this);
 		    if (!s_glfwInitialized) {
 			    TME_ASSERT(glfwInit(), "failed to initialize glfw");
@@ -53,13 +65,12 @@ namespace tme {
 		    	data.handler->onEvent(event);
 		    });
             
-            // TODO remove commented out stubs when respective events are implemented
-            /*
-		    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+		    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int keyCode, int /*scancode*/, int action, int mods) {
 			    GET_GLFW_DATA;
+                GlfwKey key(keyCode, mods);
 			    switch (action) {
 				    case GLFW_PRESS: {
-                        core::events::KeyPressed event(key, 0);
+                        core::events::KeyPressed event(key);
 					    data.handler->onEvent(event);
 					    break;
 				    }
@@ -68,14 +79,17 @@ namespace tme {
 					    data.handler->onEvent(event);
 					    break;
 				    }
+                    /* in case this is needed in the future
 				    case GLFW_REPEAT: {
-                        core::events::KeyPressed event(key, 1);
+                        core::events::KeyRepeat event(key, ?);
 					    data.handler->onEvent(event);
 					    break;
-				    }
+				    }*/
 			    }
 		    });
 
+            // TODO remove commented out stubs when respective events are implemented
+            /*
 		    glfwSetCharCallback(m_window, [](GLFWwindow* window, unsigned int keycode) {
 			    GET_GLFW_DATA;
                 core::events::KeyTyped event(keycode);

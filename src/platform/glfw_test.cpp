@@ -43,6 +43,29 @@ namespace tme {
             GlfwWindow::s_glfwInitialized = false;
         }
 
+        TEST(TestGlfwKey, KeyMapping) {
+            GlfwKey key(GLFW_KEY_F, 0);
+            EXPECT_EQ(key.getKeyCode(), TME_KEY_F);
+            EXPECT_TRUE(key.isKey(TME_KEY_F));
+        }
+
+        TEST(TestGlfwKey, KeyMods) {
+            GlfwKey key(GLFW_KEY_L, GLFW_MOD_SHIFT | GLFW_MOD_ALT);
+            EXPECT_TRUE(key.hasModAlt());
+            EXPECT_TRUE(key.hasModShift());
+            EXPECT_FALSE(key.hasModSuper());
+            EXPECT_FALSE(key.hasModControl());
+            EXPECT_FALSE(key.hasModNumLock());
+            EXPECT_FALSE(key.hasModCapsLock());
+        }
+
+        TEST(TestGlfwKey, UnknownKey) {
+            // this key is not mapped to it should
+            // result in an TME_KEY_UNKNOW
+            GlfwKey key(GLFW_KEY_PRINT_SCREEN, 0);
+            EXPECT_EQ(key.getKeyCode(), TME_KEY_UNKNOWN);
+        }
+
     }
 }
 

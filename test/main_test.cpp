@@ -2,9 +2,11 @@
 
 #include "core/log_test.cpp"
 #include "core/loggable_test.cpp"
+#include "core/key_test.cpp"
 #include "core/events/event_test.cpp"
 #include "core/events/dispatcher_test.cpp"
 #include "core/events/window_test.cpp"
+#include "core/events/key_test.cpp"
 #include "core/window_test.cpp"
 #include "platform/glfw_test.cpp"
 
