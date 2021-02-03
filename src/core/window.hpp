@@ -1,3 +1,4 @@
+/** @file */
 #ifndef _CORE_WINDOW_H
 #define _CORE_WINDOW_H
 

@@ -1,3 +1,4 @@
+/** @file */
 #ifndef _CORE_EVENTS_HANDLER_H
 #define _CORE_EVENTS_HANDLER_H
 

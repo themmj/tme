@@ -1,3 +1,4 @@
+/** @file */
 #include "core/window.hpp"
 #include <sstream>
 
