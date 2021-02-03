@@ -15,7 +15,8 @@ namespace tme {
             /// Valid event types.
             enum class Type {
                 None = 0,
-                WindowResize, WindowClose
+                WindowResize, WindowClose,
+                KeyPressed, KeyReleased
             };
 
             /// Valid event categories.
