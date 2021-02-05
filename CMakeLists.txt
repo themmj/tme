@@ -80,6 +80,14 @@ set(BIN_COMPILE_OPTIONS
     -Wshadow
 )
 
+# disable opengl deprecation warnings on osx
+if(APPLE)
+    set(BIN_COMPILE_OPTIONS
+        ${BIN_COMPILE_OPTIONS}
+        -DGL_SILENCE_DEPRECATION
+    )
+endif()
+
 # options for test
 set(TEST_COMPILE_OPTIONS
     ${BIN_COMPILE_OPTIONS}

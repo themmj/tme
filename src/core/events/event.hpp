@@ -2,7 +2,7 @@
 #define EVENT_H
 /** @file */
 
-#include <bits/stdint-uintn.h>
+#include <cstdint>
 #include "core/loggable.hpp"
 
 /// shift bit left by x
