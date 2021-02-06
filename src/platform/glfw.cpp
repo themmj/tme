@@ -70,12 +70,12 @@ namespace tme {
                 GlfwKey key(keyCode, mods);
 			    switch (action) {
 				    case GLFW_PRESS: {
-                        core::events::KeyPressed event(key);
+                        core::events::KeyPress event(key);
 					    data.handler->onEvent(event);
 					    break;
 				    }
 				    case GLFW_RELEASE: {
-                        core::events::KeyReleased event(key);
+                        core::events::KeyRelease event(key);
 					    data.handler->onEvent(event);
 					    break;
 				    }
@@ -91,7 +91,7 @@ namespace tme {
 		    glfwSetCharCallback(m_window, [](GLFWwindow* window, uint32_t codepoint) {
 			    GET_GLFW_DATA;
                 GlfwCharKey key(codepoint);
-                core::events::KeyTyped event(key);
+                core::events::KeyChar event(key);
 			    data.handler->onEvent(event);
 		    });
 

@@ -29,37 +29,37 @@ namespace tme {
                 }
             };
 
-            TEST(EventTest, KeyPressed) {
+            TEST(EventTest, KeyPress) {
                 _DefaultKey dk(TME_KEY_H);
-                KeyPressed kp(dk);
+                KeyPress kp(dk);
 
                 EXPECT_EQ(dk.getKeyCode(),kp.getKey().getKeyCode());
-                EXPECT_EQ(kp.getType(), Type::KeyPressed);
+                EXPECT_EQ(kp.getType(), Type::KeyPress);
                 EXPECT_TRUE(kp.isInCategory(Category::Input));
                 EXPECT_TRUE(kp.isInCategory(Category::Keyboard));
-                EXPECT_EQ(kp.toString(), "KeyPressed(25,000000)");
+                EXPECT_EQ(kp.toString(), "KeyPress(25,000000)");
             }
 
-            TEST(EventTest, KeyReleased) {
+            TEST(EventTest, KeyRelease) {
                 _DefaultKey dk(TME_KEY_K);
-                KeyReleased kr(dk);
+                KeyRelease kr(dk);
 
                 EXPECT_EQ(dk.getKeyCode(),kr.getKey().getKeyCode());
-                EXPECT_EQ(kr.getType(), Type::KeyReleased);
+                EXPECT_EQ(kr.getType(), Type::KeyRelease);
                 EXPECT_TRUE(kr.isInCategory(Category::Input));
                 EXPECT_TRUE(kr.isInCategory(Category::Keyboard));
-                EXPECT_EQ(kr.toString(), "KeyReleased(28,000000)");
+                EXPECT_EQ(kr.toString(), "KeyRelease(28,000000)");
             }
 
-            TEST(EventTest, KeyTyped) {
+            TEST(EventTest, KeyChar) {
                 _DefaultKey dk(0x0000004e);
-                KeyTyped kr(dk);
+                KeyChar kr(dk);
 
                 EXPECT_EQ(dk.getKeyCode(),kr.getKey().getKeyCode());
-                EXPECT_EQ(kr.getType(), Type::KeyTyped);
+                EXPECT_EQ(kr.getType(), Type::KeyChar);
                 EXPECT_TRUE(kr.isInCategory(Category::Input));
                 EXPECT_TRUE(kr.isInCategory(Category::Keyboard));
-                EXPECT_EQ(kr.toString(), "KeyTyped(78)");
+                EXPECT_EQ(kr.toString(), "KeyChar(78)");
             }
 
         }

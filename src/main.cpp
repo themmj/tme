@@ -21,7 +21,7 @@ namespace tme {
                 return true;
             }
 
-            bool handleKeyPress(events::KeyPressed& event) {
+            bool handleKeyPress(events::KeyPress& event) {
                 switch(event.getKey().getKeyCode()) {
                     case TME_KEY_R:
                         red += 0.1f;
@@ -49,7 +49,7 @@ namespace tme {
             void onEvent(events::Event& event) override {
                 TME_INFO("received event {}", event);
                 dispatchEvent<events::WindowClose>(event, &App::handleWindowClose);
-                dispatchEvent<events::KeyPressed>(event, &App::handleKeyPress);
+                dispatchEvent<events::KeyPress>(event, &App::handleKeyPress);
             }
 
             /// run application

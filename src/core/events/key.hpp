@@ -49,30 +49,30 @@ namespace tme {
             };
 
             /// KeyBase specialisation when a key is pressed.
-            class KeyPressed : public KeyBase {
+            class KeyPress : public KeyBase {
                 public:
-                /// Construct KeyPressed instance forwarding the key object to KeyBase
-                KeyPressed(const Key& key) : KeyBase(key) {}
+                /// Construct KeyPress instance forwarding the key object to KeyBase
+                KeyPress(const Key& key) : KeyBase(key) {}
 
-                EVENT_CLASS_TYPE(KeyPressed)
+                EVENT_CLASS_TYPE(KeyPress)
             };
 
             /// KeyBase specialisation when a key is released.
-            class KeyReleased : public KeyBase {
+            class KeyRelease : public KeyBase {
                 public:
-                /// Construct KeyReleased instance forwarding the key object to KeyBase
-                KeyReleased(const Key& key) : KeyBase(key) {}
+                /// Construct KeyRelease instance forwarding the key object to KeyBase
+                KeyRelease(const Key& key) : KeyBase(key) {}
 
-                EVENT_CLASS_TYPE(KeyReleased)
+                EVENT_CLASS_TYPE(KeyRelease)
             };
 
             /// KeyBase specialisation when a key is typed (e.g. an input field)
-            class KeyTyped : public KeyBase {
+            class KeyChar : public KeyBase {
                 public:
-                /// Constructs KeyTyped instance by forewarding the key object to KeyBase
-                KeyTyped(const Key& key) : KeyBase(key) {}
+                /// Constructs KeyChar instance by forewarding the key object to KeyBase
+                KeyChar(const Key& key) : KeyBase(key) {}
 
-                EVENT_CLASS_TYPE(KeyTyped)
+                EVENT_CLASS_TYPE(KeyChar)
 
                 std::string toString() const override {
                     std::stringstream ss;
