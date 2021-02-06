@@ -33,6 +33,8 @@ namespace tme {
                 bool vSyncEnabled;
                 /// handler to propagate events to
                 EventHandlerPtr handler;
+                /// this pointer to access member in callback lambdas
+                Window* m_this;
 
                 /**//**
                  * \brief window data constructor
@@ -62,7 +64,7 @@ namespace tme {
             static Window* create(const Data& data);
 
             /// construct new window base from data
-            Window(const Data& data) : m_data(data) {}
+            Window(const Data& data) : m_data(data) { m_data.m_this = this; }
             virtual ~Window() {}
 
             /// Update method called every iteration of the application loop.
@@ -107,6 +109,30 @@ namespace tme {
             virtual void setVSync(bool enable) = 0;
 
             virtual std::string toString() const override;
+
+            /**//**
+             * \brief Get relative x coordinate based on window dimension.
+             *
+             * @param absX absolute x value
+             *
+             * @return corresponding relative coordinate based on window width
+             */
+            template<typename T>
+            double getRelativeX(T absX) const{
+                return static_cast<double>(absX) / static_cast<double>(getWidth());
+            }
+
+            /**//**
+             * \brief Get relative y coordinate based on window dimension.
+             *
+             * @param absY absolute y value
+             *
+             * @return corresponding relative coordinate based on window height
+             */
+            template<typename T>
+            double getRelativeY(T absY) const {
+                return static_cast<double>(absY) / static_cast<double>(getHeight());
+            }
         };
 
     }

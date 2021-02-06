@@ -50,5 +50,19 @@ namespace tme {
             EXPECT_EQ(dw.toString(), "Window: Test title(240,144,0)");
         }
 
+        TEST(WindowTest, RelativeCoordinates) {
+            std::string title{"Test title"};
+            _DefaultWindow::Dimension width = 240;
+            _DefaultWindow::Dimension height = 144;
+            _DefaultWindowEventHandler deh;
+            _DefaultWindow dw(Window::Data{title, width, height, &deh});
+
+            EXPECT_EQ(dw.getRelativeX(120.0), 0.5);
+            EXPECT_EQ(dw.getRelativeY(72.0), 0.5);
+
+            EXPECT_EQ(dw.getRelativeX(60), 0.25);
+            EXPECT_EQ(dw.getRelativeY(36), 0.25);
+        }
+
     }
 }
