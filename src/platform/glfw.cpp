@@ -52,10 +52,12 @@ namespace tme {
             // GCOVR_EXCL_START
 		    glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int32_t width, int32_t height) {
                 GET_GLFW_DATA;
+                auto widthFactor = data.m_this->getRelativeX(width);
+                auto heightFactor = data.m_this->getRelativeY(height);
 			    data.width = static_cast<Dimension>(width);
 			    data.height = static_cast<Dimension>(height);
 
-                core::events::WindowResize event(data.width, data.height);
+                core::events::WindowResize event(data.width, data.height, widthFactor, heightFactor);
                 data.handler->onEvent(event);
 		    });
 

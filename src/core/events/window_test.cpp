@@ -16,7 +16,9 @@ namespace tme {
             TEST(EventTest, WindowResize) {
                 const uint32_t width = 220;
                 const uint32_t height = 144;
-                WindowResize wr(width, height);
+                const double widthFactor = 1.0;
+                const double heightFactor = 0.5;
+                WindowResize wr(width, height, widthFactor, heightFactor);
 
                 EXPECT_EQ(wr.getType(), Type::WindowResize);
                 EXPECT_TRUE(wr.isInCategory(Application));
@@ -24,8 +26,10 @@ namespace tme {
 
                 EXPECT_EQ(wr.getWidth(), width);
                 EXPECT_EQ(wr.getHeight(), height);
+                EXPECT_EQ(wr.getWidthFactor(), widthFactor);
+                EXPECT_EQ(wr.getHeightFactor(), heightFactor);
                 // custom to string
-                EXPECT_EQ(wr.toString(), "WindowResize(220,144)");
+                EXPECT_EQ(wr.toString(), "WindowResize(220,144,1,0.5)");
             }
 
         }

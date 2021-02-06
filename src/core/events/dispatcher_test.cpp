@@ -40,7 +40,7 @@ namespace tme {
             TEST(DispatcherTest, DispatchMismatchedEvent) {
                 _TestDispatcher td;
                 EXPECT_FALSE(td.hitEvent<WindowResize>());
-                WindowResize event(640, 300);
+                WindowResize event(640, 300, 1.1, 1.1);
                 td.onEvent(event);
                 EXPECT_FALSE(td.hitEvent<WindowResize>());
                 EXPECT_FALSE(td.hitEvent<WindowClose>());
