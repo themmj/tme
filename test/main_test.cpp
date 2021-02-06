@@ -7,6 +7,7 @@
 #include "core/events/dispatcher_test.cpp"
 #include "core/events/window_test.cpp"
 #include "core/events/key_test.cpp"
+#include "core/events/mouse_test.cpp"
 #include "core/window_test.cpp"
 #include "platform/glfw_test.cpp"
 

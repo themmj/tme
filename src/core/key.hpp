@@ -177,6 +177,10 @@ namespace tme {
 #define TME_KEY_RIGHT_CONTROL  111
 #define TME_KEY_RIGHT_ALT  112
 #define TME_KEY_RIGHT_SUPER  113
+
+#define TME_MOUSE_BUTTON_LEFT 114
+#define TME_MOUSE_BUTTON_RIGHT 115
+#define TME_MOUSE_BUTTON_MIDDLE 116
 // @endcond
 
 #endif

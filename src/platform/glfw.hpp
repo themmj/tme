@@ -129,6 +129,10 @@ namespace tme {
             { GLFW_KEY_RIGHT_CONTROL, TME_KEY_RIGHT_CONTROL },
             { GLFW_KEY_RIGHT_ALT, TME_KEY_RIGHT_ALT },
             { GLFW_KEY_RIGHT_SUPER, TME_KEY_RIGHT_SUPER },
+
+            { GLFW_MOUSE_BUTTON_LEFT , TME_MOUSE_BUTTON_LEFT },
+            { GLFW_MOUSE_BUTTON_RIGHT , TME_MOUSE_BUTTON_RIGHT },
+            { GLFW_MOUSE_BUTTON_MIDDLE , TME_MOUSE_BUTTON_MIDDLE }
         };
 
         /**//**

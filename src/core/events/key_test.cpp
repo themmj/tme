@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "core/events/key.hpp"
+#include "core/events/mouse.hpp"
 
 namespace tme {
     namespace core {
@@ -60,6 +61,28 @@ namespace tme {
                 EXPECT_TRUE(kr.isInCategory(Category::Input));
                 EXPECT_TRUE(kr.isInCategory(Category::Keyboard));
                 EXPECT_EQ(kr.toString(), "KeyChar(78)");
+            }
+
+            TEST(EventTest, MouseKeyRelease) {
+                _DefaultKey dk(TME_MOUSE_BUTTON_LEFT);
+                MouseKeyRelease kr(dk);
+
+                EXPECT_EQ(dk.getKeyCode(),kr.getKey().getKeyCode());
+                EXPECT_EQ(kr.getType(), Type::MouseKeyRelease);
+                EXPECT_TRUE(kr.isInCategory(Category::Input));
+                EXPECT_TRUE(kr.isInCategory(Category::Mouse));
+                EXPECT_EQ(kr.toString(), "MouseKeyRelease(114,000000)");
+            }
+
+            TEST(EventTest, MouseKeyPress) {
+                _DefaultKey dk(TME_MOUSE_BUTTON_RIGHT);
+                MouseKeyPress kr(dk);
+
+                EXPECT_EQ(dk.getKeyCode(),kr.getKey().getKeyCode());
+                EXPECT_EQ(kr.getType(), Type::MouseKeyPress);
+                EXPECT_TRUE(kr.isInCategory(Category::Input));
+                EXPECT_TRUE(kr.isInCategory(Category::Mouse));
+                EXPECT_EQ(kr.toString(), "MouseKeyPress(115,000000)");
             }
 
         }

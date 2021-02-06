@@ -4,6 +4,7 @@
 #include "core/window.hpp"
 #include "core/events/window.hpp"
 #include "core/events/key.hpp"
+#include "core/events/mouse.hpp"
 
 namespace tme {
 
@@ -95,18 +96,17 @@ namespace tme {
 			    data.handler->onEvent(event);
 		    });
 
-            // TODO remove commented out stubs when respective events are implemented
-            /*
 		    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int32_t button, int32_t action, int32_t mods) {
 			    GET_GLFW_DATA;
+                GlfwKey key(button, mods);
 			    switch (action) {
 				    case GLFW_PRESS: {
-                        core::events::MouseButtonPressed event(button);
+                        core::events::MouseKeyPress event(key);
 					    data.handler->onEvent(event);
 					    break;
 				    }
 				    case GLFW_RELEASE: {
-                        core::events::MouseButtonReleased event(button);
+                        core::events::MouseKeyRelease event(key);
 					    data.handler->onEvent(event);
 					    break;
 				    }
@@ -115,16 +115,15 @@ namespace tme {
 
 		    glfwSetScrollCallback(m_window, [](GLFWwindow* window, double xOffset, double yOffset) {
 			    GET_GLFW_DATA;
-                core::events::MouseScrolled event(xOffset, yOffset);
+                core::events::MouseScroll event(xOffset, yOffset);
 			    data.handler->onEvent(event);
 		    });
 
 		    glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xPos, double yPos) {
 			    GET_GLFW_DATA;
-                core::events::MouseMoved event(xPos, yPos);
+                core::events::MouseMove event(xPos, yPos, data.m_this->getRelativeX(xPos), data.m_this->getRelativeY(yPos));
 			    data.handler->onEvent(event);
 		    });
-            */
             // GCOVR_EXCL_STOP
             ++s_windowCount;
             TME_INFO("created window {}", *this);

@@ -17,6 +17,7 @@ namespace tme {
                 None = 0,
                 WindowResize, WindowClose,
                 KeyPress, KeyRelease, KeyChar,
+                MouseKeyPress, MouseKeyRelease, MouseMove, MouseScroll
             };
 
             /// Valid event categories.
