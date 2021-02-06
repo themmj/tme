@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include <string>
 #include "core/window.hpp"
 #include "platform/glfw.hpp"
 #include "core/events/handler.hpp"
@@ -64,6 +65,21 @@ namespace tme {
             // result in an TME_KEY_UNKNOW
             GlfwKey key(GLFW_KEY_PRINT_SCREEN, 0);
             EXPECT_EQ(key.getKeyCode(), TME_KEY_UNKNOWN);
+        }
+
+        TEST(TestGlfwCharKey, CharValue) {
+            GlfwCharKey key(0x0000004c); // capital L
+            EXPECT_EQ(static_cast<char32_t>(key.getKeyCode()), U'L');
+        }
+
+        TEST(TestGlfwCharKey, ModStubs) {
+            GlfwCharKey key(0x0000004d);
+            EXPECT_FALSE(key.hasModAlt());
+            EXPECT_FALSE(key.hasModShift());
+            EXPECT_FALSE(key.hasModSuper());
+            EXPECT_FALSE(key.hasModControl());
+            EXPECT_FALSE(key.hasModNumLock());
+            EXPECT_FALSE(key.hasModCapsLock());
         }
 
     }

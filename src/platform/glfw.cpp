@@ -18,7 +18,7 @@ namespace tme {
         /// code generation to get user data contained in the window instance and cast it accordingly
         #define GET_GLFW_DATA core::Window::Data& data = *static_cast<core::Window::Data*>(glfwGetWindowUserPointer(window))
 
-        int glfwToTmeKeyCode(int glfwKeyCode) {
+        int32_t glfwToTmeKeyCode(int32_t glfwKeyCode) {
             auto result = glfwKeyMap.find(glfwKeyCode);
             if (result == glfwKeyMap.end()) {
                 return TME_KEY_UNKNOWN;
@@ -34,7 +34,7 @@ namespace tme {
 			    s_glfwInitialized = true;
 		    }
 
-		    m_window = glfwCreateWindow(static_cast<int>(m_data.width), static_cast<int>(m_data.height), &m_data.title[0], nullptr, nullptr);
+		    m_window = glfwCreateWindow(static_cast<int32_t>(m_data.width), static_cast<int32_t>(m_data.height), &m_data.title[0], nullptr, nullptr);
             if (!m_window) {
                 TME_CRITICAL("could not create window");
                 return;
@@ -49,7 +49,7 @@ namespace tme {
             // automated unit tests because then i.e. depend on user input etc.
             // rest assured they are tested thoroughly in a manual fashion
             // GCOVR_EXCL_START
-		    glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
+		    glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int32_t width, int32_t height) {
                 GET_GLFW_DATA;
 			    data.width = static_cast<Dimension>(width);
 			    data.height = static_cast<Dimension>(height);
@@ -65,7 +65,7 @@ namespace tme {
 		    	data.handler->onEvent(event);
 		    });
             
-		    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int keyCode, int /*scancode*/, int action, int mods) {
+		    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int32_t keyCode, int32_t /*scancode*/, int32_t action, int32_t mods) {
 			    GET_GLFW_DATA;
                 GlfwKey key(keyCode, mods);
 			    switch (action) {
@@ -88,15 +88,16 @@ namespace tme {
 			    }
 		    });
 
-            // TODO remove commented out stubs when respective events are implemented
-            /*
-		    glfwSetCharCallback(m_window, [](GLFWwindow* window, unsigned int keycode) {
+		    glfwSetCharCallback(m_window, [](GLFWwindow* window, uint32_t codepoint) {
 			    GET_GLFW_DATA;
-                core::events::KeyTyped event(keycode);
+                GlfwCharKey key(codepoint);
+                core::events::KeyTyped event(key);
 			    data.handler->onEvent(event);
 		    });
 
-		    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods) {
+            // TODO remove commented out stubs when respective events are implemented
+            /*
+		    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int32_t button, int32_t action, int32_t mods) {
 			    GET_GLFW_DATA;
 			    switch (action) {
 				    case GLFW_PRESS: {

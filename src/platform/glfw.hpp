@@ -11,7 +11,7 @@ namespace tme {
     namespace platform {
 
         /// type alias for the datastructure used to map glfw keys to tme keys
-        using GlfwKeyMap = std::unordered_map<int, const int>;
+        using GlfwKeyMap = std::unordered_map<int32_t, const int32_t>;
         /// key code mappings between glfw and tme
         const GlfwKeyMap glfwKeyMap = {
             { GLFW_KEY_UNKNOWN, TME_KEY_UNKNOWN },
@@ -139,13 +139,13 @@ namespace tme {
          *
          * @return tme key code
          */
-        int glfwToTmeKeyCode(int glfwKeyCode);
+        int32_t glfwToTmeKeyCode(int32_t glfwKeyCode);
 
         /**//**
-         * \brief Key implementation for glfw.
+         * \brief Physical key implementation for glfw.
          */
         class GlfwKey : public core::Key {
-            int m_modMask;
+            int32_t m_modMask;
 
             public:
             /**//**
@@ -154,7 +154,7 @@ namespace tme {
              * @param keyCode the glfw keycode to be used (will be converted during construction)
              * @param modMask the glfw modmask provided in the event callback
              */
-            GlfwKey(int keyCode, int modMask) : Key(glfwToTmeKeyCode(keyCode)), m_modMask(modMask) {}
+            GlfwKey(int32_t keyCode, int32_t modMask) : Key(glfwToTmeKeyCode(keyCode)), m_modMask(modMask) {}
 
             bool hasModShift() const override {
                 return m_modMask & GLFW_MOD_SHIFT;
@@ -173,6 +173,51 @@ namespace tme {
             }
             bool hasModNumLock() const override {
                 return m_modMask & GLFW_MOD_NUM_LOCK;
+            }
+        };
+
+        /**//**
+         * \brief Character key implementation for glfw.
+         * 
+         * Glfw allow for a specific callback containing the UTF-32 representation
+         * of the pressed key with respect to the active modifiers. As GlfwKey
+         * converts the glfw key code to a tme key code, this implementation is needed
+         * to store the received code point32_t directly and process it further.
+         *
+         * The Key base type stores the keycode as a signed 32 bit integer.
+         * During construction the unsigned 32 bit integer from glfw is casted to it's
+         * signed verion. This does not change the bit representation, just how the value is
+         * interpreted. When using the value with getKeyCode the value can be casted back to
+         * an unsigned type.
+         *
+         * The mods functions are implemented as stubs and should not be used.
+         */
+        class GlfwCharKey : public core::Key {
+            public:
+            /**//**
+             * \brief Construct GlfwCharKey instance.
+             *
+             * @param codePoint the unsigned 32 bit integer representation of the character (UTF-32)
+             */
+            GlfwCharKey(uint32_t codePoint) : Key(static_cast<int32_t>(codePoint)) {}
+
+            bool hasModShift() const override {
+                return false;
+            }
+            bool hasModControl() const override {
+                return false;
+            }
+            bool hasModAlt() const override {
+                return false;
+            }
+            bool hasModSuper() const override {
+                return false;
+            }
+            bool hasModCapsLock() const override {
+                return false;
+            }
+            bool hasModNumLock() const override {
+                return false;
             }
         };
 

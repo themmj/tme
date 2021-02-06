@@ -7,7 +7,7 @@ namespace tme {
 
             class _DefaultKey : public core::Key {
                 public:
-                _DefaultKey(int keyCode) : Key(keyCode) {}
+                _DefaultKey(int32_t keyCode) : Key(keyCode) {}
 
                 bool hasModShift() const override {
                     return false;
@@ -49,6 +49,17 @@ namespace tme {
                 EXPECT_TRUE(kr.isInCategory(Category::Input));
                 EXPECT_TRUE(kr.isInCategory(Category::Keyboard));
                 EXPECT_EQ(kr.toString(), "KeyReleased(28,000000)");
+            }
+
+            TEST(EventTest, KeyTyped) {
+                _DefaultKey dk(0x0000004e);
+                KeyTyped kr(dk);
+
+                EXPECT_EQ(dk.getKeyCode(),kr.getKey().getKeyCode());
+                EXPECT_EQ(kr.getType(), Type::KeyTyped);
+                EXPECT_TRUE(kr.isInCategory(Category::Input));
+                EXPECT_TRUE(kr.isInCategory(Category::Keyboard));
+                EXPECT_EQ(kr.toString(), "KeyTyped(78)");
             }
 
         }

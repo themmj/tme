@@ -6,7 +6,7 @@ namespace tme {
 
         class _DefaultKey : public core::Key {
             public:
-            _DefaultKey(int keyCode) : Key(keyCode) {}
+            _DefaultKey(int32_t keyCode) : Key(keyCode) {}
 
             bool hasModShift() const override {
                 return false;

@@ -34,7 +34,7 @@ namespace tme {
 
                 EVENT_CLASS_CATEGORY(Input | Keyboard)
                 
-                std::string toString() const override {
+                virtual std::string toString() const override {
                     std::stringstream ss;
                     ss << getName() << '(' << m_key.getKeyCode() << ',';
                     ss << m_key.hasModShift();
@@ -64,6 +64,21 @@ namespace tme {
                 KeyReleased(const Key& key) : KeyBase(key) {}
 
                 EVENT_CLASS_TYPE(KeyReleased)
+            };
+
+            /// KeyBase specialisation when a key is typed (e.g. an input field)
+            class KeyTyped : public KeyBase {
+                public:
+                /// Constructs KeyTyped instance by forewarding the key object to KeyBase
+                KeyTyped(const Key& key) : KeyBase(key) {}
+
+                EVENT_CLASS_TYPE(KeyTyped)
+
+                std::string toString() const override {
+                    std::stringstream ss;
+                    ss << getName() << '(' << static_cast<uint32_t>(m_key.getKeyCode()) << ')';
+                    return ss.str();
+                }
             };
 
         }

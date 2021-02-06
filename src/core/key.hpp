@@ -15,10 +15,10 @@ namespace tme {
          * and access to the applied modifiers.
          */
         class Key : public Loggable {
-            int m_keyCode;
+            int32_t m_keyCode;
             public:
             /// Construct Key instance from tme key code
-            Key(int keyCode) : m_keyCode(keyCode) {}
+            Key(int32_t keyCode) : m_keyCode(keyCode) {}
             virtual ~Key() {}
 
             /**//**
@@ -28,13 +28,13 @@ namespace tme {
              *
              * @return true if the provided key code matches, false otherwise
              */
-            bool isKey(int keyCode) const { return m_keyCode == keyCode; }
+            bool isKey(int32_t keyCode) const { return m_keyCode == keyCode; }
             /**//**
              * \brief Get the tme key code.
              *
              * @return key code of the key
              */
-            int getKeyCode() const { return m_keyCode; }
+            int32_t getKeyCode() const { return m_keyCode; }
 
             /// Returns true if the shift mod was active
             virtual bool hasModShift() const = 0;
