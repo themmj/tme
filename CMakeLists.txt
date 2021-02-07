@@ -28,9 +28,11 @@ endmacro()
 # spdlog
 add_extern_directory(spdlog)
 
-# opengl
-set(OpenGL_GL_PREFERENCE GLVND)
-find_package( OpenGL REQUIRED )
+# glad
+add_extern_directory(glad)
+
+#imgui
+add_extern_directory(imgui)
 
 # glfw
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -45,14 +47,16 @@ set(INCLUDE_DIRS
     ${THIRD_PARTY_DIR}/spdlog/include
     ${THIRD_PARTY_DIR}/googletest/googletest/include
     ${THIRD_PARTY_DIR}/googletest/googlemock/include
-    ${OPENGL_INCLUDE_DIRS}
+    ${THIRD_PARTY_DIR}/glad/include
+    ${THIRD_PARTY_DIR}/imgui/imgui
 )
 
 # libraries
 set(LIBRARIES
     spdlog
     glfw
-    OpenGL::GL
+    glad
+    imgui
 )
 
 # options for bin
