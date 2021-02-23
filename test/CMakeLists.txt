@@ -17,6 +17,7 @@ add_executable(${BINARY}-test main_test.cpp)
 
 target_include_directories(${BINARY}-test PUBLIC
     ${INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 target_link_libraries(${BINARY}-test
     gtest
