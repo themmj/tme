@@ -3,7 +3,8 @@
 #define _PLATFORM_GLFW_H
 
 #include <unordered_map>
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include "core/key.hpp"
 #include "core/window.hpp"
 

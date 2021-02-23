@@ -127,6 +127,9 @@ namespace tme {
 			    data.handler->onEvent(event);
 		    });
             // GCOVR_EXCL_STOP
+
+            TME_ASSERT(gladLoadGLLoader((GLADloadproc) glfwGetProcAddress), "glad could not load opengl loader");
+
             ++s_windowCount;
             TME_INFO("created window {}", *this);
         }
