@@ -48,15 +48,33 @@ namespace tme {
 
             /**//**
              * \brief Event when window is resized.
+             *
+             * Contains new window dimensions, the scaling factors compared to the previous
+             * dimensions and new frame buffer dimensions. (dimensions can differ on high dpi displays).
              */
             class WindowResize : public Event {
                 uint32_t m_width, m_height;
                 double m_widthFactor, m_heightFactor;
+                uint32_t m_frameBufferWidth, m_frameBufferHeight;
 
                 public:
-                /// Construct WindowResize event with new window dimensions.
+                /**//**
+                 * Construct WindowResize event.
+                 *
+                 * @param width New width of the window.
+                 * @param height New height of the window.
+                 * @param widthFactor Width scaling factor compared to last update.
+                 * @param heightFactor Height scaling factor compared to last update.
+                 * @param frameBufferWidth New width of frame buffer.
+                 * @param frameBufferHeight New height of the frame buffer.
+                 */
+                WindowResize(uint32_t width, uint32_t height, double widthFactor, double heightFactor, uint32_t frameBufferWidth, uint32_t frameBufferHeight)
+                    : m_width(width), m_height(height),
+                    m_widthFactor(widthFactor), m_heightFactor(heightFactor),
+                    m_frameBufferWidth(frameBufferWidth), m_frameBufferHeight(frameBufferHeight) {}
+                /// Construct WindowResize event with new window dimensions. Uses new window dimensions as new frame buffer dimensions.
                 WindowResize(uint32_t width, uint32_t height, double widthFactor, double heightFactor) 
-                    : m_width(width), m_height(height), m_widthFactor(widthFactor), m_heightFactor(heightFactor) {}
+                    : WindowResize(width, height, widthFactor, heightFactor, width, height) {}
 
                 /**//**
                  * \brief Get new window width.
@@ -96,10 +114,25 @@ namespace tme {
                  */
                 inline auto getHeightFactor() const { return m_heightFactor; }
 
+                /**//**
+                 * \brief Get new frame buffer width.
+                 *
+                 * @return new frame buffer width.
+                 */
+                inline auto getFrameBufferWidth() const { return m_frameBufferWidth; }
+
+                /**//**
+                 * \brief Get new frame buffer height.
+                 *
+                 * @return new frame buffer height.
+                 */
+                inline auto getFrameBufferHeight() const { return m_frameBufferHeight; }
+
                 std::string toString() const override {
                     std::stringstream ss;
                     ss << getName() << '(' << m_width << ',' << m_height << ',';
-                    ss << m_widthFactor << ',' << m_heightFactor << ')';
+                    ss << m_widthFactor << ',' << m_heightFactor << ',';
+                    ss << m_frameBufferWidth << ',' << m_frameBufferHeight << ')';
                     return ss.str();
                 }
 

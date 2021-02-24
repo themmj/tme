@@ -90,9 +90,13 @@ namespace tme {
             // GCOVR_EXCL_START
             bool Imgui::handleWindowResize(events::WindowResize& event) {
                 ImGuiIO& io = ImGui::GetIO();
-                io.DisplaySize = ImVec2(static_cast<float>(event.getWidth()), static_cast<float>(event.getHeight()));
-                io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
-                glViewport(0, 0, (int) event.getWidth(), (int) event.getHeight());
+                float widthF = static_cast<float>(event.getWidth());
+                float heightF = static_cast<float>(event.getHeight());
+                float fbWidthF = static_cast<float>(event.getFrameBufferWidth());
+                float fbHeightF = static_cast<float>(event.getFrameBufferHeight());
+                io.DisplaySize = ImVec2(widthF, heightF);
+                io.DisplayFramebufferScale = ImVec2(fbWidthF / widthF, fbHeightF / heightF);
+                glViewport(0, 0, static_cast<int>(event.getFrameBufferWidth()), static_cast<int>(event.getFrameBufferHeight()));
                 return false;
             }
 

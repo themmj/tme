@@ -38,6 +38,9 @@ namespace tme {
 			    s_glfwInitialized = true;
 		    }
 
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
 		    m_window = glfwCreateWindow(static_cast<int32_t>(m_data.width), static_cast<int32_t>(m_data.height), &m_data.title[0], nullptr, nullptr);
             if (!m_window) {
                 TME_CRITICAL("could not create window");
@@ -59,8 +62,10 @@ namespace tme {
                 auto heightFactor = data.m_this->getRelativeY(height);
 			    data.width = static_cast<Dimension>(width);
 			    data.height = static_cast<Dimension>(height);
+                int frameBufferWidth, frameBufferHeight;
+                glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
 
-                core::events::WindowResize event(data.width, data.height, widthFactor, heightFactor);
+                core::events::WindowResize event(data.width, data.height, widthFactor, heightFactor, static_cast<uint32_t>(frameBufferWidth), static_cast<uint32_t>(frameBufferHeight));
                 data.handler->onEvent(event);
 		    });
 
@@ -165,7 +170,7 @@ namespace tme {
 		    io.KeyMap[ImGuiKey_Y] = TME_KEY_Y;
 		    io.KeyMap[ImGuiKey_Z] = TME_KEY_Z;
 
-		    ImGui_ImplOpenGL3_Init("#version 410");
+		    ImGui_ImplOpenGL3_Init("#version 330");
 
             ++s_windowCount;
             TME_INFO("created window {}", *this);
