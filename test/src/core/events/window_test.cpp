@@ -5,6 +5,17 @@ namespace tme {
     namespace core {
         namespace events {
 
+            TEST(EventTest, WindowUpdate) {
+                double update = 2.5;
+                WindowUpdate wu(update);
+
+                EXPECT_EQ(wu.getType(), Type::WindowUpdate);
+                EXPECT_TRUE(wu.isInCategory(Application));
+                EXPECT_FALSE(wu.isInCategory(Keyboard));
+                EXPECT_EQ(wu.getDeltaTime(), update);
+                EXPECT_EQ(wu.toString(), "WindowUpdate(2.5)");
+            }
+
             TEST(EventTest, WindowClose) {
                 WindowClose wc;
 

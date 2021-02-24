@@ -35,6 +35,8 @@ namespace tme {
                 EventHandlerPtr handler;
                 /// this pointer to access member in callback lambdas
                 Window* m_this;
+                /// timestamp of the last update
+                double lastUpdate;
 
                 /**//**
                  * \brief window data constructor

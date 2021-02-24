@@ -63,10 +63,13 @@ namespace tme {
 // @cond KEY_CODES_INCLUDED
 // (to exclude them from the documentation)
 #define TME_KEY_UNKNOWN  -1
-#define TME_KEY_SPACE  0
-#define TME_KEY_APOSTROPHE  1
-#define TME_KEY_COMMA  2
-#define TME_KEY_MINUS  3
+#define TME_MOUSE_BUTTON_LEFT 0
+#define TME_MOUSE_BUTTON_RIGHT 1
+#define TME_MOUSE_BUTTON_MIDDLE 2
+#define TME_KEY_SPACE  3
+#define TME_KEY_APOSTROPHE  114
+#define TME_KEY_COMMA  115
+#define TME_KEY_MINUS  116
 #define TME_KEY_PERIOD  4
 #define TME_KEY_SLASH  5
 #define TME_KEY_0  6
@@ -177,10 +180,6 @@ namespace tme {
 #define TME_KEY_RIGHT_CONTROL  111
 #define TME_KEY_RIGHT_ALT  112
 #define TME_KEY_RIGHT_SUPER  113
-
-#define TME_MOUSE_BUTTON_LEFT 114
-#define TME_MOUSE_BUTTON_RIGHT 115
-#define TME_MOUSE_BUTTON_MIDDLE 116
 // @endcond
 
 #endif

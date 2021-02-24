@@ -10,6 +10,32 @@ namespace tme {
         namespace events {
 
             /**//**
+             * \brief Event emitted when the window updates.
+             */
+            class WindowUpdate : public Event {
+                double m_deltaTime;
+                public:
+                /// Construct WindowUpdate event with new time delta.
+                WindowUpdate(double deltaTime) : m_deltaTime(deltaTime) {}
+
+                /**//**
+                 * \brief Get time delta since last update.
+                 *
+                 * @return time delta since last update.
+                 */
+                inline double getDeltaTime() const { return m_deltaTime; }
+
+                EVENT_CLASS_TYPE(WindowUpdate)
+                EVENT_CLASS_CATEGORY(Application)
+
+                std::string toString() const override {
+                    std::stringstream ss;
+                    ss << getName() << '(' << m_deltaTime << ')';
+                    return ss.str();
+                }
+            };
+
+            /**//**
              * \brief Event when window is closed.
              */
             class WindowClose : public Event {

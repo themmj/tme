@@ -71,7 +71,7 @@ namespace tme {
                 EXPECT_EQ(kr.getType(), Type::MouseKeyRelease);
                 EXPECT_TRUE(kr.isInCategory(Category::Input));
                 EXPECT_TRUE(kr.isInCategory(Category::Mouse));
-                EXPECT_EQ(kr.toString(), "MouseKeyRelease(114,000000)");
+                EXPECT_EQ(kr.toString(), "MouseKeyRelease(0,000000)");
             }
 
             TEST(EventTest, MouseKeyPress) {
@@ -82,7 +82,7 @@ namespace tme {
                 EXPECT_EQ(kr.getType(), Type::MouseKeyPress);
                 EXPECT_TRUE(kr.isInCategory(Category::Input));
                 EXPECT_TRUE(kr.isInCategory(Category::Mouse));
-                EXPECT_EQ(kr.toString(), "MouseKeyPress(115,000000)");
+                EXPECT_EQ(kr.toString(), "MouseKeyPress(1,000000)");
             }
 
         }

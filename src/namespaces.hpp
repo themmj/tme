@@ -5,11 +5,14 @@
 /// TME
 namespace tme {
 
-    /// Essestials like logging, events etc.
+    /// Essentials like logging, events etc.
     namespace core {
 
         /// Eventsystem including Dispatcher and base Event types.
         namespace events {}
+
+        /// Layer system to build up application logic and handle events.
+        namespace layers {}
 
     }
 
