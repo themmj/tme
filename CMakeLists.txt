@@ -31,9 +31,6 @@ add_extern_directory(spdlog)
 # glad
 add_extern_directory(glad)
 
-#imgui
-add_extern_directory(imgui)
-
 # glfw
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -50,6 +47,9 @@ set(INCLUDE_DIRS
     ${THIRD_PARTY_DIR}/glad/include
     ${THIRD_PARTY_DIR}/imgui/imgui
 )
+
+#imgui
+add_extern_directory(imgui)
 
 # libraries
 set(LIBRARIES

@@ -9,10 +9,18 @@ add_library(imgui STATIC
     imgui/misc/cpp/imgui_stdlib.cpp
     imgui/misc/freetype/imgui_freetype.cpp
     imgui/misc/fonts/binary_to_compressed_c.cpp
+    imgui/backends/imgui_impl_opengl3.cpp
 )
 
 target_include_directories(imgui PRIVATE
-    ${THIRD_PARTY_DIR}/imgui/imgui
+    ${INCLUDE_DIRS}
+    # debian
     /usr/include/freetype2
+    # apple
+    /usr/local/include/freetype2
+)
+
+target_compile_options(imgui PRIVATE
+    -DIMGUI_IMPL_OPENGL_LOADER_GLAD
 )
 
