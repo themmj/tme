@@ -4,6 +4,7 @@ set (SRC_FILES
     core/window.cpp
     platform/glfw.cpp
     ../third-party/imgui/imgui/backends/imgui_impl_opengl3.cpp
+    core/layers/imgui.cpp
 )
 
 add_executable(${BINARY} ${SRC_FILES})

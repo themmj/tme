@@ -1,12 +1,14 @@
 /** @file */
 #include <iostream>
-#include "namespaces.hpp"
 #include "core/log.hpp"
+#include "namespaces.hpp"
 
 #include "core/events/dispatcher.hpp"
-#include "platform/glfw.hpp"
 #include "core/events/window.hpp"
 #include "core/events/key.hpp"
+#include "core/layers/layer.hpp"
+#include "core/layers/imgui.hpp"
+#include "platform/glfw.hpp"
 
 namespace tme {
     namespace core {
@@ -14,7 +16,9 @@ namespace tme {
         class App : public events::Dispatcher<App> {
             bool m_running;
 
-            float red, green, blue;
+            float red = 0.0f, green = 0.0f, blue = 0.0f;
+
+            layers::Stack m_layers;
 
             bool handleWindowClose(events::WindowClose&) {
                 m_running = false;
@@ -39,7 +43,7 @@ namespace tme {
                             blue = 0.0f;
                         break;
                 }
-                return true;
+                return false;
             }
 
             public:
@@ -47,17 +51,23 @@ namespace tme {
 
             /// event callback function
             void onEvent(events::Event& event) override {
-                TME_INFO("received event {}", event);
+                m_layers.onEvent(event);
+                if (event.getType() != events::Type::WindowUpdate && event.getType() != events::Type::MouseMove)
+                    TME_INFO("received event {}", event);
+                if (event.isHandled())
+                    return;
                 dispatchEvent<events::WindowClose>(event, &App::handleWindowClose);
                 dispatchEvent<events::KeyPress>(event, &App::handleKeyPress);
             }
 
             /// run application
             void run() {
-                auto window = Window::create({"This is a test", 640, 300, this});
+                auto window = Window::create({"This is a test", 640, 300, this, true});
+                m_layers.push<layers::DemoImgui>();
                 while (m_running) {
                     glClearColor( red, green, blue, 0.0f );
                     glClear(GL_COLOR_BUFFER_BIT);
+
                     window->onUpdate();
                 }
                 delete window;

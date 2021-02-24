@@ -10,6 +10,8 @@
 #include "core/events/mouse_test.cpp"
 #include "core/window_test.cpp"
 #include "platform/glfw_test.cpp"
+#include "core/layers/layer_test.cpp"
+#include "core/layers/imgui_test.cpp"
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
