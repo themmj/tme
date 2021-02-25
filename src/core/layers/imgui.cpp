@@ -33,16 +33,17 @@ namespace tme {
             bool Imgui::handleKeyPress(events::KeyPress& event) {
                 ImGuiIO& io = ImGui::GetIO();
                 io.KeysDown[event.getKey().getKeyCode()] = true;
-                return io.WantCaptureKeyboard;
-            }
-            bool Imgui::handleKeyRelease(events::KeyRelease& event) {
-                ImGuiIO& io = ImGui::GetIO();
-                io.KeysDown[event.getKey().getKeyCode()] = false;
 
                 io.KeyCtrl = event.getKey().hasModControl();
                 io.KeyShift = event.getKey().hasModShift();
                 io.KeyAlt = event.getKey().hasModAlt();
                 io.KeySuper = event.getKey().hasModSuper();
+
+                return io.WantCaptureKeyboard;
+            }
+            bool Imgui::handleKeyRelease(events::KeyRelease& event) {
+                ImGuiIO& io = ImGui::GetIO();
+                io.KeysDown[event.getKey().getKeyCode()] = false;
 
                 return io.WantCaptureKeyboard;
             }
