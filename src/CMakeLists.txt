@@ -6,6 +6,23 @@ set (SRC_FILES
     core/layers/imgui.cpp
 )
 
+# potentially inject platform specific implementations
+if(APPLE)
+    message(STATUS "using platform implementation for apple")
+    set(SRC_FILES
+        ${SRC_FILES}
+        platform/glfw.cpp
+    )
+elseif(UNIX)
+    message(STATUS "using platform implementation for linux")
+    set(SRC_FILES
+        ${SRC_FILES}
+        platform/glfw.cpp
+    )
+else()
+    message(FATAL_ERROR "unsupported platform")
+endif()
+
 add_executable(${BINARY} ${SRC_FILES})
 
 target_include_directories(${BINARY} PUBLIC

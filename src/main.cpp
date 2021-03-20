@@ -3,12 +3,13 @@
 #include "core/log.hpp"
 #include "namespaces.hpp"
 
+#include "glad/glad.h"
 #include "core/events/dispatcher.hpp"
 #include "core/events/window.hpp"
 #include "core/events/key.hpp"
 #include "core/layers/layer.hpp"
 #include "core/layers/imgui.hpp"
-#include "platform/glfw.hpp"
+#include "core/window.hpp"
 
 namespace tme {
     namespace core {
