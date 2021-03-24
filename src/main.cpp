@@ -63,7 +63,7 @@ namespace tme {
 
             /// run application
             void run() {
-                auto window = Window::create({"This is a test", 640, 300, this, true});
+                auto window = Window::create({this, "This is a test", 640, 300, true});
                 m_layers.push<layers::DemoImgui>();
                 while (m_running) {
                     glClearColor( red, green, blue, 0.0f );

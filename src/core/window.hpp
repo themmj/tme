@@ -41,19 +41,22 @@ namespace tme {
                 /**//**
                  * \brief window data constructor
                  *
+                 * @param eventHandler handler to which events by the window will be propagated to
                  * @param windowTitle
                  * @param windowWidth
                  * @param windowHeight
-                 * @param eventHandler handler to which events by the window will be propagated to
                  * @param vSync enable vsync of the window or not
                  */
-                Data(const std::string& windowTitle, Dimension windowWidth, Dimension windowHeight, EventHandlerPtr eventHandler, bool vSync = 0) 
+                Data(EventHandlerPtr eventHandler, const std::string& windowTitle = "not set", Dimension windowWidth = 300, Dimension windowHeight = 300, bool vSync = true)
                     : title(windowTitle), width(windowWidth), height(windowHeight), vSyncEnabled(vSync), handler(eventHandler) {}
             };
 
             protected:
             /// window data
             Data m_data;
+
+            /// construct new window base from data
+            Window(const Data& data) : m_data(data) { m_data.m_this = this; }
 
             public:
             /**//**
@@ -64,9 +67,6 @@ namespace tme {
              * @return Owning pointer to created window.
              */
             static Window* create(const Data& data);
-
-            /// construct new window base from data
-            Window(const Data& data) : m_data(data) { m_data.m_this = this; }
             virtual ~Window() {}
 
             /// Update method called every iteration of the application loop.
@@ -78,18 +78,21 @@ namespace tme {
              * @return current window width
              */
             inline Dimension getWidth() const { return m_data.width; }
+
             /**//**
              * \brief Get window height.
              *
              * @return current window height
              */
             inline Dimension getHeight() const { return m_data.height; }
+
             /**//**
              * \brief Get window vsync setting.
              *
              * @return true of vsync is enabled. false otherwise
              */
             inline bool isVSync() const { return m_data.vSyncEnabled; }
+
             /**//**
              * \brief Get window title.
              *
@@ -102,13 +105,14 @@ namespace tme {
              *
              * @param title new window title
              */
-            virtual void setTitle(const std::string& title) = 0;
+            void setTitle(const std::string& title);
+
             /**//**
              * \brief Set window vsync setting.
              *
-             * @param enable desired vsync setting (true to enable, false to diable)
+             * @param enable desired vsync setting (true to enable, false to disable)
              */
-            virtual void setVSync(bool enable) = 0;
+            void setVSync(bool enable);
 
             virtual std::string toString() const override;
 
@@ -135,6 +139,21 @@ namespace tme {
             double getRelativeY(T absY) const {
                 return static_cast<double>(absY) / static_cast<double>(getHeight());
             }
+
+            protected:
+            /**//**
+             * \brief Set window title for specific platform.
+             *
+             * @param title new window title
+             */
+            virtual void setTitleInternal(const std::string& title) = 0;
+
+            /**//**
+             * \brief Set window vsync setting for specific platform.
+             *
+             * @param enable desired vsync setting (true to enable, false to disable)
+             */
+            virtual void setVSyncInternal(bool enable) = 0;
         };
 
     }

@@ -205,17 +205,15 @@ namespace tme {
             glfwPollEvents();
         }
 
-        void GlfwWindow::setTitle(const std::string& title) {
-            m_data.title = title;
-            glfwSetWindowTitle(m_window, &m_data.title[0]);
+        void GlfwWindow::setTitleInternal(const std::string& title) {
+            glfwSetWindowTitle(m_window, &title[0]);
         }
 
-        void GlfwWindow::setVSync(bool enable) {
+        void GlfwWindow::setVSyncInternal(bool enable) {
             if (enable)
                 glfwSwapInterval(1);
             else
                 glfwSwapInterval(0);
-            m_data.vSyncEnabled = enable;
         }
 
     }

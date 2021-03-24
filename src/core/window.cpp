@@ -14,5 +14,15 @@ namespace tme {
             return ss.str();
         }
 
+        void Window::setTitle(const std::string& title) {
+            setTitleInternal(title);
+            m_data.title = title;
+        }
+
+        void Window::setVSync(bool enable) {
+            setVSyncInternal(enable);
+            m_data.vSyncEnabled = enable;
+        }
+
     }
 }

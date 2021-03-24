@@ -12,8 +12,8 @@ namespace tme {
             ~_DefaultWindow() { --s_windowCount; }
             using Window::Dimension;
             void onUpdate() override {}
-            void setTitle(const std::string& title) override { m_data.title = title; }
-            void setVSync(bool enable) override { m_data.vSyncEnabled = enable; }
+            void setTitleInternal(const std::string& title) override { m_data.title = title; }
+            void setVSyncInternal(bool enable) override { m_data.vSyncEnabled = enable; }
             void sendEvent() { events::WindowClose wc; m_data.handler->onEvent(wc); }
         };
 
@@ -39,7 +39,7 @@ namespace tme {
             _DefaultWindowEventHandler deh;
 
             EXPECT_EQ(Window::s_windowCount, 0);
-            _DefaultWindow dw(Window::Data{title, width, height, &deh});
+            _DefaultWindow dw(Window::Data{&deh, title, width, height});
             EXPECT_EQ(Window::s_windowCount, 1);
 
             EXPECT_EQ(dw.getTitle(), title);
@@ -55,7 +55,7 @@ namespace tme {
             _DefaultWindow::Dimension width = 240;
             _DefaultWindow::Dimension height = 144;
             _DefaultWindowEventHandler deh;
-            _DefaultWindow dw(Window::Data{title, width, height, &deh});
+            _DefaultWindow dw(Window::Data{&deh, title, width, height});
 
             EXPECT_EQ(dw.getRelativeX(120.0), 0.5);
             EXPECT_EQ(dw.getRelativeY(72.0), 0.5);

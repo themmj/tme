@@ -22,7 +22,7 @@ namespace tme {
             TEST(TestImguiLayers, WindowUpdateReaction) {
                 // update function should only trigger
                 // on WindowUpdate event
-                auto window = Window::create({"This is a test", 640, 300, nullptr, true});
+                auto window = Window::create({nullptr, "This is a test", 640, 300, true});
                 events::WindowUpdate wu(2.0);
                 events::WindowClose wc;
 

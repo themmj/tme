@@ -17,7 +17,7 @@ namespace tme {
             EXPECT_FALSE(GlfwWindow::s_glfwInitialized);
             EXPECT_EQ(core::Window::s_windowCount, 0);
             // tests static create method implementation in header
-            auto gw = core::Window::create({"test title", 220, 144, &bh});
+            auto gw = core::Window::create({&bh, "test title", 220, 144});
             EXPECT_TRUE(GlfwWindow::s_glfwInitialized);
             EXPECT_EQ(core::Window::s_windowCount, 1);
             // execute overriden functions to check for errors, can't really
@@ -38,7 +38,7 @@ namespace tme {
             EXPECT_EQ(core::Window::s_windowCount, 0);
             // should not increment the window counter as it does not
             // create one
-            core::Window::create({"test title", 220, 144, &bh});
+            core::Window::create({&bh, "test title", 220, 144});
             EXPECT_EQ(core::Window::s_windowCount, 0);
             // reset state
             GlfwWindow::s_glfwInitialized = false;

@@ -245,8 +245,8 @@ namespace tme {
             ~GlfwWindow() { shutdown(); }
 
             void onUpdate() override;
-            void setTitle(const std::string& title) override;
-            void setVSync(bool enable) override; 
+            void setTitleInternal(const std::string& title) override;
+            void setVSyncInternal(bool enable) override;
         };
 
     }
