@@ -12,6 +12,7 @@ namespace tme {
             ~_DefaultWindow() { --s_windowCount; }
             using Window::Dimension;
             void onUpdate() override {}
+            void setActiveInternal() override {}
             void setTitleInternal(const std::string& title) override { m_data.title = title; }
             void setVSyncInternal(bool enable) override { m_data.vSyncEnabled = enable; }
             void sendEvent() { events::WindowClose wc; m_data.handler->onEvent(wc); }

@@ -3,7 +3,7 @@
 #define _PLATFORM_GLFW_H
 
 #include <unordered_map>
-#include "glad/glad.h"
+#include "core/graphics/gl.hpp"
 #include "GLFW/glfw3.h"
 #include "core/key.hpp"
 #include "core/window.hpp"
@@ -245,6 +245,7 @@ namespace tme {
             ~GlfwWindow() { shutdown(); }
 
             void onUpdate() override;
+            void setActiveInternal() override;
             void setTitleInternal(const std::string& title) override;
             void setVSyncInternal(bool enable) override;
         };

@@ -6,7 +6,7 @@
 #include "core/events/event.hpp"
 #include "core/events/mouse.hpp"
 
-#include "glad/glad.h"
+#include "core/graphics/gl.hpp"
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -81,9 +81,7 @@ namespace tme {
             bool Imgui::handleWindowUpdate(events::WindowUpdate& event) {
                 ImGuiIO& io = ImGui::GetIO();
                 io.DeltaTime = static_cast<float>(event.getDeltaTime());
-                
                 update();
-
                 return false;
             }
 
@@ -105,6 +103,12 @@ namespace tme {
             void DemoImgui::update() {
                 static bool show = true;
                 ImGui::ShowDemoWindow(&show);
+            }
+            void StyleImgui::update() {
+                bool show_app_style_editor = 1;
+                ImGui::Begin("Dear ImGui Style Editor", &show_app_style_editor);
+                ImGui::ShowStyleEditor();
+                ImGui::End();
             }
             // GCOVR_EXCL_STOP
 

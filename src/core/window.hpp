@@ -3,24 +3,29 @@
 #define _CORE_WINDOW_H
 
 #include <string>
+#include "imgui.h"
 #include "core/loggable.hpp"
 #include "core/events/event.hpp"
 #include "core/events/handler.hpp"
+#include "core/map.hpp"
 
 namespace tme {
     namespace core {
 
         /// Base class for windows.
-        class Window : public Loggable {
+        class Window : public Loggable, Mappable {
             using EventHandlerPtr = core::events::Handler*;
+
+            Identifier m_id;
 
             protected:
             /// type alias for window dimension
             using Dimension = uint32_t;
 
+            /// Imgui context
+            ImGuiContext* m_imGuiContext;
+
             public:
-            /// Global window counter. Needs to be in-/decremented in the derived classes.
-            static uint32_t s_windowCount;
             /// window data container
             struct Data {
                 /// window title
@@ -56,7 +61,7 @@ namespace tme {
             Data m_data;
 
             /// construct new window base from data
-            Window(const Data& data) : m_data(data) { m_data.m_this = this; }
+            Window(const Data& data);
 
             public:
             /**//**
@@ -67,10 +72,19 @@ namespace tme {
              * @return Owning pointer to created window.
              */
             static Window* create(const Data& data);
-            virtual ~Window() {}
+            virtual ~Window();
+
+            /// initialize platform specific things to be able to open windows and render to them
+            static void init();
+
+            /// teardown initally set up platform specific aspects for window creation and rendering
+            static void shutdown();
 
             /// Update method called every iteration of the application loop.
             virtual void onUpdate() = 0;
+
+            /// set window as active window to render to it
+            void setActive();
 
             /**//**
              * \brief Get window width.
@@ -140,7 +154,12 @@ namespace tme {
                 return static_cast<double>(absY) / static_cast<double>(getHeight());
             }
 
+            Identifier getId() const override { return m_id; }
+
             protected:
+            /// set window as current render target for specific platform
+            virtual void setActiveInternal() = 0;
+
             /**//**
              * \brief Set window title for specific platform.
              *

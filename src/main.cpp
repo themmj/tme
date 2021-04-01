@@ -1,77 +1,56 @@
 /** @file */
 #include <iostream>
+#include "core/graphics/shader.hpp"
 #include "core/log.hpp"
+#include "core/map.hpp"
 #include "namespaces.hpp"
 
-#include "glad/glad.h"
 #include "core/events/dispatcher.hpp"
 #include "core/events/window.hpp"
 #include "core/events/key.hpp"
 #include "core/layers/layer.hpp"
 #include "core/layers/imgui.hpp"
 #include "core/window.hpp"
+#include "core/application.hpp"
 
 namespace tme {
     namespace core {
         /// Example class to test event handling.
-        class App : public events::Dispatcher<App> {
-            bool m_running;
-
-            float red = 0.0f, green = 0.0f, blue = 0.0f;
-
-            layers::Stack m_layers;
-
-            bool handleWindowClose(events::WindowClose&) {
-                m_running = false;
-                return true;
-            }
-
-            bool handleKeyPress(events::KeyPress& event) {
-                switch(event.getKey().getKeyCode()) {
-                    case TME_KEY_R:
-                        red += 0.1f;
-                        if (red > 1.0f)
-                            red = 0.0f;
-                        break;
-                    case TME_KEY_G:
-                        green += 0.1f;
-                        if (green > 1.0f)
-                            green = 0.0f;
-                        break;
-                    case TME_KEY_B:
-                        blue += 0.1f;
-                        if (blue > 1.0f)
-                            blue = 0.0f;
-                        break;
-                }
-                return false;
-            }
+        class App : public Application {
+            float m_red;
+            Handle<Manager<graphics::Shader>> m_shadersHandle;
+            Handle<Manager<graphics::Shader::Stage>> m_shaderStagesHandle;
 
             public:
-            App() : Dispatcher(this), m_running(true) {}
+            App(const std::string& name, float red) : Application(name), m_red(red) {
+                if (red == 0.0f) {
+                m_layers.push<layers::StyleImgui>();
+                }
+                m_shadersHandle = Manager<graphics::Shader>::createInstance();
+                m_shaderStagesHandle = Manager<graphics::Shader::Stage>::createInstance();
 
-            /// event callback function
-            void onEvent(events::Event& event) override {
-                m_layers.onEvent(event);
-                if (event.getType() != events::Type::WindowUpdate && event.getType() != events::Type::MouseMove)
-                    TME_INFO("received event {}", event);
-                if (event.isHandled())
-                    return;
-                dispatchEvent<events::WindowClose>(event, &App::handleWindowClose);
-                dispatchEvent<events::KeyPress>(event, &App::handleKeyPress);
+                TME_INFO("creating app {}", name);
+
+                auto vertexId = m_shaderStagesHandle->create(graphics::Shader::Stage::Type::Vertex, "/home/mmj/development/workspaces/cpp/tme/res/vertex.glsl");
+                auto fragmentId = m_shaderStagesHandle->create(graphics::Shader::Stage::Type::Fragment, "/home/mmj/development/workspaces/cpp/tme/res/fragment.glsl");
+                auto vertex = m_shaderStagesHandle->get(vertexId);
+                auto fragment = m_shaderStagesHandle->get(fragmentId);
+                auto shaderId = m_shadersHandle->create(vertex, fragment);
+                auto shader  = m_shadersHandle->get(shaderId);
+                shader->bind();
+                shader->setUniform1i("u_Texture", 10);
+                shader->setUniform1i("doesnt exist", 20);
+                shader->unbind();
+            }
+            
+            void updateInternal() override {
+                glClearColor(m_red, 0.5f, 0.5f, 0.0f );
+                glClear(GL_COLOR_BUFFER_BIT);
             }
 
-            /// run application
-            void run() {
-                auto window = Window::create({this, "This is a test", 640, 300, true});
-                m_layers.push<layers::DemoImgui>();
-                while (m_running) {
-                    glClearColor( red, green, blue, 0.0f );
-                    glClear(GL_COLOR_BUFFER_BIT);
-
-                    window->onUpdate();
-                }
-                delete window;
+            ~App() {
+                m_shaderStagesHandle->clear();
+                m_shadersHandle->clear();
             }
         };
     }
@@ -80,12 +59,27 @@ namespace tme {
 /// Program entrypoint.
 int main() {
     tme::core::Log::init();
+    tme::core::Window::init();
     TME_INFO("starting application");
 
-    tme::core::App app;
-    app.run();
+    {
+    auto appId = tme::core::Manager<tme::core::Application>::getGlobalInstance()->add(new tme::core::App("test", 0.0f));
+    auto app = tme::core::Manager<tme::core::Application>::getGlobalInstance()->get(appId);
+    auto appId1 = tme::core::Manager<tme::core::Application>::getGlobalInstance()->add(new tme::core::App("test1", 1.0f));
+    auto app1 = tme::core::Manager<tme::core::Application>::getGlobalInstance()->get(appId1);
 
+    while (app->isRunning() || app1->isRunning()) {
+        if (app->isRunning())
+            app->update();
+        if (app1->isRunning())
+            app1->update();
+    }
+    }
     TME_INFO("shutting down");
+
+    tme::core::Manager<tme::core::Application>::getGlobalInstance()->clear();
+
+    tme::core::Window::shutdown();
 
     return 0;
 }

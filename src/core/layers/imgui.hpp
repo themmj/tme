@@ -60,6 +60,15 @@ namespace tme {
                 void update() override;
             };
 
+            /// Derived class of Imgui showing the ImGui demo window
+            class StyleImgui : public Imgui {
+                public:
+                StyleImgui() : Imgui() {}
+                
+                protected:
+                void update() override;
+            };
+
         }
     }
 }
