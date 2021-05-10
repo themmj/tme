@@ -3,10 +3,11 @@
 #define _PLATFORM_GLFW_H
 
 #include <unordered_map>
-#include "glad/glad.h"
+#include "core/graphics/gl.hpp"
 #include "GLFW/glfw3.h"
 #include "core/key.hpp"
 #include "core/window.hpp"
+#include "platform/context.hpp"
 
 namespace tme {
     namespace platform {
@@ -226,6 +227,15 @@ namespace tme {
             }
         };
 
+        /// glfw implementation of a platform context
+        class GlfwContext : public platform::Context {
+            public:
+            /// initialize glfw
+            GlfwContext();
+            /// terminate glfw
+            ~GlfwContext();
+        };
+
         /**//**
          * \brief Window implementation using GLFW.
          */
@@ -234,19 +244,18 @@ namespace tme {
 
             GLFWwindow* m_window;
 
-            void init();
-            void shutdown();
-
             public:
-            /// state information if glfw has been initialized
-            static bool s_glfwInitialized;
             /// construct window instance using glfw from data
-            GlfwWindow(const BaseWindow::Data& data) : BaseWindow(data) { init(); }
-            ~GlfwWindow() { shutdown(); }
+            GlfwWindow(const BaseWindow::Data& data);
+            ~GlfwWindow();
 
-            void onUpdate() override;
+            void update() override;
             void setTitleInternal(const std::string& title) override;
             void setVSyncInternal(bool enable) override;
+
+            private:
+            /// set glfw callbacks
+            void setupCallbacks();
         };
 
     }

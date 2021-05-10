@@ -3,7 +3,11 @@ set (SRC_FILES
     core/log.cpp
     core/window.cpp
     platform/glfw.cpp
+    core/application.cpp
     core/layers/imgui.cpp
+    core/layers/ui.cpp
+    core/graphics/common.cpp
+    core/graphics/shader.cpp
 )
 
 # potentially inject platform specific implementations

@@ -14,6 +14,9 @@ namespace tme {
         /// Layer system to build up application logic and handle events.
         namespace layers {}
 
+        /// Graphics pipeline
+        namespace graphics {}
+
     }
 
     /// Platform specific specialisation of core components.

@@ -3,24 +3,28 @@
 #define _CORE_WINDOW_H
 
 #include <string>
+#include "imgui.h"
 #include "core/loggable.hpp"
 #include "core/events/event.hpp"
 #include "core/events/handler.hpp"
+#include "core/storage.hpp"
 
 namespace tme {
     namespace core {
 
         /// Base class for windows.
-        class Window : public Loggable {
+        class Window : public Loggable, Mappable {
+            static bool s_windowCreated;
+
             using EventHandlerPtr = core::events::Handler*;
+
+            Identifier m_id;
 
             protected:
             /// type alias for window dimension
             using Dimension = uint32_t;
 
             public:
-            /// Global window counter. Needs to be in-/decremented in the derived classes.
-            static uint32_t s_windowCount;
             /// window data container
             struct Data {
                 /// window title
@@ -56,7 +60,7 @@ namespace tme {
             Data m_data;
 
             /// construct new window base from data
-            Window(const Data& data) : m_data(data) { m_data.m_this = this; }
+            Window(const Data& data);
 
             public:
             /**//**
@@ -67,10 +71,10 @@ namespace tme {
              * @return Owning pointer to created window.
              */
             static Window* create(const Data& data);
-            virtual ~Window() {}
+            virtual ~Window();
 
             /// Update method called every iteration of the application loop.
-            virtual void onUpdate() = 0;
+            virtual void update() = 0;
 
             /**//**
              * \brief Get window width.
@@ -139,6 +143,8 @@ namespace tme {
             double getRelativeY(T absY) const {
                 return static_cast<double>(absY) / static_cast<double>(getHeight());
             }
+
+            Identifier getId() const override { return m_id; }
 
             protected:
             /**//**

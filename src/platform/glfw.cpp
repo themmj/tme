@@ -1,4 +1,6 @@
 /** @file */
+#include <memory>
+#include "core/graphics/gl.hpp"
 #include "platform/glfw.hpp"
 #include "core/log.hpp"
 #include "core/window.hpp"
@@ -11,13 +13,14 @@
 
 namespace tme {
 
-    core::Window* core::Window::create(const core::Window::Data& data) {
-        return new platform::GlfwWindow(data);
+    namespace core {
+        Window* Window::create(const Window::Data& data) {
+            return new platform::GlfwWindow(data);
+        }
     }
 
-    namespace platform {
 
-        bool GlfwWindow::s_glfwInitialized = false;
+    namespace platform {
 
         /// code generation to get user data contained in the window instance and cast it accordingly
         #define GET_GLFW_DATA core::Window::Data& data = *static_cast<core::Window::Data*>(glfwGetWindowUserPointer(window))
@@ -30,28 +33,87 @@ namespace tme {
             return result->second;
         }
 
-        void GlfwWindow::init() {
-            TME_ASSERT(s_windowCount == 0, "cannot create more than one window");
-            TME_TRACE("creating window {}", *this);
-            if (!s_glfwInitialized) {
-                TME_ASSERT(glfwInit(), "failed to initialize glfw");
-                s_glfwInitialized = true;
-            }
+        std::unique_ptr<Context> Context::create() {
+            return std::make_unique<GlfwContext>();
+        }
+
+        GlfwContext::GlfwContext() {
+            glfwSetErrorCallback([](int error, const char* description){
+                TME_ERROR("[GLFW] ({}): {}", error, description);
+            });
+            TME_ASSERT(glfwInit(), "failed to initialize glfw");
+        }
+
+        GlfwContext::~GlfwContext() {
+            glfwTerminate();
+            TME_INFO("terminated glfw");
+        }
+
+        GlfwWindow::GlfwWindow(const BaseWindow::Data& data) : BaseWindow(data){
+            TME_TRACE("creating {}", *this);
 
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
             m_window = glfwCreateWindow(static_cast<int32_t>(m_data.width), static_cast<int32_t>(m_data.height), &m_data.title[0], nullptr, nullptr);
             if (!m_window) {
-                TME_CRITICAL("could not create window");
+                // guarantees a debugger trap
+                TME_ASSERT(m_window, "could not create window");
+                // early exit to avoid seg faults
                 return;
             }
 
             glfwMakeContextCurrent(m_window);
             glfwSetWindowUserPointer(m_window, &m_data);
             setVSync(m_data.vSyncEnabled);
+            
+            // load gl
+            TME_ASSERT(gladLoadGLLoader((GLADloadproc) glfwGetProcAddress), "glad could not load opengl loader");
 
-            // set glfw callbacks
+            setupCallbacks();
+
+            m_data.lastUpdate = glfwGetTime();
+
+            ImGui_ImplOpenGL3_Init("#version 330");
+
+            TME_INFO("created {}", *this);
+        }
+
+        GlfwWindow::~GlfwWindow() {
+            ImGui_ImplOpenGL3_Shutdown();
+            glfwDestroyWindow(m_window);
+            TME_INFO("destroyed {}", *this);
+        }
+
+        void GlfwWindow::update() {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui::NewFrame();
+
+            double currentUpdate = glfwGetTime();
+            core::events::WindowUpdate updateEvent(currentUpdate - m_data.lastUpdate);
+            m_data.lastUpdate = currentUpdate;
+            m_data.handler->onEvent(updateEvent);
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            ImGui::EndFrame();
+
+            glfwSwapBuffers(m_window);
+            glfwPollEvents();
+        }
+
+        void GlfwWindow::setTitleInternal(const std::string& title) {
+            glfwSetWindowTitle(m_window, &title[0]);
+        }
+
+        void GlfwWindow::setVSyncInternal(bool enable) {
+            if (enable)
+                glfwSwapInterval(1);
+            else
+                glfwSwapInterval(0);
+        }
+
+        void GlfwWindow::setupCallbacks() {
             // the following callbacks are excluded from coverage tests as then cannot be tested with
             // automated unit tests because then i.e. depend on user input etc.
             // rest assured they are tested thoroughly in a manual fashion
@@ -135,85 +197,6 @@ namespace tme {
                 data.handler->onEvent(event);
             });
             // GCOVR_EXCL_STOP
-
-            TME_ASSERT(gladLoadGLLoader((GLADloadproc) glfwGetProcAddress), "glad could not load opengl loader");
-
-            m_data.lastUpdate = glfwGetTime();
-
-            // ImGui init
-            ImGui::CreateContext();
-            ImGui::StyleColorsDark();
-
-            ImGuiIO& io = ImGui::GetIO();
-            io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-            io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
-
-            io.KeyMap[ImGuiKey_Tab] = TME_KEY_TAB;
-            io.KeyMap[ImGuiKey_LeftArrow] = TME_KEY_LEFT;
-            io.KeyMap[ImGuiKey_RightArrow] = TME_KEY_RIGHT;
-            io.KeyMap[ImGuiKey_UpArrow] = TME_KEY_UP;
-            io.KeyMap[ImGuiKey_DownArrow] = TME_KEY_DOWN;
-            io.KeyMap[ImGuiKey_PageUp] = TME_KEY_PAGE_UP;
-            io.KeyMap[ImGuiKey_PageDown] = TME_KEY_PAGE_DOWN;
-            io.KeyMap[ImGuiKey_Home] = TME_KEY_HOME;
-            io.KeyMap[ImGuiKey_End] = TME_KEY_END;
-            io.KeyMap[ImGuiKey_Insert] = TME_KEY_INSERT;
-            io.KeyMap[ImGuiKey_Delete] = TME_KEY_DELETE;
-            io.KeyMap[ImGuiKey_Backspace] = TME_KEY_BACKSPACE;
-            io.KeyMap[ImGuiKey_Space] = TME_KEY_SPACE;
-            io.KeyMap[ImGuiKey_Enter] = TME_KEY_ENTER;
-            io.KeyMap[ImGuiKey_Escape] = TME_KEY_ESCAPE;
-            io.KeyMap[ImGuiKey_A] = TME_KEY_A;
-            io.KeyMap[ImGuiKey_C] = TME_KEY_C;
-            io.KeyMap[ImGuiKey_V] = TME_KEY_V;
-            io.KeyMap[ImGuiKey_X] = TME_KEY_X;
-            io.KeyMap[ImGuiKey_Y] = TME_KEY_Y;
-            io.KeyMap[ImGuiKey_Z] = TME_KEY_Z;
-
-            ImGui_ImplOpenGL3_Init("#version 330");
-
-            ++s_windowCount;
-            TME_INFO("created window {}", *this);
-        }
-
-        void GlfwWindow::shutdown() {
-            ImGui_ImplOpenGL3_Shutdown();
-            ImGui::DestroyContext();
-            glfwDestroyWindow(m_window);
-            TME_INFO("destroyed window {}", *this);
-            // if it is the last window being destroyed
-            // terminate glfw
-            if (--s_windowCount == 0) {
-                glfwTerminate();
-                TME_INFO("terminated glfw");
-            }
-        }
-
-        void GlfwWindow::onUpdate() {
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui::NewFrame();
-
-            double currentUpdate = glfwGetTime();
-            core::events::WindowUpdate updateEvent(currentUpdate - m_data.lastUpdate);
-            m_data.lastUpdate = currentUpdate;
-            m_data.handler->onEvent(updateEvent);
-
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-            glfwSwapBuffers(m_window);
-            glfwPollEvents();
-        }
-
-        void GlfwWindow::setTitleInternal(const std::string& title) {
-            glfwSetWindowTitle(m_window, &title[0]);
-        }
-
-        void GlfwWindow::setVSyncInternal(bool enable) {
-            if (enable)
-                glfwSwapInterval(1);
-            else
-                glfwSwapInterval(0);
         }
 
     }
