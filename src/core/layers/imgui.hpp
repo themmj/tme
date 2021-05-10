@@ -17,27 +17,17 @@ namespace tme {
              *
              * This layer handles input and resizing events and forwards them
              * to ImGui.
-             * Classes should be derived from this implementing their individual
-             * layout by overriding the udpate function. The toString method can also
-             * be overridden to get more detailed logs.
+             * There should only be one Imgui layer because it updates imgui's
+             * global state.
+             * For the actual ui elements the Ui layer should be used.
              */
-            class Imgui : public Layer, public events::Dispatcher<Imgui> {
-                static bool s_initialized;
+            class Imgui final : public Layer, public events::Dispatcher<Imgui> {
                 public:
                 /// Construct an Imgui layer
-                Imgui(const std::string& name = "Imgui") : Layer(name), Dispatcher(this) {}
+                Imgui() : Layer("Imgui"), Dispatcher(this) {}
                 ~Imgui() {}
 
                 void onEvent(events::Event& event) override;
-
-                protected:
-                /**//**
-                 * Update function to be used for individual layer design.
-                 *
-                 * This method is called for every WindowUpdate event issued
-                 * by the Window.
-                 */
-                virtual void update() = 0;
 
                 private:
                 bool handleKeyPress(events::KeyPress& event);
@@ -49,15 +39,6 @@ namespace tme {
                 bool handleMouseScroll(events::MouseScroll& event);
                 bool handleWindowUpdate(events::WindowUpdate& event);
                 bool handleWindowResize(events::WindowResize& event);
-            };
-
-            /// Derived class of Imgui showing the ImGui demo window
-            class DemoImgui : public Imgui {
-                public:
-                DemoImgui() : Imgui() {}
-                
-                protected:
-                void update() override;
             };
 
         }

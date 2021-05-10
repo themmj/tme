@@ -6,7 +6,7 @@
 #include "core/events/event.hpp"
 #include "core/events/mouse.hpp"
 
-#include "glad/glad.h"
+#include "core/graphics/gl.hpp"
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -76,19 +76,7 @@ namespace tme {
                 io.MouseWheelH = static_cast<float>(event.getXOffset());
                 return io.WantCaptureMouse;
             }
-            // GCOVR_EXCL_STOP
             
-            bool Imgui::handleWindowUpdate(events::WindowUpdate& event) {
-                ImGuiIO& io = ImGui::GetIO();
-                io.DeltaTime = static_cast<float>(event.getDeltaTime());
-                
-                update();
-
-                return false;
-            }
-
-            // same reasoning as above
-            // GCOVR_EXCL_START
             bool Imgui::handleWindowResize(events::WindowResize& event) {
                 ImGuiIO& io = ImGui::GetIO();
                 float widthF = static_cast<float>(event.getWidth());
@@ -100,13 +88,13 @@ namespace tme {
                 glViewport(0, 0, static_cast<int>(event.getFrameBufferWidth()), static_cast<int>(event.getFrameBufferHeight()));
                 return false;
             }
-
-
-            void DemoImgui::update() {
-                static bool show = true;
-                ImGui::ShowDemoWindow(&show);
-            }
             // GCOVR_EXCL_STOP
+
+            bool Imgui::handleWindowUpdate(events::WindowUpdate& event) {
+                ImGuiIO& io = ImGui::GetIO();
+                io.DeltaTime = static_cast<float>(event.getDeltaTime());
+                return false;
+            }
 
         }
     }

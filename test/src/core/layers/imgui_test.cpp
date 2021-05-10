@@ -2,44 +2,21 @@
 #include "core/events/window.hpp"
 #include "core/layers/imgui.hpp"
 #include "core/window.hpp"
+#include "platform/context.hpp"
 
 namespace tme {
     namespace core {
         namespace layers {
 
-            class _DefaultImgui : public Imgui {
-                public:
-                uint32_t m_counter = 0;
-
-                _DefaultImgui() : Imgui() {}
-
-                protected:
-                void update() override {
-                    ++m_counter;
-                }
-            };
-
-            TEST(TestImguiLayers, WindowUpdateReaction) {
-                // update function should only trigger
-                // on WindowUpdate event
+            TEST(TestImguiLayers, CreationOnWindow) {
+                auto context = platform::Context::create();
                 auto window = Window::create({nullptr, "This is a test", 640, 300, true});
                 events::WindowUpdate wu(2.0);
-                events::WindowClose wc;
-
-                _DefaultImgui layer;
-                EXPECT_EQ(layer.m_counter, 0);
-
-                layer.onEvent(wc);
-                EXPECT_EQ(layer.m_counter, 0);
+                Imgui layer;
 
                 layer.onEvent(wu);
-                EXPECT_EQ(layer.m_counter, 1);
-                delete window;
-            }
 
-            TEST(TestImguiLayers, CreateDemoImgui) {
-                // verifies that classes overriding update can be instantiated
-                DemoImgui layer;
+                delete window;
             }
 
         }

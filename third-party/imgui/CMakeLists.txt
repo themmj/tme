@@ -21,6 +21,7 @@ target_include_directories(imgui PRIVATE
 )
 
 target_compile_options(imgui PRIVATE
+    -g
     -DIMGUI_IMPL_OPENGL_LOADER_GLAD
 )
 
