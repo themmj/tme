@@ -11,6 +11,9 @@ namespace tme {
         /// Eventsystem including Dispatcher and base Event types.
         namespace events {}
 
+        /// Custom exceptions types and functionality.
+        namespace exceptions {}
+
         /// Layer system to build up application logic and handle events.
         namespace layers {}
 
