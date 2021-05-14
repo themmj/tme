@@ -46,15 +46,15 @@ namespace tme {
  * @param ... Arguments which need to have an ostream& operator<<(ostream&, T) definded.
  * First argument can be an spdlog format string followed by the needed arguments.
  */
-#   define TME_TRACE(...)     ::tme::core::Log::getInstance()->trace(__VA_ARGS__)
+#   define TME_TRACE(...)     SPDLOG_LOGGER_TRACE(::tme::core::Log::getInstance(), __VA_ARGS__)
 /// Log on info level. \sa #TME_TRACE(...)
-#   define TME_INFO(...)      ::tme::core::Log::getInstance()->info(__VA_ARGS__)
+#   define TME_INFO(...)      SPDLOG_LOGGER_INFO(::tme::core::Log::getInstance(), __VA_ARGS__)
 /// Log on warning level. \sa #TME_TRACE(...)
-#   define TME_WARN(...)      ::tme::core::Log::getInstance()->warn(__VA_ARGS__)
+#   define TME_WARN(...)      SPDLOG_LOGGER_WARN(::tme::core::Log::getInstance(), __VA_ARGS__)
 /// Log on error level. \sa #TME_TRACE(...)
-#   define TME_ERROR(...)     ::tme::core::Log::getInstance()->error(__VA_ARGS__)
+#   define TME_ERROR(...)     SPDLOG_LOGGER_ERROR(::tme::core::Log::getInstance(), __VA_ARGS__)
 /// Log on critical level. \sa #TME_TRACE(...)
-#   define TME_CRITICAL(...)  ::tme::core::Log::getInstance()->critical(__VA_ARGS__)
+#   define TME_CRITICAL(...)  SPDLOG_LOGGER_CRITICAL(::tme::core::Log::getInstance(), __VA_ARGS__)
 #   include <signal.h>
 /**//**
  * Log on critical level and raise SIGTRAP if x is false.
