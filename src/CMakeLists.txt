@@ -8,6 +8,9 @@ set (SRC_FILES
     core/layers/ui.cpp
     core/graphics/common.cpp
     core/graphics/shader.cpp
+    core/graphics/vertex.cpp
+    core/graphics/index.cpp
+    core/graphics/buffer.cpp
 )
 
 # potentially inject platform specific implementations
