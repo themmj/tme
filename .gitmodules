@@ -10,3 +10,9 @@
 [submodule "third-party/imgui/imgui"]
 	path = third-party/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "third-party/stb/stb"]
+	path = third-party/stb/stb
+	url = https://github.com/nothings/stb.git
+[submodule "third-party/glm"]
+	path = third-party/glm
+	url = https://github.com/g-truc/glm.git

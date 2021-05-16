@@ -46,10 +46,17 @@ set(INCLUDE_DIRS
     ${THIRD_PARTY_DIR}/googletest/googlemock/include
     ${THIRD_PARTY_DIR}/glad/include
     ${THIRD_PARTY_DIR}/imgui/imgui
+    ${THIRD_PARTY_DIR}/stb
 )
 
-#imgui
+# imgui
 add_extern_directory(imgui)
+
+# stb
+add_extern_directory(stb)
+
+# glm
+add_extern_directory(glm)
 
 # libraries
 set(LIBRARIES
@@ -57,6 +64,8 @@ set(LIBRARIES
     glfw
     glad
     imgui
+    stb
+    glm
 )
 
 # options for bin
