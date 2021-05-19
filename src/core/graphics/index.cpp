@@ -9,8 +9,12 @@ namespace tme {
 
             IndexBuffer::IndexBuffer(GLsizeiptr primitivesPerEntry, GLsizeiptr entrySize, GLsizeiptr size)
                 : Buffer(GL_ELEMENT_ARRAY_BUFFER, entrySize, size),
-                m_primitiveCount(static_cast<GLsizei>(getSize() * primitivesPerEntry)) {}
-            IndexBuffer::~IndexBuffer() {}
+                m_primitiveCount(static_cast<GLsizei>(getSize() * primitivesPerEntry)) {
+                TME_INFO("created {}", *this);
+            }
+            IndexBuffer::~IndexBuffer() {
+                TME_INFO("deleting {}", *this);
+            }
 
             std::string IndexBuffer::toString() const {
                 std::stringstream ss;

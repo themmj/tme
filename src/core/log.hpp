@@ -62,7 +62,7 @@ namespace tme {
  * @param x Statement to be used in an if clause.
  * @param ... \ref #TME_TRACE(...)
  */
-#   define TME_ASSERT(x, ...) { if (!(x)) { TME_CRITICAL("Assertion failed: {0}", __VA_ARGS__); raise(SIGTRAP); } }
+#   define TME_ASSERT(x, ...) { if (!(x)) { TME_CRITICAL("Assertion failed!"); TME_CRITICAL(__VA_ARGS__); raise(SIGTRAP); } }
 #else
 #   define TME_TRACE(...)
 #   define TME_INFO(...)

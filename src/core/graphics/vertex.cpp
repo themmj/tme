@@ -7,9 +7,13 @@ namespace tme {
     namespace  core {
         namespace graphics {
 
-            VertexLayout::VertexLayout() : m_id(uuid<VertexLayout>()), m_elements(), m_stride(0) {}
+            VertexLayout::VertexLayout() : m_id(uuid<VertexLayout>()), m_elements(), m_stride(0) {
+                TME_INFO("created {}", *this);
+            }
 
-            VertexLayout::~VertexLayout() {}
+            VertexLayout::~VertexLayout() {
+                TME_INFO("deleting {}", *this);
+            }
 
             std::string VertexLayout::toString() const {
                 std::stringstream ss;
@@ -40,8 +44,12 @@ namespace tme {
             }
 
 
-            VertexBuffer::VertexBuffer(GLsizeiptr entrySize, GLsizeiptr size) : Buffer(GL_ARRAY_BUFFER, entrySize, size) {}
-            VertexBuffer::~VertexBuffer() {}
+            VertexBuffer::VertexBuffer(GLsizeiptr entrySize, GLsizeiptr size) : Buffer(GL_ARRAY_BUFFER, entrySize, size) {
+                TME_INFO("created {}", *this);
+            }
+            VertexBuffer::~VertexBuffer() {
+                TME_INFO("deleting {}", *this);
+            }
 
             std::string VertexBuffer::toString() const {
                 std::stringstream ss;
@@ -63,9 +71,11 @@ namespace tme {
                     glCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, vertexLayout->getStride(), (const GLvoid*) offset));
                     offset += element.count * element.typeSize;
                 }
+                TME_INFO("created {}", *this);
             }
 
             VertexArray::~VertexArray() {
+                TME_INFO("deleting {}", *this);
                 unbind();
                 glCall(glDeleteVertexArrays(1, &m_renderingId));
             }
@@ -80,7 +90,8 @@ namespace tme {
             std::string VertexArray::toString() const {
                 std::stringstream ss;
                 ss << "VertexArray(" << getId() << ',';
-                ss << m_vertexBuffer << m_vertexLayout << ')';
+                ss << m_vertexBuffer->toString() << ',';
+                ss << m_vertexLayout->toString() << ')';
                 return ss.str();
             }
 

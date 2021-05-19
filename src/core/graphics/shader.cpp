@@ -11,7 +11,7 @@ namespace tme {
     namespace  core {
         namespace graphics {
 
-            Shader::Stage::Stage(Type type, const std::string& name, const std::string& filePath) : m_id(0), m_type(type), m_filePath(filePath), m_name(name) {
+            Shader::Stage::Stage(Type type, const std::string& name, const std::string& filePath) : m_type(type), m_filePath(filePath), m_name(name) {
                 std::ifstream file(filePath);
                 if (!file.is_open()) {
                     TME_ERROR("could not find file {}", filePath);
@@ -30,7 +30,7 @@ namespace tme {
                     cleanUp();
                     throw exceptions::SyntaxError("could not compile shader stage, see logs for details");
                 }
-                TME_INFO("compiled {} from file {}", *this, filePath);
+                TME_INFO("created {}", *this);
             }
 
             Shader::Stage::~Stage() {
