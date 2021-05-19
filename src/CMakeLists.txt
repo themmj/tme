@@ -11,6 +11,7 @@ set (SRC_FILES
     core/graphics/vertex.cpp
     core/graphics/index.cpp
     core/graphics/buffer.cpp
+    core/graphics/texture.cpp
 )
 
 # potentially inject platform specific implementations
