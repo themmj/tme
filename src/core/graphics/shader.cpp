@@ -62,7 +62,7 @@ namespace tme {
             }
 
 
-            Shader::Shader(const Handle<Shader::Stage>& vertexStage, const Handle<Shader::Stage>& fragmentStage)
+            Shader::Shader(Handle<Shader::Stage> vertexStage, Handle<Shader::Stage> fragmentStage)
                 : m_uniformCache() {
                 TME_ASSERT(vertexStage, "provided invalid vertex stage");
                 TME_ASSERT(fragmentStage, "provided invalid fragment stage");

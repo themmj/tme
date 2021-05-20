@@ -86,12 +86,17 @@ namespace tme {
                 Handle<VertexBuffer> m_vertexBuffer;
                 Handle<VertexLayout> m_vertexLayout;
                 public:
-                /// construct VertexArray instance form VertexBuffer Handle and VertexLayout Handle
-                VertexArray(const Handle<VertexBuffer>& vertexBuffer, const Handle<VertexLayout>& vertexLayout);
+                /// construct VertexArray instance form VertexBuffer Handle and VertexLayout
+                VertexArray(Handle<VertexBuffer> vertexBuffer, Handle<VertexLayout> vertexLayout);
                 ~VertexArray();
 
                 void bind() const override;
                 void unbind() const override;
+
+                /// get vertex buffer
+                inline Handle<VertexBuffer> getVertexBuffer() const { return m_vertexBuffer; }
+                /// get vertex layout
+                inline Handle<VertexLayout> getVertexLayout() const { return m_vertexLayout; }
 
                 std::string toString() const override;
             };

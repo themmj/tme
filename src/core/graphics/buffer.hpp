@@ -72,6 +72,15 @@ namespace tme {
                  */
                 Space add(GLsizeiptr size, const void* data);
                 /**//**
+                 * Update existing data inside the buffer.
+                 *
+                 * Extracts necessary offset and size from space and writes data.
+                 *
+                 * @param space offset and size information
+                 * @param data pointer to data used to overwrite data in space
+                 */
+                void update(const Space& space, const void* data);
+                /**//**
                  * Release space inside the buffer to be overwritten.
                  *
                  * Does not clear the data as it cannot know "neutral" data.

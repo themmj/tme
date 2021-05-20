@@ -60,6 +60,13 @@ namespace tme {
                 virtual Identifier getId() const override { return m_renderingId; }
             };
 
+            /// interface for classes that are able to be rendered to the screen
+            class Renderable {
+                public:
+                /// contains logic to render the object
+                virtual void render() const = 0;
+            };
+
         }
     }
 }

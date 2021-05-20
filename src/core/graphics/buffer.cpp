@@ -34,12 +34,16 @@ namespace tme {
                 }
                 // subtracting here avoids overflow
                 if (m_size - size >= m_nextOffset) {
-                    GLsizeiptr offset = m_nextOffset;
-                    glCall(glBufferSubData(m_type, offset * m_entrySize, size * m_entrySize, data));
+                    Space dataSpace{ m_nextOffset, size };
+                    update(dataSpace, data);
                     m_nextOffset += size;
-                    return { offset, size };
+                    return dataSpace;
                 }
                 return { INVALID_OFFSET, size };
+            }
+
+            void Buffer::update(const Buffer::Space& space, const void* data) {
+                glCall(glBufferSubData(m_type, space.offset * m_entrySize, space.size * m_entrySize, data));
             }
 
             void Buffer::remove(const Buffer::Space& space) {

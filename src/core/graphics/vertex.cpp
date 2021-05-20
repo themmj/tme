@@ -17,7 +17,7 @@ namespace tme {
 
             std::string VertexLayout::toString() const {
                 std::stringstream ss;
-                ss << "VertexLayout[";
+                ss << "VertexLayout:" << m_id << '[';
                 for (const auto& element : m_elements) {
                     ss << '(' << element.type << ',';
                     ss << element.typeSize << ',';
@@ -58,7 +58,7 @@ namespace tme {
             }
 
 
-            VertexArray::VertexArray(const Handle<VertexBuffer>& vertexBuffer, const Handle<VertexLayout>& vertexLayout)
+            VertexArray::VertexArray(Handle<VertexBuffer> vertexBuffer, Handle<VertexLayout> vertexLayout)
             : m_vertexBuffer(vertexBuffer), m_vertexLayout(vertexLayout) {
                 glCall(glGenVertexArrays(1, &m_renderingId));
                 bind();

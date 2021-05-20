@@ -4,10 +4,14 @@
 
 #include "core/graphics/common.hpp"
 #include "core/loggable.hpp"
+#include <vector>
 
 namespace tme {
     namespace core {
         namespace graphics {
+
+            /// invalid texture identifier one can check against
+            constexpr Identifier NO_TEXTURE = static_cast<Identifier>(-1);
 
             /**//**
              * Abstraction to load an image from disk into an OpenGL texture.
@@ -15,11 +19,24 @@ namespace tme {
              * Can be set active on any available texture slot.
              */
             class Texture final : public Loggable, public Bindable {
+                class SlotGenerator {
+                    GLenum m_nextSlot;
+                    std::vector<GLenum> m_freeSlots;
+                    public:
+                    SlotGenerator();
+                    ~SlotGenerator();
+
+                    GLenum get();
+                    void release(GLenum slot);
+                };
+                static SlotGenerator s_slotGenerator;
+
                 public:
                 ///  type alias used for the dimensions of the image
                 using Dimension = int;
 
                 private:
+                GLenum m_slot;
                 std::string m_filePath;
                 Dimension m_width, m_height;
                 int m_channels;
@@ -32,12 +49,8 @@ namespace tme {
                 void bind() const override;
                 void unbind() const override;
 
-                /**//**
-                 * Set texture on slot active.
-                 *
-                 * @param slot index of the texture to be used in the shader, default 0
-                 */
-                void setActive(GLenum slot = 0) const;
+                /// get unique slot for texture to be active on.
+                inline GLenum getSlot() const { return m_slot; }
 
                 /// get width of the texture in pixels
                 inline Dimension getWidth() const { return m_width; }

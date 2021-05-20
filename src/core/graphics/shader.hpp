@@ -80,7 +80,7 @@ namespace tme {
                  * @throw exceptions::LinkingError when an error occurs during the linking process of the stages
                  * @throw exceptions::ValidationError when an error occurs during the validation of the shader object
                  */
-                Shader(const Handle<Shader::Stage>& vertexStage, const Handle<Shader::Stage>& fragmentStage);
+                Shader(Handle<Shader::Stage> vertexStage, Handle<Shader::Stage> fragmentStage);
                 ~Shader();
 
                 /// returns the shaders identifier (shifted combination of the shader's stages)
