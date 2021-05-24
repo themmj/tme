@@ -4,11 +4,11 @@
 
 #include <memory>
 #include <vector>
-#include <sstream>
 #include "core/events/event.hpp"
-#include "core/log.hpp"
+#include "core/exceptions/common.hpp"
 #include "core/loggable.hpp"
 #include "core/events/handler.hpp"
+#include "core/graphics/common.hpp"
 
 namespace tme {
     namespace core {
@@ -22,7 +22,7 @@ namespace tme {
              * to process events and can override the toString
              * function to display extra information.
              */           
-            class Layer : public Loggable, public events::Handler {
+            class Layer : public Loggable, public events::Handler, public graphics::Renderable {
                 std::string m_name;
 
                 public:
@@ -30,9 +30,7 @@ namespace tme {
                 Layer(const std::string& name) : m_name(name) {}
                 virtual ~Layer() {}
 
-                virtual std::string toString() const override {
-                    return m_name;
-                }
+                virtual std::string toString() const override { return m_name; }
 
                 virtual void onEvent(events::Event&) override {}
             };
@@ -48,22 +46,17 @@ namespace tme {
              * If a layer successfully handled an event it will not be propagated
              * to the layers below it.
              */
-            class Stack : public Loggable, public events::Handler {
+            class Stack : public Loggable, public events::Handler, public graphics::Renderable {
                 using Container = std::vector<LayerHandle>;
                 Container m_layers;
 
                 public:
                 /// Construct a Layer Stack instance
-                Stack() : m_layers() {}
-                ~Stack() {}
+                Stack();
+                ~Stack();
 
-                void onEvent(events::Event& event) override {
-                    for (auto it = m_layers.crbegin(); it != m_layers.crend(); ++it) {
-                        (*it)->onEvent(event);
-                        if (event.isHandled())
-                            break;
-                    }
-                }
+                void onEvent(events::Event& event) override;
+                void render() override;
 
                 /**//**
                  * Construct a new Layer of type T in-place on the top
@@ -77,20 +70,9 @@ namespace tme {
                 }
 
                 /// Removes top element of the stack.
-                void pop() {
-                    TME_ASSERT(m_layers.size() != 0, "pop should not be called on an empty stack");
-                    m_layers.pop_back();
-                }
+                void pop();
 
-                std::string toString() const override {
-                    std::stringstream ss;
-                    ss << "LayerStack( ";
-                    for (auto it = m_layers.crbegin(); it != m_layers.crend(); ++it) {
-                        ss << (*it)->toString() << ' ';
-                    }
-                    ss << ')';
-                    return ss.str();
-                }
+                std::string toString() const override;
             };
 
         }

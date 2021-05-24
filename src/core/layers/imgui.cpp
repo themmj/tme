@@ -7,8 +7,8 @@
 #include "core/events/mouse.hpp"
 
 #include "core/graphics/gl.hpp"
+
 #include "imgui.h"
-#include "backends/imgui_impl_opengl3.h"
 
 namespace tme {
     namespace core {
@@ -24,6 +24,10 @@ namespace tme {
                 dispatchEvent<events::MouseScroll>(event, &Imgui::handleMouseScroll);
                 dispatchEvent<events::WindowUpdate>(event, &Imgui::handleWindowUpdate);
                 dispatchEvent<events::WindowResize>(event, &Imgui::handleWindowResize);
+            }
+
+            void Imgui::render() {
+                ImGui::Render();
             }
 
             // the following callbacks are excluded from coverage tests as then cannot be tested with

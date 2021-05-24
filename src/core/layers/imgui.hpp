@@ -29,6 +29,8 @@ namespace tme {
 
                 void onEvent(events::Event& event) override;
 
+                void render() override;
+
                 private:
                 bool handleKeyPress(events::KeyPress& event);
                 bool handleKeyRelease(events::KeyRelease& event);
