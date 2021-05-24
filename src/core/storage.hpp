@@ -39,7 +39,8 @@ namespace tme {
          */
         template<typename T>
         class Storage {
-            std::unordered_map<Identifier, Handle<T>> m_data;
+            using Container = std::unordered_map<Identifier, Handle<T>>;
+            Container m_data;
 
             // create storage container
             Storage() : m_data() {}
@@ -82,7 +83,6 @@ namespace tme {
                 return element;
             }
 
-
             /**//**
              * get handle to instance of T using its id
              *
@@ -98,6 +98,16 @@ namespace tme {
                 return Handle<T>(nullptr);
             }
 
+            /**//**
+             * check if storage contains an element for id
+             *
+             * @param id identifier of the object to be checked
+             * @return true if an object exists, false if nothing is found
+             */
+            bool has(Identifier id) {
+                return m_data.find(id) != m_data.end();
+            }
+
             /// remove object with id id from storage
             void destroy(Identifier id) {
                 m_data.erase(id);
@@ -107,6 +117,14 @@ namespace tme {
             void clear() {
                 m_data.clear();
             }
+
+            /// const iterator for data inside Storage
+            using const_iterator = typename Container::const_iterator;
+            /// get iterator of the start of the underlying container
+            const_iterator begin() const noexcept { return m_data.begin(); }
+            /// get iterator of the end of the underlying container
+            const_iterator end() const noexcept { return m_data.end(); }
+
         };
 
     }
