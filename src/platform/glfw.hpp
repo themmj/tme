@@ -250,6 +250,8 @@ namespace tme {
             ~GlfwWindow();
 
             void update() override;
+            void swapBuffer() override;
+            void pollEvents() override;
             void setTitleInternal(const std::string& title) override;
             void setVSyncInternal(bool enable) override;
 

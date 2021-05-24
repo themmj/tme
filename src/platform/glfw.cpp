@@ -86,19 +86,17 @@ namespace tme {
         }
 
         void GlfwWindow::update() {
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui::NewFrame();
-
             double currentUpdate = glfwGetTime();
             core::events::WindowUpdate updateEvent(currentUpdate - m_data.lastUpdate);
             m_data.lastUpdate = currentUpdate;
             m_data.handler->onEvent(updateEvent);
+        }
 
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            ImGui::EndFrame();
-
+        void GlfwWindow::swapBuffer() {
             glfwSwapBuffers(m_window);
+        }
+
+        void GlfwWindow::pollEvents() {
             glfwPollEvents();
         }
 
@@ -193,6 +191,7 @@ namespace tme {
 
             glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xPos, double yPos) {
                 GET_GLFW_DATA;
+                yPos = data.m_this->getHeight() - yPos;
                 core::events::MouseMove event(xPos, yPos, data.m_this->getRelativeX(xPos), data.m_this->getRelativeY(yPos));
                 data.handler->onEvent(event);
             });

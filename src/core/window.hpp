@@ -76,6 +76,10 @@ namespace tme {
             /// Update method called every iteration of the application loop.
             virtual void update() = 0;
 
+            virtual void swapBuffer() = 0;
+
+            virtual void pollEvents() = 0;
+
             /**//**
              * \brief Get window width.
              *
