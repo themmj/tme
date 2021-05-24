@@ -64,8 +64,11 @@ namespace tme {
             class Renderable {
                 public:
                 /// contains logic to render the object
-                virtual void render() const = 0;
+                virtual void render() = 0;
             };
+
+            /// a single byte with the value 0, i.e. used to clear buffers
+            constexpr unsigned char NULL_BYTE = 0;
 
         }
     }

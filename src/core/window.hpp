@@ -76,8 +76,10 @@ namespace tme {
             /// Update method called every iteration of the application loop.
             virtual void update() = 0;
 
+            /// instruct window to swap buffer
             virtual void swapBuffer() = 0;
 
+            /// poll for events like input or resizing etc
             virtual void pollEvents() = 0;
 
             /**//**

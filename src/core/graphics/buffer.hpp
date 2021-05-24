@@ -18,10 +18,8 @@ namespace tme {
              * Abstraction of an OpenGL buffer.
              *
              * Provides infrastructure to create/delete an OpenGL buffer
-             * and add/remove data. The removal of data does not clear that part
-             * of the buffer and instead only allows to overwrite it in future
-             * additions because the buffer can not know what is considered
-             * "neutral" data.
+             * and add/remove data. The removal of data means overwriting it with zeros and
+             * allows to overwrite it in future additions.
              *
              * A Buffer is designed to store entries with a set size.
              * Because of that semantically the size and offset should be interpreted as entries
@@ -83,7 +81,7 @@ namespace tme {
                 /**//**
                  * Release space inside the buffer to be overwritten.
                  *
-                 * Does not clear the data as it cannot know "neutral" data.
+                 * Does not clear the data explicitly. It overwrites the affected part of the buffer with zeros.
                  *
                  * @param space the space to be released
                  */

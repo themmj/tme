@@ -120,6 +120,10 @@ namespace tme {
                 glCall(glUniform4f(getUniformLocation(name), v0, v1, v2, v3));
             }
 
+            void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) {
+                glCall(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+            }
+
             GLint Shader::getUniformLocation(const std::string& name) {
                 if(m_uniformCache.find(name) != m_uniformCache.end()) {
                     return m_uniformCache[name];

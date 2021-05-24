@@ -2,10 +2,11 @@
 #define _CORE_GRAPHICS_SHADER_H
 /** @file */
 
+#include <unordered_map>
 #include "core/graphics/common.hpp"
 #include "core/loggable.hpp"
 #include "core/storage.hpp"
-#include <unordered_map>
+#include "glm/mat4x4.hpp"
 
 namespace tme {
     namespace core {
@@ -105,6 +106,13 @@ namespace tme {
                  * @param v0,v1,v2,v3 values the uniform should be set to
                  */
                 void setUniform4f(const std::string& name, float  v0, float v1, float v2, float v3);
+                /**//**
+                 * Set 4x4 matrix uniform.
+                 *
+                 * @param name name of the uniform
+                 * @param matrix matrix the uniform should be set to
+                 */
+                void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
                 std::string toString() const override;
 

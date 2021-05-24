@@ -23,13 +23,12 @@ namespace tme {
             }
 
             Buffer::Space Buffer::add(GLsizeiptr size, const void* data) {
-                bind();
                 for (auto iter = m_freeSpaces.begin(); iter != m_freeSpaces.end(); ++iter) {
                     if (iter->size == size) {
-                        GLsizeiptr offset = iter->offset;
-                        glCall(glBufferSubData(m_type, offset * m_entrySize, size * m_entrySize, data));
+                        Space dataSpace{ iter->offset, size };
+                        update(dataSpace, data);
                         m_freeSpaces.erase(iter);
-                        return { offset, size };
+                        return dataSpace;
                     }
                 }
                 // subtracting here avoids overflow
@@ -43,10 +42,12 @@ namespace tme {
             }
 
             void Buffer::update(const Buffer::Space& space, const void* data) {
+                bind();
                 glCall(glBufferSubData(m_type, space.offset * m_entrySize, space.size * m_entrySize, data));
             }
 
             void Buffer::remove(const Buffer::Space& space) {
+                update(space, &NULL_BYTE);
                 m_freeSpaces.push_back(space);
             }
             
