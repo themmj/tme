@@ -4,6 +4,7 @@
 
 #include "core/events/dispatcher.hpp"
 #include "core/events/window.hpp"
+#include "core/graphics/common.hpp"
 #include "core/layers/layer.hpp"
 #include "core/storage.hpp"
 #include "core/window.hpp"
@@ -40,7 +41,7 @@ namespace tme {
          * Implements the run method and provides a virtual update method
          * which is called every frame.
          */
-        class WindowApplication : public Application, events::Dispatcher<WindowApplication> {
+        class WindowApplication : public Application, public events::Dispatcher<WindowApplication>, public graphics::Renderable {
             protected:
             /// identifier of the created window
             /// can be passed to other components which acces it via Storage
@@ -60,10 +61,6 @@ namespace tme {
             void run() override;
 
             void onEvent(events::Event& event) override;
-
-            protected:
-            /// virtual update method which is called every iteration of the update/render loop
-            virtual void update() = 0;
 
             private:
             bool handleWindowClose(events::WindowClose&);

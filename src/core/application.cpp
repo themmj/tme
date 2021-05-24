@@ -2,8 +2,12 @@
 #include "core/application.hpp"
 
 #include "core/events/event.hpp"
+#include "core/events/window.hpp"
 #include "core/storage.hpp"
 #include "core/window.hpp"
+
+#include "imgui.h"
+#include "backends/imgui_impl_opengl3.h"
 
 namespace tme {
     namespace core {
@@ -26,8 +30,14 @@ namespace tme {
         void WindowApplication::run() {
             auto window = Storage<Window>::global()->get(m_window);
             while (m_running) {
-                update();
+                ImGui_ImplOpenGL3_NewFrame();
+                ImGui::NewFrame();
                 window->update();
+                render();
+                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+                ImGui::EndFrame();
+                window->swapBuffer();
+                window->pollEvents();
             }
         }
 
