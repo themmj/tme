@@ -16,7 +16,7 @@ namespace tme {
                 /**//**
                  * Handle event.
                  *
-                 * @param event The event to be handled.
+                 * @param event the Event to be handled
                  */
                 virtual void onEvent(Event& event) = 0;
             };

@@ -11,17 +11,23 @@ namespace tme {
 
             /**//**
              * \brief Event emitted when the window updates.
+             *
+             * Contains the time since the last update in seconds.
              */
             class WindowUpdate : public Event {
                 double m_deltaTime;
                 public:
-                /// Construct WindowUpdate event with new time delta.
+                /**//**
+                 * \brief Construct WindowUpdate event with new time delta.
+                 *
+                 * @param deltaTime amount of time passed since the last update
+                 */
                 WindowUpdate(double deltaTime) : m_deltaTime(deltaTime) {}
 
                 /**//**
                  * \brief Get time delta since last update.
                  *
-                 * @return time delta since last update.
+                 * @return time delta since last update in seconds
                  */
                 inline double getDeltaTime() const { return m_deltaTime; }
 
@@ -36,10 +42,13 @@ namespace tme {
             };
 
             /**//**
-             * \brief Event when window is closed.
+             * \brief Event when Window is closed.
              */
             class WindowClose : public Event {
                 public:
+                /**//**
+                 * \brief Construct WindowClose event.
+                 */
                 WindowClose() {}
 
                 EVENT_CLASS_TYPE(WindowClose)
@@ -47,10 +56,11 @@ namespace tme {
             };
 
             /**//**
-             * \brief Event when window is resized.
+             * \brief Event when Window is resized.
              *
              * Contains new window dimensions, the scaling factors compared to the previous
-             * dimensions and new frame buffer dimensions. (dimensions can differ on high dpi displays).
+             * dimensions and new frame buffer dimensions.
+             * The two dimension types are stored because they can differ on high dpi displays.
              */
             class WindowResize : public Event {
                 uint32_t m_width, m_height;
@@ -59,34 +69,43 @@ namespace tme {
 
                 public:
                 /**//**
-                 * Construct WindowResize event.
+                 * \brief Construct WindowResize event.
                  *
-                 * @param width New width of the window.
-                 * @param height New height of the window.
-                 * @param widthFactor Width scaling factor compared to last update.
-                 * @param heightFactor Height scaling factor compared to last update.
-                 * @param frameBufferWidth New width of frame buffer.
-                 * @param frameBufferHeight New height of the frame buffer.
+                 * @param width new width of the window
+                 * @param height new height of the window
+                 * @param widthFactor width scaling factor compared to previous width
+                 * @param heightFactor height scaling factor compared to previous height
+                 * @param frameBufferWidth new width of frame buffer
+                 * @param frameBufferHeight new height of the frame buffer
                  */
                 WindowResize(uint32_t width, uint32_t height, double widthFactor, double heightFactor, uint32_t frameBufferWidth, uint32_t frameBufferHeight)
                     : m_width(width), m_height(height),
                     m_widthFactor(widthFactor), m_heightFactor(heightFactor),
                     m_frameBufferWidth(frameBufferWidth), m_frameBufferHeight(frameBufferHeight) {}
-                /// Construct WindowResize event with new window dimensions. Uses new window dimensions as new frame buffer dimensions.
+                /**//**
+                 * \brief Construct WindowResize event with new window dimensions.
+                 *
+                 * Uses new window dimensions as new frame buffer dimensions.
+                 *
+                 * @param width new width of the window
+                 * @param height new height of the window
+                 * @param widthFactor width scaling factor compared to previous width
+                 * @param heightFactor height scaling factor compared to previous height
+                 */
                 WindowResize(uint32_t width, uint32_t height, double widthFactor, double heightFactor) 
                     : WindowResize(width, height, widthFactor, heightFactor, width, height) {}
 
                 /**//**
                  * \brief Get new window width.
                  *
-                 * @return new window width.
+                 * @return new window width
                  */
                 inline auto getWidth() const { return m_width; }
 
                 /**//**
                  * \brief Get new window height.
                  *
-                 * @return new window height.
+                 * @return new window height
                  */
                 inline auto getHeight() const { return m_height; }
 
@@ -117,14 +136,14 @@ namespace tme {
                 /**//**
                  * \brief Get new frame buffer width.
                  *
-                 * @return new frame buffer width.
+                 * @return new frame buffer width
                  */
                 inline auto getFrameBufferWidth() const { return m_frameBufferWidth; }
 
                 /**//**
                  * \brief Get new frame buffer height.
                  *
-                 * @return new frame buffer height.
+                 * @return new frame buffer height
                  */
                 inline auto getFrameBufferHeight() const { return m_frameBufferHeight; }
 

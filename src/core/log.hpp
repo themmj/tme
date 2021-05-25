@@ -10,11 +10,11 @@
 namespace tme {
     namespace core {
 
-        /// Smart handle to spd::logger
+        /// smart handle to spd::logger
         using LoggerHandle = std::shared_ptr<spdlog::logger>;
 
         /**//**
-         * \brief Logger
+         * \brief Logging wrapper.
          *
          * Singleton wrapper for splog logger.
          * Initialize with init().
@@ -26,12 +26,14 @@ namespace tme {
 
         public:
             /**//**
-             * Initialize logger instance
+             * \brief Initialize logger instance.
              */
             static void init();
 
             /**//**
-             * Get logger instance
+             * \brief Get logger instance.
+             *
+             * @return static LoggerHandle to logger
              */
             static inline LoggerHandle& getInstance() { return s_logger; }
         };
@@ -57,7 +59,7 @@ namespace tme {
 #   define TME_CRITICAL(...)  SPDLOG_LOGGER_CRITICAL(::tme::core::Log::getInstance(), __VA_ARGS__)
 #   include <signal.h>
 /**//**
- * Log on critical level and raise SIGTRAP if x is false.
+ * \brief Log on critical level and raise SIGTRAP if x is false.
  *
  * @param x Statement to be used in an if clause.
  * @param ... \ref #TME_TRACE(...)

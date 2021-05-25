@@ -15,7 +15,7 @@ namespace tme {
             constexpr GLsizeiptr INVALID_OFFSET = -1;
 
             /**//**
-             * Abstraction of an OpenGL buffer.
+             * \brief Abstraction of an OpenGL buffer.
              *
              * Provides infrastructure to create/delete an OpenGL buffer
              * and add/remove data. The removal of data means overwriting it with zeros and
@@ -27,11 +27,15 @@ namespace tme {
              */
             class Buffer : public Loggable, public Bindable {
                 public:
-                /// entity to store a destinct space inside a buffer
+                /**//**
+                 * \brief Value object to store a destinct space inside a buffer.
+                 *
+                 * Offset and size of an area inside the buffer.
+                 */
                 struct Space {
                     /// offset inside the buffer
                     GLsizeiptr offset;
-                    /// size of space
+                    /// size of the space
                     GLsizeiptr size;
                 };
 
@@ -44,8 +48,7 @@ namespace tme {
 
                 public:
                 /**//**
-                 * Construct instance of a buffer of specific OpenGL buffer type
-                 * with set size, allowing to store entries with a defined size.
+                 * \brief Construct instance of a buffer of specific OpenGL buffer type with set size, allowing to store entries with a defined size.
                  *
                  * @param type OpenGL enum value for buffer type
                  * @param entrySize size in bytes of the individual entries
@@ -55,22 +58,20 @@ namespace tme {
                 virtual ~Buffer();
 
                 /**//**
-                 * Try to add size amount of data somewhere into the buffer.
+                 * \brief Try to add size amount of data somewhere into the buffer.
                  *
                  * Attempts to find space for the data. If not enough space is left inside the buffer
-                 * the returned Space will contain an INVALID_OFFSET. In contrast to an exception this
-                 * requires explicit success checks. Exceptions would increase the complexity of this low level
-                 * abstraction and most likely overcomplicate orchestration logic.
+                 * the returned Space will contain an INVALID_OFFSET.
                  *
                  * @param size amount of entries to be added to the buffer
                  * @param data pointer to entries
                  *
-                 * @return Space containing storage information of the added data.
-                 * Space.offset contains INVALID_OFFSET if not enough space is left in the buffer.
+                 * @return Space containing storage information of the added data,
+                 * Space.offset contains INVALID_OFFSET if not enough space is left in the buffer
                  */
                 Space add(GLsizeiptr size, const void* data);
                 /**//**
-                 * Update existing data inside the buffer.
+                 * \brief Update existing data inside the buffer.
                  *
                  * Extracts necessary offset and size from space and writes data.
                  *
@@ -79,9 +80,9 @@ namespace tme {
                  */
                 void update(const Space& space, const void* data);
                 /**//**
-                 * Release space inside the buffer to be overwritten.
+                 * \brief Release space inside the buffer to be overwritten.
                  *
-                 * Does not clear the data explicitly. It overwrites the affected part of the buffer with zeros.
+                 * It overwrites the affected part of the buffer with zeros.
                  *
                  * @param space the space to be released
                  */
@@ -90,9 +91,17 @@ namespace tme {
                 void bind() const override;
                 void unbind() const override;
 
-                /// get number of entries the buffer was instructed to be able to hold
+                /**//**
+                 * \brief Get number of entries the buffer was instructed to be able to hold.
+                 *
+                 * @return size of the buffer
+                 */
                 inline GLsizeiptr getSize() const { return m_size; }
-                /// get number of entries still available inside the buffer
+                /**//**
+                 * \brief Get number of entries still available inside the buffer.
+                 *
+                 * @return free space inside the buffer
+                 */
                 GLsizeiptr getFreeSpace() const;
             };
 

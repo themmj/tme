@@ -12,23 +12,28 @@ namespace tme {
 
             /**//**
              * \brief Base class for a key event.
+             *
              * Contains the key itself, getters and the
              * necessary category and toString overloads.
              */
             class KeyBase : public Event {
                 protected:
-                /// The key for which the event was triggered
+                /// the key for which the event was triggered
                 const Key& m_key;
                 
                 public:
-                /// Construct a KeyBase instance containing the key.
+                /**//**
+                 * \brief Construct a KeyBase instance containing the key.
+                 *
+                 * @param key the key for which the event should be created
+                 */
                 KeyBase(const Key& key) : m_key(key) {}
                 virtual ~KeyBase() {}
 
                 /**//**
                  * \brief Get the key.
                  *
-                 * @return The key for which the event was triggered.
+                 * @return the key for which the event was triggered
                  */
                 const Key& getKey() const { return m_key; }
 
@@ -48,28 +53,52 @@ namespace tme {
                 }
             };
 
-            /// KeyBase specialisation when a key is pressed.
+            /**//**
+             * \brief KeyBase specialisation when a key is pressed.
+             */
             class KeyPress : public KeyBase {
                 public:
-                /// Construct KeyPress instance forwarding the key object to KeyBase
+                /**//**
+                 * \brief Construct KeyPress instance for key.
+                 *
+                 * It forwards the key to KeyBase.
+                 *
+                 * @param key the key that was pressed
+                 */
                 KeyPress(const Key& key) : KeyBase(key) {}
 
                 EVENT_CLASS_TYPE(KeyPress)
             };
 
-            /// KeyBase specialisation when a key is released.
+            /**//**
+             * \brief KeyBase specialisation when a key is pressed.
+             */
             class KeyRelease : public KeyBase {
                 public:
-                /// Construct KeyRelease instance forwarding the key object to KeyBase
+                /**//**
+                 * \brief Construct KeyRelease instance for key.
+                 *
+                 * It forwards the key to KeyBase.
+                 *
+                 * @param key the key that was released
+                 */
                 KeyRelease(const Key& key) : KeyBase(key) {}
 
                 EVENT_CLASS_TYPE(KeyRelease)
             };
 
-            /// KeyBase specialisation when a key is typed (e.g. an input field)
+            /**//**
+             * \brief KeyBase specialisation when a key is typed (e.g. an input field).
+             */
             class KeyChar : public KeyBase {
                 public:
-                /// Constructs KeyChar instance by forewarding the key object to KeyBase
+                /**//**
+                 * \brief Constructs KeyChar instance by forewarding the key object to KeyBase.
+                 *
+                 * It forwards the key to KeyBase.
+                 *
+                 * @param key the key that was typed
+                 */
                 KeyChar(const Key& key) : KeyBase(key) {}
 
                 EVENT_CLASS_TYPE(KeyChar)

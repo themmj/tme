@@ -14,13 +14,17 @@ namespace tme {
         namespace graphics {
 
             /**//**
-             * Store layout definition for vertex data.
+             * \brief Store layout definition for vertex data.
              *
              * Allows to incrementally build up layout.
              */
             class VertexLayout final : public Loggable, public Mappable {
                 public:
-                /// entity storing info about a part of the vertex structure
+                /**//**
+                 * \brief Value object storing info about a part of the vertex structure.
+                 *
+                 * Contains necessary information to enable a vertex attribute pointer.
+                 */
                 struct Element {
                     /// OpenGL type of the primitive
                     GLenum type;
@@ -38,12 +42,14 @@ namespace tme {
                 GLsizei m_stride;
 
                 public:
-                /// construct VertexLayout instance
+                /**//**
+                 * \brief Construct VertexLayout instance.
+                 */
                 VertexLayout();
                 ~VertexLayout();
 
                 /**//**
-                 * Adds Element based on provided type and count to the layout.
+                 * \brief Adds Element based on provided type and count to the layout.
                  *
                  * @param count number of T contained inside element of vertex
                  */
@@ -54,9 +60,17 @@ namespace tme {
                     m_stride += element.count * element.typeSize;
                 }
 
-                /// get stored elements defining the structure
+                /**//**
+                 * \brief Get stored elements defining the structure.
+                 *
+                 * @return vector of description elements pushed into the layout
+                 */
                 inline const std::vector<Element> getElements() const { return m_elements; }
-                /// get stride of the vertex
+                /**//**
+                 * \brief Get stride of the vertex.
+                 *
+                 * @return stride of the layout
+                 */
                 inline GLsizei getStride() const { return m_stride; }
 
                 Identifier getId() const override { return m_id; }
@@ -71,31 +85,55 @@ namespace tme {
                 }
             };
 
-            /// Buffer implementation for a vertex buffer.
+            /**//**
+             * \brief Buffer implementation for a vertex buffer.
+             */
             class VertexBuffer final : public Buffer {
                 public:
-                /// construct Buffer instance for GL_ARRAY_BUFFER
+                /**//**
+                 * \brief Construct Buffer instance.
+                 *
+                 * Uses GL_ARRAY_BUFFER for the type.
+                 *
+                 * @param entrySize size of a single vertex entry in bytes
+                 * @param size amount of vertices the buffer should be able to store
+                 */
                 VertexBuffer(GLsizeiptr entrySize, GLsizeiptr size);
                 ~VertexBuffer();
 
                 std::string toString() const override;
             };
 
-            /// combination of a vertex buffer and its corresponding layout
+            /**//**
+             * \brief Combination of a VertexBuffer and its corresponding VertexLayout.
+             */
             class VertexArray final : public Loggable, public Bindable {
                 Handle<VertexBuffer> m_vertexBuffer;
                 Handle<VertexLayout> m_vertexLayout;
                 public:
-                /// construct VertexArray instance form VertexBuffer Handle and VertexLayout
+                /**//**
+                 * \brief Construct VertexArray instance.
+                 *
+                 * @param vertexBuffer VertexBuffer to use
+                 * @param vertexLayout VertexLayout to use
+                 */
                 VertexArray(Handle<VertexBuffer> vertexBuffer, Handle<VertexLayout> vertexLayout);
                 ~VertexArray();
 
                 void bind() const override;
                 void unbind() const override;
 
-                /// get vertex buffer
+                /**//**
+                 * \brief Get vertex buffer.
+                 *
+                 * @return Handle to the used VertexBuffer
+                 */
                 inline Handle<VertexBuffer> getVertexBuffer() const { return m_vertexBuffer; }
-                /// get vertex layout
+                /**//**
+                 * \brief Get vertex layout.
+                 *
+                 * @return Handle to the used VertexLayout
+                 */
                 inline Handle<VertexLayout> getVertexLayout() const { return m_vertexLayout; }
 
                 std::string toString() const override;

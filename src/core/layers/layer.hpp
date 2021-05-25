@@ -15,9 +15,9 @@ namespace tme {
         namespace layers {
 
             /**//**
-             * Base class for every layer implementing the Loggable
-             * and events::Handler interface
+             * \brief Base class for every layer.
              *
+             * It implements the Loggable, events::Handler and graphics::Renderable interface.
              * Derived classes should override the onEvent function
              * to process events and can override the toString
              * function to display extra information.
@@ -26,7 +26,11 @@ namespace tme {
                 std::string m_name;
 
                 public:
-                /// Construct Layer instance with name.
+                /**//**
+                 * \brief Construct Layer instance with name.
+                 *
+                 * @param name the name of the layer used for logging
+                 */
                 Layer(const std::string& name) : m_name(name) {}
                 virtual ~Layer() {}
 
@@ -35,23 +39,26 @@ namespace tme {
                 virtual void onEvent(events::Event&) override {}
             };
 
-            /// Owning handle for a Layer
+            /// owning handle for a Layer
             using LayerHandle = std::unique_ptr<Layer>;
 
             /**//**
-             * Stack structure to store Layer.
+             * \brief Stack structure to store Layer.
              *
              * Implements events::Handler to receive events and propagate
              * them to the layers, starting with the most recently added one.
              * If a layer successfully handled an event it will not be propagated
-             * to the layers below it.
+             * to the layers below it. This goes top to bottom of the stack.
+             * Additionally can render all layers. This goes bottom to top of the stack.
              */
             class Stack : public Loggable, public events::Handler, public graphics::Renderable {
                 using Container = std::vector<LayerHandle>;
                 Container m_layers;
 
                 public:
-                /// Construct a Layer Stack instance
+                /**//**
+                 * \brief Construct a Layer Stack instance.
+                 */
                 Stack();
                 ~Stack();
 
@@ -59,17 +66,18 @@ namespace tme {
                 void render() override;
 
                 /**//**
-                 * Construct a new Layer of type T in-place on the top
-                 * of the Stack.
+                 * \brief Construct a new Layer of type T in-place on the top of the Stack.
                  *
-                 * @param args Arguments forwarded to the constructor of T
+                 * @param args arguments forwarded to the constructor of T
                  */
                 template<typename T, typename... Args>
                 void push(Args... args) {
                     m_layers.push_back(std::make_unique<T>(args...));
                 }
 
-                /// Removes top element of the stack.
+                /**//**
+                 * \brief Removes top element of the stack.
+                 */
                 void pop();
 
                 std::string toString() const override;

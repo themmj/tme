@@ -13,15 +13,15 @@ namespace tme {
         namespace graphics {
 
             /**//**
-             * Abstraction for an OpenGL program object.
+             * \brief Abstraction for an OpenGL program object.
              *
-             * Is constructed from two Shader::Stage handles when both stages are valid together.
+             * Is constructed from two Shader::Stage Handle when both stages are valid together.
              * Allows to set uniforms to pass extra data to the shader.
              */
             class Shader final : public Loggable, public Bindable {
                 public:
                 /**//**
-                 * Abstraction for an OpenGL shader object.
+                 * \brief Abstraction for an OpenGL shader object.
                  *
                  * Is constructed from the contents of a file when the code does not contain any errors.
                  */
@@ -33,7 +33,7 @@ namespace tme {
                         Fragment = GL_FRAGMENT_SHADER
                     };
                     /**//**
-                     * Construct named shader stage from file.
+                     * \brief Construct named shader stage from file.
                      *
                      * @param type the type of shader to be created
                      * @param name the name for the stage
@@ -46,11 +46,25 @@ namespace tme {
                     ~Stage();
 
                     core::Identifier getId() const override;
-                    /// get the stage type
+                    /**//**
+                     * \brief Get the stage type.
+                     *
+                     * @sa Stage::Type
+                     *
+                     * @return type of the stage
+                     */
                     inline Type getType() const { return m_type; }
-                    /// get the path to the file used for creation
+                    /**//**
+                     * \brief Get the path to the file used for creation.
+                     *
+                     * @return file path to shader stage file
+                     */
                     inline std::string getFilePath() const { return m_filePath; }
-                    /// get the name provided during creation
+                    /**//**
+                     * \brief Get the name provided during creation.
+                     *
+                     * @return custom set name of the stage
+                     */
                     inline std::string getName() const { return m_name; }
 
                     std::string toString() const override;
@@ -71,7 +85,7 @@ namespace tme {
 
                 public:
                 /**//**
-                 * Construct shader from two shader stages.
+                 * \brief Construct shader from two shader stages.
                  *
                  * Its name is the combination of the names of the provided stages.
                  *
@@ -84,30 +98,42 @@ namespace tme {
                 Shader(Handle<Shader::Stage> vertexStage, Handle<Shader::Stage> fragmentStage);
                 ~Shader();
 
-                /// returns the shaders identifier (shifted combination of the shader's stages)
+                /**//**
+                 * \brief Get Stage combination.
+                 *
+                 * For that the ids of the stages are shifted and combined into one id.
+                 *
+                 * @return Stage combination encoded as a single id
+                 */
                 Identifier getId() const override;
-                /// get name of the shader (combination of stage names)
+                /**//**
+                 * \brief Get name of the Shader.
+                 *
+                 * The name is a combination of the Stage names.
+                 *
+                 * @return custom set name of the stage
+                 */
                 inline std::string getName() const { return m_name; }
 
                 void bind() const override;
                 void unbind() const override;
 
                 /**//**
-                 * Set one integer uniform.
+                 * \brief Set one integer uniform.
                  *
                  * @param name name of the uniform
                  * @param value value the uniform should be set to
                  */
                 void setUniform1i(const std::string& name, int value);
                 /**//**
-                 * Set four float uniform.
+                 * \brief Set four float uniform.
                  *
                  * @param name name of the uniform
                  * @param v0,v1,v2,v3 values the uniform should be set to
                  */
                 void setUniform4f(const std::string& name, float  v0, float v1, float v2, float v3);
                 /**//**
-                 * Set 4x4 matrix uniform.
+                 * \brief Set 4x4 matrix uniform.
                  *
                  * @param name name of the uniform
                  * @param matrix matrix the uniform should be set to

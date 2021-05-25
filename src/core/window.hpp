@@ -12,7 +12,9 @@
 namespace tme {
     namespace core {
 
-        /// Base class for windows.
+        /**//**
+         * \brief Base class for windows.
+         */
         class Window : public Loggable, Mappable {
             static bool s_windowCreated;
 
@@ -25,7 +27,11 @@ namespace tme {
             using Dimension = uint32_t;
 
             public:
-            /// window data container
+            /**//**
+             * \brief Window data container.
+             *
+             * Contains all configurable data.
+             */
             struct Data {
                 /// window title
                 std::string title;
@@ -46,10 +52,10 @@ namespace tme {
                  * \brief window data constructor
                  *
                  * @param eventHandler handler to which events by the window will be propagated to
-                 * @param windowTitle
-                 * @param windowWidth
-                 * @param windowHeight
-                 * @param vSync enable vsync of the window or not
+                 * @param windowTitle title of the window
+                 * @param windowWidth width of the window in pixels
+                 * @param windowHeight height of the window in pixels
+                 * @param vSync vsync enabled or not
                  */
                 Data(EventHandlerPtr eventHandler, const std::string& windowTitle = "not set", Dimension windowWidth = 300, Dimension windowHeight = 300, bool vSync = true)
                     : title(windowTitle), width(windowWidth), height(windowHeight), vSyncEnabled(vSync), handler(eventHandler) {}
@@ -59,13 +65,18 @@ namespace tme {
             /// window data
             Data m_data;
 
-            /// construct new window base from data
+            /**//**
+             * \brief Construct new window base from data.
+             *
+             * @param data the data to be used to create the window
+             */
             Window(const Data& data);
 
             public:
             /**//**
-             * Static method to create a new window.
-             * Implementation dependent on chosen platform inside /platform
+             * \brief Static method to create a new window.
+             *
+             * Implementation dependent on chosen platform inside /platform.
              *
              * @param data parameters used to create window.
              * @return Owning pointer to created window.
@@ -73,13 +84,19 @@ namespace tme {
             static Window* create(const Data& data);
             virtual ~Window();
 
-            /// Update method called every iteration of the application loop.
+            /**//**
+             * \brief Update method called every iteration of the application loop.
+             */
             virtual void update() = 0;
 
-            /// instruct window to swap buffer
+            /**//**
+             * \brief Instruct window to swap buffer.
+             */
             virtual void swapBuffer() = 0;
 
-            /// poll for events like input or resizing etc
+            /**//**
+             * \brief Poll for events like input or resizing etc.
+             */
             virtual void pollEvents() = 0;
 
             /**//**

@@ -13,17 +13,18 @@ namespace tme {
         namespace layers {
 
             /**//**
-             * Layer specialization for ImGui.
+             * \brief Layer specialization for ImGui.
              *
              * This layer handles input and resizing events and forwards them
              * to ImGui.
              * There should only be one Imgui layer because it updates imgui's
              * global state.
-             * For the actual ui elements the Ui layer should be used.
              */
             class Imgui final : public Layer, public events::Dispatcher<Imgui> {
                 public:
-                /// Construct an Imgui layer
+                /**//**
+                 * \brief Construct an Imgui layer.
+                 */
                 Imgui() : Layer("Imgui"), Dispatcher(this) {}
                 ~Imgui() {}
 

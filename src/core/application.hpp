@@ -14,7 +14,7 @@ namespace tme {
     namespace core {
 
         /**//**
-         * Base class for applications.
+         * \brief Base class for applications.
          *
          * Provides functionality to use it inside storages.
          * Virtual run method for custom execution logic.
@@ -24,40 +24,50 @@ namespace tme {
             Identifier m_id;
         
             public:
-            /// default constructor
+            /**//**
+             * \brief Default constructor.
+             */
             Application();
             virtual ~Application();
 
             Identifier getId() const override { return m_id; }
 
-            /// virtual method to be overwritten by implementations
+            /**//**
+             * \brief Virtual method to be overwritten by implementations.
+             *
+             * This allows for custom execution logic.
+             */
             virtual void run() = 0;
         };
 
         /**//**
-         * Application implementation which creates a window.
+         * \brief Application implementation which creates a window.
          *
          * Handles creating a window and corresponding layer stack.
-         * Implements the run method and provides a virtual update method
-         * which is called every frame.
+         * Implements the run method and calls the Renderable render function every frame.
          */
         class WindowApplication : public Application, public events::Dispatcher<WindowApplication>, public graphics::Renderable {
             protected:
             /// identifier of the created window
-            /// can be passed to other components which acces it via Storage
             Identifier m_window;
-            /// stack on which different Layer implementations can be pushed
+            /// layers::Stack on which different Layer implementations can be pushed
             layers::Stack m_layers;
 
             private:
             bool m_running;
         
             public:
-            /// construct WindowApplication with title name
+            /**//**
+             * \brief Construct WindowApplication instance.
+             *
+             * @param name the name of the app, which is also shows in the window title bar
+             */
             WindowApplication(const std::string& name);
             virtual ~WindowApplication();
 
-            /// run implementation containing the update/render loop
+            /**//**
+             * \brief Run implementation containing the update/render loop.
+             */
             void run() override;
 
             void onEvent(events::Event& event) override;

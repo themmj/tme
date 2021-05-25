@@ -14,7 +14,7 @@ namespace tme {
             constexpr Identifier NO_TEXTURE = static_cast<Identifier>(-1);
 
             /**//**
-             * Abstraction to load an image from disk into an OpenGL texture.
+             * \brief Abstraction to load an image from disk into an OpenGL texture.
              *
              * Can be set active on any available texture slot.
              */
@@ -42,19 +42,35 @@ namespace tme {
                 int m_channels;
 
                 public:
-                /// load image from filePath and create texture
+                /**//**
+                 * \brief Load image from filePath and create texture.
+                 *
+                 * @param filePath path to texture file
+                 */
                 Texture(const std::string& filePath);
                 ~Texture();
 
                 void bind() const override;
                 void unbind() const override;
 
-                /// get unique slot for texture to be active on.
+                /**//**
+                 * \brief Get unique slot for texture to be active on.
+                 *
+                 * @return unique slot for the texture
+                 */
                 inline GLenum getSlot() const { return m_slot; }
 
-                /// get width of the texture in pixels
+                /**//**
+                 * \brief Get width of the texture in pixels.
+                 *
+                 * @return width of the texture in pixels
+                 */
                 inline Dimension getWidth() const { return m_width; }
-                /// get height of the texture in pixels
+                /**//**
+                 * \brief Get height of the texture in pixels.
+                 *
+                 * @return height of the texture in pixels
+                 */
                 inline Dimension getHeight() const { return m_height; }
 
                 std::string toString() const override;

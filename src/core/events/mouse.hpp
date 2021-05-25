@@ -15,6 +15,9 @@ namespace tme {
              *
              * Contains the new mouse coordinates in absolute and relative form 
              * accessible via getters.
+             * Coordinates are measured from top left to bottom right.
+             * Absolute coordinates are in pixels.
+             * Relative coordinates are between 0.0 and 1.0.
              */
             class MouseMove : public Event {
                 double m_xPos, m_yPos, m_xPosRel, m_yPosRel;
@@ -33,13 +36,29 @@ namespace tme {
                 EVENT_CLASS_TYPE(MouseMove)
                 EVENT_CLASS_CATEGORY(Input | Mouse)
 
-                /// get absolute x pos
+                /**//**
+                 * \brief Get absolute x pos.
+                 *
+                 * @return absolute mouse x position
+                 */
                 double getXPos() const { return m_xPos; }
-                /// get absolute y pos
+                /**//**
+                 * \brief Get absolute y pos.
+                 *
+                 * @return absolute mouse y position
+                 */
                 double getYPos() const { return m_yPos; }
-                /// get relative x pos
+                /**//**
+                 * \brief Get relative x pos.
+                 *
+                 * @return relative mouse x position
+                 */
                 double getXPosRel() const { return m_xPosRel; }
-                /// get relative y pos
+                /**//**
+                 * \brief Get relative y pos.
+                 *
+                 * @return relative mouse y position
+                 */
                 double getYPosRel() const { return m_yPosRel; }
 
                 std::string toString() const override {
@@ -70,9 +89,17 @@ namespace tme {
                  */
                 MouseScroll(double xOffset, double yOffset) : m_xOffset(xOffset), m_yOffset(yOffset) {}
 
-                /// get x scroll offset
+                /**//**
+                 * \brief Get x scroll offset.
+                 *
+                 * @return scroll offset in x direction
+                 */
                 double getXOffset() const { return m_xOffset; }
-                /// get y scroll offset
+                /**//**
+                 * \brief Get y scroll offset.
+                 *
+                 * @return scroll offset in y direction
+                 */
                 double getYOffset() const { return m_yOffset; }
 
                 EVENT_CLASS_TYPE(MouseScroll)
@@ -93,7 +120,13 @@ namespace tme {
              */
             class MouseKeyPress : public KeyPress {
                 public:
-                /// Construct MouseKeyPress instance from key forewarding to KeyPress
+                /**//**
+                 * \brief Construct MouseKeyPress instance from key.
+                 *
+                 * It forewards the key to KeyPress.
+                 *
+                 * @param key the key that was pressed
+                 */
                 MouseKeyPress(const Key& key) : KeyPress(key) {}
 
                 EVENT_CLASS_TYPE(MouseKeyPress)
@@ -108,7 +141,13 @@ namespace tme {
              */
             class MouseKeyRelease : public KeyRelease {
                 public:
-                /// Construct MouseKeyRelease instance from key forewarding to KeyRelease
+                /**//**
+                 * \brief Construct MouseKeyRelease instance from key.
+                 *
+                 * It forewards the key to KeyPress.
+                 *
+                 * @param key the key that was released
+                 */
                 MouseKeyRelease(const Key& key) : KeyRelease(key) {}
 
                 EVENT_CLASS_TYPE(MouseKeyRelease)

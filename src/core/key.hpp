@@ -10,6 +10,7 @@ namespace tme {
 
         /**//**
          * \brief Key base class.
+         *
          * Base class from which platform specific implementation can be derived.
          * Provides comparison functions and getters for the key code
          * and access to the applied modifiers.
@@ -17,12 +18,16 @@ namespace tme {
         class Key : public Loggable {
             int32_t m_keyCode;
             public:
-            /// Construct Key instance from tme key code
+            /**//**
+             * \brief Construct Key instance from tme key code.
+             *
+             * @param keyCode the code of the key for which the Key should be created
+             */
             Key(int32_t keyCode) : m_keyCode(keyCode) {}
             virtual ~Key() {}
 
             /**//**
-             * \brief Determine if key has been pressed.
+             * \brief Determine if key is a specific one.
              *
              * @param keyCode the tme key code to be compared to.
              *
@@ -36,17 +41,41 @@ namespace tme {
              */
             int32_t getKeyCode() const { return m_keyCode; }
 
-            /// Returns true if the shift mod was active
+            /**//**
+             * \brief Check if key has mod shift
+             *
+             * @return true if the shift mod was active
+             */
             virtual bool hasModShift() const = 0;
-            /// Returns true if the control mod was active
+            /**//**
+             * \brief Check if key has mod control
+             *
+             * @return true if the control mod was active
+             */
             virtual bool hasModControl() const = 0;
-            /// Returns true if the alt mod was active
+            /**//**
+             * \brief Check if key has mod alt
+             *
+             * @return true if the alt mod was active
+             */
             virtual bool hasModAlt() const = 0;
-            /// Returns true if the super mod was active
+            /**//**
+             * \brief Check if key has mod super
+             *
+             * @return true if the super mod was active
+             */
             virtual bool hasModSuper() const = 0;
-            /// Returns true if the caps lock mod was active
+            /**//**
+             * \brief Check if key has mod caps lock
+             *
+             * @return true if the caps lock mod was active
+             */
             virtual bool hasModCapsLock() const = 0;
-            /// Returns true if the num lock mod was active
+            /**//**
+             * \brief Check if key has mod num lock.
+             *
+             * @return true if the num lock mod was active
+             */
             virtual bool hasModNumLock() const = 0;
 
             std::string toString() const override {

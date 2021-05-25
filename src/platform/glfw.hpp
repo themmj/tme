@@ -139,6 +139,7 @@ namespace tme {
 
         /**//**
          * \brief Conversion helper between glfw and tme keycodes.
+         *
          * Will translate unknown keys to TME_KEY_UNKNOWN.
          *
          * @param glfwKeyCode key code from glfw to map
@@ -227,12 +228,18 @@ namespace tme {
             }
         };
 
-        /// glfw implementation of a platform context
+        /**//**
+         * \brief glfw implementation of a platform context.
+         */
         class GlfwContext : public platform::Context {
             public:
-            /// initialize glfw
+            /**//**
+             * \brief Initialize glfw.
+             */
             GlfwContext();
-            /// terminate glfw
+            /**//**
+             * \brief Terminate glfw.
+             */
             ~GlfwContext();
         };
 
@@ -245,7 +252,11 @@ namespace tme {
             GLFWwindow* m_window;
 
             public:
-            /// construct window instance using glfw from data
+            /**//**
+             * \brief Construct window instance using glfw from data.
+             *
+             * @param data window data to be passed to Window constructor
+             */
             GlfwWindow(const BaseWindow::Data& data);
             ~GlfwWindow();
 

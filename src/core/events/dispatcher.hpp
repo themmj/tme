@@ -8,18 +8,18 @@
 namespace tme {
     namespace core {
 
-        /// Template to define member function pointer types taking a single argument
+        /// template to define member function pointer types taking a single argument
         template<typename ReturnType, typename Class, typename ArgType>
         using MemberFn = ReturnType(Class::*)(ArgType);
 
         namespace events {
 
-            /// Event handling function type.
+            /// event handling function type
             template<typename Class, typename EventType>
             using EventFn = MemberFn<bool, Class, EventType&>;
 
             /**//**
-             * \brief Base class for event dispatching
+             * \brief Base class for event dispatching.
              *
              * Base class providing event handling interface.
              * Derive with class Class : public Dispatcher<Class> to access
@@ -32,20 +32,19 @@ namespace tme {
 
                 protected:
                 /**//**
-                 * Construct dispatcher instance.
+                 * \brief Construct dispatcher instance.
                  *
-                 * @param object Instance of Class on which the functions
-                 *  in dispatchEvent is invoked.
+                 * @param object instance of type Class on which the functions
+                 * in dispatchEvent are invoked
                  */
                 Dispatcher(Class* object) : obj(object) {}
 
                 /**//**
-                 * Invoke event handler function of instance obj
-                 * with event of type EventType.
+                 * \brief Invoke event handler function of instance obj with event of type EventType.
                  *
-                 * @param event The event to be looked at.
-                 * @param func The handler function pointer of instance obj.
-                 * @return true if the handler was invoked. false otherwise.
+                 * @param event the event to be looked at
+                 * @param func the handler function pointer of Class
+                 * @return true if the handler was invoked, false otherwise
                  */
                 template<typename EventType>
                 bool dispatchEvent(Event& event, EventFn<Class,EventType> func) {

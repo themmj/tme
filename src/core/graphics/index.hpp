@@ -10,23 +10,34 @@ namespace tme {
         namespace graphics {
 
             /**//**
-             * Buffer implementation for an index buffer.
+             * \brief Buffer implementation for an index buffer.
              *
-             * Added functionality to get the amount of raw primitives inside the buffer for rendering.
+             * Additional functionality to get the amount of raw primitives inside the buffer for rendering.
              */
             class IndexBuffer final : public Buffer {
                 GLsizei m_primitiveCount;
                 public:
                 /**//**
-                 * Construct Buffer instance for GL_ELEMENT_ARRAY_BUFFER.
+                 * \brief Construct Buffer instance for indices.
                  *
-                 * Precalculate amount of primitives stored inside the buffer.
+                 * Uses GL_ELEMENT_ARRAY_BUFFER for its type.
+                 * Precalculates amount of primitives stored inside the buffer.
+                 *
+                 * @param primitivesPerEntry number of primitives inside a single index entry
+                 * @param entrySize size of a single index entry in bytes
+                 * @param size number of index entries the buffer should be able to hold 
                  */
                 IndexBuffer(GLsizeiptr primitivesPerEntry, GLsizeiptr entrySize, GLsizeiptr size);
                 ~IndexBuffer();
 
                 std::string toString() const override;
-                /// get number of primitives stored inside the buffer (not just populated but all)
+                /**//**
+                 * \brief Get number of primitives stored inside the buffer.
+                 *
+                 * Meaning all possible primitives, not just populated ones.
+                 *
+                 * @return total number of primitives
+                 */
                 inline GLsizei getPrimitiveCount() const { return m_primitiveCount;  }
             };
 

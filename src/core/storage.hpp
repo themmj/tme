@@ -18,22 +18,32 @@ namespace tme {
         template<typename T>
         using Handle = std::shared_ptr<T>;
 
-        /// generate uuids for type T
+        /**//**
+         * \brief Generate uuids for type T.
+         *
+         * @return unique id for type T
+         */
         template<typename T>
         Identifier uuid() {
             static Identifier id = 0;
             return id++;
         }
 
-        /// pure virtual base class to identify an object by id
+        /**//**
+         * \brief Interface to identify an object by id.
+         */
         class Mappable {
             public:
-            /// getter for the unique id
+            /**//**
+             * \brief Get unique identifier of object.
+             *
+             * @return unique Identifier
+             */
             virtual Identifier getId() const = 0;
         };
 
         /**//**
-         * General map-like storage container for classes implementing the Mappable interface.
+         * \brief General map-like storage container for classes implementing the Mappable interface.
          *
          * Allows to create instances of T which are accessible by a direct handle or indirect id.
          */
@@ -42,25 +52,36 @@ namespace tme {
             using Container = std::unordered_map<Identifier, Handle<T>>;
             Container m_data;
 
-            // create storage container
+            /**//**
+             * \brief Create storage container.
+             */
             Storage() : m_data() {}
 
             public:
-            /// get handle for global instance of Storage<T>
+            /**//**
+             * \brief Get handle for global instance of Storage<T>.
+             *
+             * @return Handle to global Storage of T
+             */
             static Handle<Storage> global() {
                 static Handle<Storage> storage = localInstance();
                 return storage;
             }
 
-            /// create local instance of Storage<T> and get handle
+            /**//**
+             * \brief Create local instance of Storage<T> and get handle.
+             *
+             * @return Handle to local Storage of T
+             */
             static Handle<Storage> localInstance() {
                 return std::shared_ptr<Storage>(new Storage<T>());
             }
 
             /**//**
-             * emplace instance of T into the Storage
+             * \brief Emplace instance of T into the Storage.
              *
              * @param args arguments used for construction of instance
+             *
              * @return Handle<T> to created object
              */
             template<typename ...Args>
@@ -70,10 +91,12 @@ namespace tme {
             }
 
             /**//**
-             * insert instance of T into the Storage
-             * transfers ownership to the object to the storage
+             * \brief Insert instance of T into the Storage
+             *
+             * Transfers ownership of the object to the storage
              *
              * @param object owning pointer to the object
+             *
              * @return Handle<T> to inserted object
              */
             Handle<T> add(T* object)  {
@@ -84,7 +107,7 @@ namespace tme {
             }
 
             /**//**
-             * get handle to instance of T using its id
+             * \brief Get handle to instance of T using its id.
              *
              * @param id identifier of the object to be accessed
              * @return Handle<T> to found object or Handle(nullptr) if nothing is found
@@ -99,7 +122,7 @@ namespace tme {
             }
 
             /**//**
-             * check if storage contains an element for id
+             * \brief Check if storage contains an element for id.
              *
              * @param id identifier of the object to be checked
              * @return true if an object exists, false if nothing is found
@@ -108,21 +131,38 @@ namespace tme {
                 return m_data.find(id) != m_data.end();
             }
 
-            /// remove object with id id from storage
+            /**//**
+             * \brief Remove object with id id from storage.
+             *
+             * @param id identifier of the object to be checked
+             */
             void destroy(Identifier id) {
                 m_data.erase(id);
             }
 
-            /// clear the storage, removes all elements
+            /**//**
+             * \brief Clear the storage.
+             *
+             * Removes all elements.
+             */
             void clear() {
                 m_data.clear();
             }
 
             /// const iterator for data inside Storage
             using const_iterator = typename Container::const_iterator;
-            /// get iterator of the start of the underlying container
+
+            /**//**
+             * \brief Get iterator of the start of the underlying container.
+             *
+             * @return begin iterator to storage
+             */
             const_iterator begin() const noexcept { return m_data.begin(); }
-            /// get iterator of the end of the underlying container
+            /**//**
+             * \brief Get iterator of the end of the underlying container.
+             *
+             * @return end iterator to storage
+             */
             const_iterator end() const noexcept { return m_data.end(); }
 
         };

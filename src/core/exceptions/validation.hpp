@@ -8,26 +8,44 @@ namespace tme {
     namespace core {
         namespace exceptions {
 
-            /// exception type for cases where a syntax error is detected during validation
+            /**//**
+             * \brief Exception type for cases where a syntax error is detected during validation.
+             */
             class SyntaxError final : public Base {
                 public:
-                /// construct SyntaxError instance with message msg
+                /**//**
+                 * \brief Construct SyntaxError instance with message msg.
+                 *
+                 * @param msg char pointer to message string
+                 */
                 SyntaxError(const char* msg) : Base("Syntax error", msg) {}
                 ~SyntaxError() {}
             };
 
-            /// exception type for cases where a linking error is detected during validation
+            /**//**
+             * \brief Exception type for cases where a linking error is detected during validation.
+             */
             class LinkingError final : public Base {
                 public:
-                /// construct LinkingError instance with message msg
+                /**//**
+                 * \brief Construct LinkingError instance with message msg.
+                 *
+                 * @param msg char pointer to message string
+                 */
                 LinkingError(const char* msg) : Base("Linking error", msg) {}
                 ~LinkingError() {}
             };
 
-            /// exception type for cases where a validation error is detected
+            /**//**
+             * \brief Exception type for cases where a validation error is detected.
+             */
             class ValidationError final : public Base {
                 public:
-                /// construct ValidationError instance with message msg
+                /**//**
+                 * \brief Construct ValidationError instance with message msg.
+                 *
+                 * @param msg char pointer to message string
+                 */
                 ValidationError(const char* msg) : Base("Validation error", msg) {}
                 ~ValidationError() {}
             };
