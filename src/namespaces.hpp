@@ -5,6 +5,17 @@
 /// TME
 namespace tme {
 
+    /// Application logic.
+    namespace app {
+
+        /// Application graphics like Batchable objects.
+        namespace graphics {}
+
+        /// Layer implementation to build up applications.
+        namespace layers {}
+
+    }
+
     /// Essentials like logging, events etc.
     namespace core {
 
