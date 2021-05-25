@@ -11,7 +11,7 @@ namespace tme {
             }
 
             void logGLCall(const char* function, const char* file, uint32_t line) {
-                if (GLenum error =  glGetError()) {
+                if (GLenum error = glGetError()) {
                     TME_ERROR("[OpenGL] ({}) from {} in {}:{}", error, function, file, line);
                 }
             }

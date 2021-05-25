@@ -6,6 +6,7 @@
 #include "core/graphics/shader.hpp"
 #include "core/graphics/texture.hpp"
 #include "core/exceptions/input.hpp"
+#include "core/exceptions/graphics.hpp"
 
 namespace tme {
     namespace  core {
@@ -78,6 +79,10 @@ namespace tme {
                 e.batchId = getId();
                 e.vertexSpace = vertexSpace;
                 e.indexSpace = indexSpace;
+                if (vertexSpace.offset == INVALID_OFFSET || indexSpace.offset == INVALID_OFFSET) {
+                    remove(e);
+                    throw exceptions::InsufficientBufferSpace("not enough space in buffers");
+                }
                 return e;
             }
 
@@ -119,35 +124,52 @@ namespace tme {
             }
 
             void Batcher::set(Handle<Batchable> object) {
+                // check existing mappings
                 if (const auto& iter = m_mappings.find(object->getId()); iter != m_mappings.end()) {
-                    if (auto previousBatch = m_batches->get(iter->second.batchId); previousBatch) {
+                    if (m_batches->has(iter->second.batchId)) {
+                        auto previousBatch = m_batches->get(iter->second.batchId);
                         if (previousBatch->getConfig() == object->getBatchConfig()) {
+                            // batch did not change so only an update is required
                             previousBatch->update(iter->second, object);
                             return;
                         } else {
+                            // another batch is needed to store object, so remove from old batch
                             previousBatch->remove(iter->second);
                         }
                     }
                 }
+                // determine new batch
+                Handle<Batch> currentBatch;
                 for (const auto& iter : *m_batches) {
+                    // check if an existing batch satisfies the requested config
                     if (iter.second->getConfig() == object->getBatchConfig()) {
-                        Batch::Entry newEntry = iter.second->add(object);
-                        m_mappings.insert_or_assign(object->getId(), newEntry);
+                        currentBatch = iter.second;
+                        break;
+                    }
+                }
+                // no known batch has requested config
+                if (!currentBatch) {
+                    try {
+                        // create new batch with requested config
+                        currentBatch = m_batches->create(m_batchSize, object->getBatchConfig());
+                    } catch(const exceptions::InvalidInput& e) {
+                        TME_ERROR("could not create new batch: {}, {}", e.type(), e.what());
                         return;
                     }
                 }
                 try {
-                    auto newBatch = m_batches->create(m_batchSize, object->getBatchConfig());
-                    Batch::Entry newEntry = newBatch->add(object);
+                    // add data to new batch
+                    Batch::Entry newEntry = currentBatch->add(object);
                     m_mappings.insert_or_assign(object->getId(), newEntry);
-                } catch (const exceptions::InvalidInput& e) {
-                    TME_ERROR("could not create new batch {}, {}", e.type(), e.what());
+                } catch (const exceptions::InsufficientBufferSpace& e) {
+                    TME_ERROR("could not add data to batch: {}, {}", e.type(), e.what());
                 }
             }
 
             void Batcher::unset(Handle<Batchable> object) {
                 if (const auto& iter = m_mappings.find(object->getId()); iter != m_mappings.end()) {
-                    if (auto batch = m_batches->get(iter->second.batchId); batch) {
+                    if (m_batches->has(iter->second.batchId)) {
+                        auto batch = m_batches->get(iter->second.batchId);
                         batch->remove(iter->second);
                         m_mappings.erase(object->getId());
                     }

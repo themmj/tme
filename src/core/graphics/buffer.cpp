@@ -47,8 +47,10 @@ namespace tme {
             }
 
             void Buffer::remove(const Buffer::Space& space) {
-                update(space, &NULL_BYTE);
-                m_freeSpaces.push_back(space);
+                if (space.offset != INVALID_OFFSET) {
+                    update(space, &NULL_BYTE);
+                    m_freeSpaces.push_back(space);
+                }
             }
             
             void Buffer::bind() const {
