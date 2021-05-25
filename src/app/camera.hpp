@@ -41,11 +41,15 @@ namespace tme {
             /**//**
              * \brief Scale the width of the projection.
              *
+             * Updates view to keep the camera in the middle.
+             *
              * @param scale factor to scale the width of the projection with
              */
             void scaleWidth(double scale);
             /**//**
              * \brief Scale the height of the projection.
+             *
+             * Updates view to keep the camera in the middle.
              *
              * @param scale factor to scale the height of the projection with
              */

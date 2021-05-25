@@ -191,7 +191,6 @@ namespace tme {
 
             glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xPos, double yPos) {
                 GET_GLFW_DATA;
-                yPos = data.m_this->getHeight() - yPos;
                 core::events::MouseMove event(xPos, yPos, data.m_this->getRelativeX(xPos), data.m_this->getRelativeY(yPos));
                 data.handler->onEvent(event);
             });

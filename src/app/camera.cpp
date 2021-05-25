@@ -19,11 +19,19 @@ namespace tme {
         }
 
         void Camera::scaleWidth(double scale) {
-            m_dimensions.x *= scale;
+            double diff = m_dimensions.x * (scale - 1.0);
+            m_dimensions.x += diff;
+
+            // keep camera in the middle
+            addX(diff / 2.0);
         }
 
         void Camera::scaleHeight(double scale) {
-            m_dimensions.y *= scale;
+            double diff = m_dimensions.y * (scale - 1.0);
+            m_dimensions.y += diff;
+
+            // keep camera in the middle
+            addY(diff / 2.0);
         }
 
         void Camera::addX(double diff) {

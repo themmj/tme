@@ -40,17 +40,24 @@ namespace tme {
             }
 
             bool Editing::handleMouseMove(core::events::MouseMove& event) {
+                // invert relative y pos because mouse coordinates are from top left whereas
+                // opengl is from bottom left
+                double xPosRel = event.getXPosRel();
+                double yPosRel = event.getYPosRel();
+                yPosRel = 1.0 - yPosRel;
                 if (m_cameraMoving) {
-                    m_camera.addX((event.getXPosRel() - m_prevCamX) * m_camera.getDimensions().x);
-                    m_camera.addY((event.getYPosRel() - m_prevCamY) * m_camera.getDimensions().y);
-                    m_prevCamX = event.getXPosRel();
-                    m_prevCamY = event.getYPosRel();
+                    // update camera pos
+                    m_camera.addX((xPosRel - m_prevCamX) * m_camera.getDimensions().x);
+                    m_camera.addY((yPosRel - m_prevCamY) * m_camera.getDimensions().y);
+                    m_prevCamX = xPosRel;
+                    m_prevCamY = yPosRel;
                     return true;
                 }
-                m_prevCamX = event.getXPosRel();
-                m_prevCamY = event.getYPosRel();
-                double onScreenX = m_camera.getDimensions().x * event.getXPosRel();
-                double onScreenY = m_camera.getDimensions().y * event.getYPosRel();
+                m_prevCamX = xPosRel;
+                m_prevCamY = yPosRel;
+                // calc tile position from mouse position if applicable
+                double onScreenX = m_camera.getDimensions().x * xPosRel;
+                double onScreenY = m_camera.getDimensions().y * yPosRel;
                 double onMapX = onScreenX - m_camera.getPosition().x;
                 double onMapY = onScreenY - m_camera.getPosition().y;
                 if (onMapX >= 0.0 && onMapY >= 0.0) {
