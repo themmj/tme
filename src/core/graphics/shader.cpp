@@ -68,6 +68,7 @@ namespace tme {
                 TME_ASSERT(fragmentStage, "provided invalid fragment stage");
 
                 m_stageCombination = fragmentStage->getId() | (vertexStage->getId() << 16);
+                m_name = vertexStage->getName() + "|" + fragmentStage->getName();
 
                 glCall(m_renderingId = glCreateProgram());
                 glCall(glAttachShader(m_renderingId, vertexStage->getId()));

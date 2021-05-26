@@ -73,6 +73,13 @@ namespace tme {
                  */
                 inline Dimension getHeight() const { return m_height; }
 
+                /**//**
+                 * \brief Get file path.
+                 *
+                 * @return path to file on disk used for texture
+                 */
+                std::string getFilePath() const { return m_filePath; }
+
                 std::string toString() const override;
             };
 

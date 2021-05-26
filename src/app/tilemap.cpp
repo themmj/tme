@@ -36,6 +36,14 @@ namespace tme {
             m_layers.render();
         }
 
+        void Tilemap::addShader(core::Identifier shaderId) {
+             m_shaderIds.push_back(shaderId);
+        }
+
+        void Tilemap::addTexture(core::Identifier textureId) {
+             m_textureIds.push_back(textureId);
+        }
+
         void Tilemap::addLayer() {
             m_layers.push<layers::MapLayer>(m_layerCount++, m_width * m_height, m_cursor);
         }

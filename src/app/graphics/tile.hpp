@@ -287,6 +287,12 @@ namespace tme {
                  * @param shaderId global id of the new Shader to be used for future tiles
                  */
                 void setShader(core::Identifier shaderId);
+                /**//**
+                 * \brief Get global id of associated Shader.
+                 *
+                 * @return global id of the Shader used for future tiles
+                 */
+                inline core::Identifier getShader() const { return m_shaderId; }
             };
 
             /**//**
@@ -343,6 +349,19 @@ namespace tme {
                  * @param textureId global id of the new Texture to be used for future tiles
                  */
                 void setTexture(core::Identifier textureId);
+                /**//**
+                 * \brief Get global id of associated Texture.
+                 *
+                 * @return global id of the Texture used for future tiles
+                 */
+                inline core::Identifier getTexture() const { return m_textureId; }
+
+                /**//**
+                 * \brief Get frames used for future tiles.
+                 *
+                 * @return reference to vector of animation frames
+                 */
+                inline const std::vector<TextureTile::Frame>& getFrames() const { return m_frames; }
                 /**//**
                  * \brief Add a Frame of animation.
                  *

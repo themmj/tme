@@ -86,19 +86,39 @@ namespace tme {
              * @return Handle to the Cursor
              */
             inline core::Handle<Cursor> getCursor() const { return m_cursor; }
+
+            /**//**
+             * \brief Adds shaderId to list of associated shaders.
+             *
+             * @param shaderId id of the shader in question
+             */
+            void addShader(core::Identifier shaderId);
             /**//**
              * \brief Get associated shader ids of Tilemap.
              *
-             * @return vector of global Identifier of associated Shader
+             * @return reference to vector of global Identifier of associated Shader
              */
-            inline IdentifierVector& getShaderIds() { return m_shaderIds; }
+            inline const IdentifierVector& getShaderIds() { return m_shaderIds; }
+
+            /**//**
+             * \brief Adds textureId to list of associated textures.
+             *
+             * @param textureId id of the texture in question
+             */
+            void addTexture(core::Identifier textureId);
             /**//**
              * \brief Get associated texture ids of Tilemap.
              *
-             * @return vector of global Identifier of associated Texture
+             * @return reference to vector of global Identifier of associated Texture
              */
-            inline IdentifierVector& getTextureIds() { return m_textureIds; }
+            inline const IdentifierVector& getTextureIds() { return m_textureIds; }
 
+            /**//**
+             * \brief Get number of layers.
+             *
+             * @return number of MapLayer in the Tilemap
+             */
+            size_t getLayerCount() const { return m_layerCount; }
             /**//**
              * \brief Add MapLayer.
              */
