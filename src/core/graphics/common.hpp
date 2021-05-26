@@ -107,9 +107,6 @@ namespace tme {
                 virtual void render() = 0;
             };
 
-            /// a single byte with the value 0, i.e. used to clear buffers
-            constexpr unsigned char NULL_BYTE = 0;
-
         }
     }
 }

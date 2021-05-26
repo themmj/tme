@@ -81,6 +81,7 @@ target_link_options(
 
 add_custom_target(run
     COMMAND ${BIN_DIR}/${BINARY}
+    WORKING_DIRECTORY ${BIN_DIR}
 )
 
 add_dependencies(run ${BINARY})

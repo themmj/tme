@@ -39,7 +39,7 @@ namespace tme {
             }
 
             const void* Tile::getVertexData() const {
-                return &core::graphics::NULL_BYTE;
+                return NULL;
             }
 
             std::string Tile::toString() const {

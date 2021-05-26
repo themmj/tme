@@ -15,9 +15,15 @@ namespace tme {
                 m_freeSpaces() {
                 glCall(glGenBuffers(1, &m_renderingId));
                 bind();
-                glCall(glBufferData(type, entrySize * size, NULL, GL_STATIC_DRAW));
+                int64_t bufferSize = entrySize * size;
+                m_neutralBuffer = new unsigned char[(size_t)bufferSize];
+                for (int64_t i = 0; i < bufferSize ; ++i) {
+                    m_neutralBuffer[i] = 0;
+                }
+                glCall(glBufferData(type, bufferSize, m_neutralBuffer, GL_STATIC_DRAW));
             }
             Buffer::~Buffer() {
+                delete[] m_neutralBuffer;
                 unbind();
                 glCall(glDeleteBuffers(1, &m_renderingId));
             }
@@ -48,7 +54,7 @@ namespace tme {
 
             void Buffer::remove(const Buffer::Space& space) {
                 if (space.offset != INVALID_OFFSET) {
-                    update(space, &NULL_BYTE);
+                    update(space, m_neutralBuffer);
                     m_freeSpaces.push_back(space);
                 }
             }

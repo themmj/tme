@@ -45,6 +45,8 @@ namespace tme {
                 GLsizeiptr m_size;
                 GLsizeiptr m_nextOffset;
                 std::vector<Space> m_freeSpaces;
+                // buffer filled with zeros to reset buffer contents to avoid undeterministic random memory
+                unsigned char* m_neutralBuffer;
 
                 public:
                 /**//**
