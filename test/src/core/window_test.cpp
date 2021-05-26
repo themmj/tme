@@ -6,12 +6,14 @@
 namespace tme {
     namespace core {
 
-        class _DefaultWindow : public Window {
+        class _DefaultWindow final : public Window {
             public:
             _DefaultWindow(const Window::Data& data) : Window(data) {}
             ~_DefaultWindow() {}
             using Window::Dimension;
             void update() override {}
+            void swapBuffer() override {}
+            void pollEvents() override {}
             void setTitleInternal(const std::string& title) override { m_data.title = title; }
             void setVSyncInternal(bool enable) override { m_data.vSyncEnabled = enable; }
             void sendEvent() { events::WindowClose wc; m_data.handler->onEvent(wc); }

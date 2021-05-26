@@ -15,7 +15,6 @@ int SignalCounter::assertionFailed = SIGTRAP;
 #include "platform/glfw_test.cpp"
 #include "core/layers/layer_test.cpp"
 #include "core/layers/imgui_test.cpp"
-#include "core/layers/ui_test.cpp"
 #include "core/storage_test.cpp"
 #include "core/application_test.cpp"
 

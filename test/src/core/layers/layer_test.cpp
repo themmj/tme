@@ -8,20 +8,29 @@ namespace tme {
     namespace core {
         namespace layers {
 
-            class _DefaultLayer : public Layer, events::Dispatcher<_DefaultLayer> {
+            class _NamedLayer final : public Layer {
+                public:
+                _NamedLayer(const std::string& name) : Layer(name) {}
+
+                void render() override {}
+            };
+
+            class _CounterLayer final : public Layer, events::Dispatcher<_CounterLayer> {
                 public:
                 uint32_t m_counter;
 
-                _DefaultLayer(uint32_t start) : Layer("Default"), Dispatcher(this), m_counter(start) {}
+                _CounterLayer(uint32_t start) : Layer("Default"), Dispatcher(this), m_counter(start) {}
 
                 void onEvent(events::Event& e) override {
-                    dispatchEvent<events::WindowClose>(e, &_DefaultLayer::handleWindowClose);
+                    dispatchEvent<events::WindowClose>(e, &_CounterLayer::handleWindowClose);
                 }
 
                 bool handleWindowClose(events::WindowClose&) {
                     ++m_counter;
                     return true;
                 }
+
+                void render() override {}
 
                 std::string toString() const override {
                     std::stringstream ss;
@@ -32,7 +41,7 @@ namespace tme {
 
             TEST(TestLayer, DefaultToString) {
                 auto testString = "TestString";
-                Layer l(testString);
+                _NamedLayer l(testString);
                 EXPECT_EQ(l.toString(), testString);
             }
 
@@ -41,8 +50,8 @@ namespace tme {
                 // not change the state
                 auto testString = "TestString";
                 events::WindowClose wc;
-                Layer l(testString);
-                Layer l1 = l;
+                _NamedLayer l(testString);
+                _NamedLayer l1 = l;
                 l.onEvent(wc);
                 EXPECT_EQ(l.toString(), l1.toString());
             }
@@ -53,8 +62,8 @@ namespace tme {
                 // this check if its the last added layer
                 // and if the remaining layer is unchanged
                 Stack s;
-                s.push<_DefaultLayer>(1);
-                s.push<_DefaultLayer>(4);
+                s.push<_CounterLayer>(1);
+                s.push<_CounterLayer>(4);
 
                 events::WindowClose wc;
                 s.onEvent(wc);

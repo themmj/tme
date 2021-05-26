@@ -11,13 +11,13 @@ namespace tme {
         // and a virtual run method. it will be tested indirectly by the
         // WindowApplication tests
 
-        class _TestWindowApp : public WindowApplication {
+        class _TestWindowApp final : public WindowApplication {
             int m_iterations = 0;
             public:
             _TestWindowApp() : WindowApplication("_TestApp") {}
             ~_TestWindowApp() {}
 
-            void update() override {
+            void render() override {
                 if (m_iterations > 1) {
                     events::WindowClose wc;
                     onEvent(wc);
