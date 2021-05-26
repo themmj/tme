@@ -10,6 +10,8 @@ add_library(imgui STATIC
     imgui/misc/freetype/imgui_freetype.cpp
     imgui/misc/fonts/binary_to_compressed_c.cpp
     imgui/backends/imgui_impl_opengl3.cpp
+
+    open-file-dialog/ImGuiFileDialog.cpp
 )
 
 target_include_directories(imgui PRIVATE

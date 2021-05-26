@@ -46,6 +46,7 @@ set(INCLUDE_DIRS
     ${THIRD_PARTY_DIR}/googletest/googlemock/include
     ${THIRD_PARTY_DIR}/glad/include
     ${THIRD_PARTY_DIR}/imgui/imgui
+    ${THIRD_PARTY_DIR}/imgui/open-file-dialog
     ${THIRD_PARTY_DIR}/stb
 )
 

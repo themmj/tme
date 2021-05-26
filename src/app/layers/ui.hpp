@@ -43,6 +43,10 @@ namespace tme {
 
                 void showShaderSelection(core::Handle<graphics::TileFactory> factory);
                 void showTextureSelection();
+
+                bool m_errorOccurred;
+                core::exceptions::Base m_error;
+                void showErrors();
             };
 
         }

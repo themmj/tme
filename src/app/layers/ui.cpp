@@ -11,6 +11,7 @@
 
 #include "glm/vec4.hpp"
 #include "imgui.h"
+#include "ImGuiFileDialog.h"
 
 namespace tme {
     namespace app {
@@ -18,7 +19,9 @@ namespace tme {
 
             EditingUI::EditingUI(core::Handle<Tilemap> tilemap)
                 : Layer("EditingUI"),
-                m_tilemap(tilemap) {
+                m_tilemap(tilemap),
+                m_errorOccurred(false),
+                m_error("No error", "You should not be able to see this") {
                 core::Identifier defaultShader;
                 core::Identifier defaultTexture;
                 try {
@@ -35,6 +38,7 @@ namespace tme {
             EditingUI::~EditingUI() {}
 
             void EditingUI::render() {
+                ImGui::ShowDemoWindow();
                 ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
                 ImGui::Begin("TME Editor");
 
@@ -43,11 +47,13 @@ namespace tme {
                 showTileSelection();
 
                 ImGui::End();
+
+                showErrors();
             }
 
             void EditingUI::showLayerSelection() {
                 ImGui::Text("Layer:");
-                ImGui::Indent(15);
+                ImGui::Indent();
                 if (ImGui::Button("+")) {
                     m_tilemap->addLayer();
                 }
@@ -70,9 +76,9 @@ namespace tme {
             }
 
             void EditingUI::showTileSelection() {
-                ImGui::Indent(-15);
+                ImGui::Unindent();
                 ImGui::Text("Tile:");
-                ImGui::Indent(15);
+                ImGui::Indent();
                 static int selected = 0;
                 ImGui::RadioButton("Colored Tile", &selected, 0);
                 ImGui::SameLine();
@@ -180,6 +186,34 @@ namespace tme {
                         }
                     }
                     ImGui::EndCombo();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Add")) {
+                    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose image file", ".png,.bmp,.gif", ".");
+                }
+                if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+                    if (ImGuiFileDialog::Instance()->IsOk()) {
+                        std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();;
+                        try {
+                            auto texture = core::Storage<core::graphics::Texture>::global()->create(filePath);
+                            m_tilemap->addTexture(texture->getId());
+                        } catch(const core::exceptions::InvalidInput& e) {
+                            m_errorOccurred = true;
+                            m_error = e;
+                        } CATCH_ALL
+                    }
+                    ImGuiFileDialog::Instance()->Close();
+                }
+            }
+
+            void EditingUI::showErrors() {
+                if (m_errorOccurred) {
+                    ImGui::Begin(m_error.type());
+                    ImGui::TextUnformatted(m_error.what());
+                    if (ImGui::Button("Ok")) {
+                        m_errorOccurred = false;
+                    }
+                    ImGui::End();
                 }
             }
 

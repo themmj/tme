@@ -16,3 +16,7 @@
 [submodule "third-party/glm"]
 	path = third-party/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "third-party/imgui/open-file-dialog"]
+	path = third-party/imgui/open-file-dialog
+    url = https://github.com/aiekick/ImGuiFileDialog.git
+    branch = Lib_Only
