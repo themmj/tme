@@ -34,7 +34,9 @@ namespace tme {
                 ImGui::NewFrame();
                 window->update();
                 render();
-                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+                if (auto imGuiDrawData = ImGui::GetDrawData(); imGuiDrawData) {
+                    ImGui_ImplOpenGL3_RenderDrawData(imGuiDrawData);
+                }
                 ImGui::EndFrame();
                 window->swapBuffer();
                 window->pollEvents();
