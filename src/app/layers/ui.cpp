@@ -1,0 +1,186 @@
+/** @file */
+
+#include "app/layers/ui.hpp"
+#include <sstream>
+#include <stdexcept>
+#include "app/graphics/tile.hpp"
+#include "core/exceptions/input.hpp"
+#include "core/graphics/shader.hpp"
+#include "core/graphics/texture.hpp"
+#include "core/storage.hpp"
+
+#include "glm/vec4.hpp"
+#include "imgui.h"
+
+namespace tme {
+    namespace app {
+        namespace layers {
+
+            EditingUI::EditingUI(core::Handle<Tilemap> tilemap)
+                : Layer("EditingUI"),
+                m_tilemap(tilemap) {
+                core::Identifier defaultShader;
+                core::Identifier defaultTexture;
+                try {
+                    defaultShader = m_tilemap->getShaderIds().at(0);
+                    defaultTexture = m_tilemap->getTextureIds().at(0);
+                } catch (const std::out_of_range& e) {
+                    throw core::exceptions::InvalidInput("no default shader/texture attached to the tilemap");
+                } CATCH_ALL
+                m_colorTileFactory = core::Handle<graphics::ColorTileFactory>(new graphics::ColorTileFactory(defaultShader));
+                m_textureTileFactory = core::Handle<graphics::TextureTileFactory>(new graphics::TextureTileFactory(defaultShader, defaultTexture));
+                m_tilemap->getCursor()->tileFactory = m_colorTileFactory;
+            }
+
+            EditingUI::~EditingUI() {}
+
+            void EditingUI::render() {
+                ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
+                ImGui::Begin("TME Editor");
+
+                showLayerSelection();
+                ImGui::Separator();
+                showTileSelection();
+
+                ImGui::End();
+            }
+
+            void EditingUI::showLayerSelection() {
+                ImGui::Text("Layer:");
+                ImGui::Indent(15);
+                if (ImGui::Button("+")) {
+                    m_tilemap->addLayer();
+                }
+                if (m_tilemap->getLayerCount() > 1) {
+                    ImGui::SameLine();
+                    if (ImGui::Button("-")) {
+                        m_tilemap->removeLayer();
+                    }
+                }
+                static size_t selected = 0;
+                for (size_t i = 0; i < m_tilemap->getLayerCount(); ++i) {
+                    size_t layerIndex = m_tilemap->getLayerCount() - 1 - i;
+                    std::ostringstream ss;
+                    ss << "Layer " << layerIndex;
+                    if (ImGui::Selectable(ss.str().c_str(), selected == layerIndex)) {
+                        selected = layerIndex;
+                    }
+                }
+                m_tilemap->getCursor()->layer = selected;
+            }
+
+            void EditingUI::showTileSelection() {
+                ImGui::Indent(-15);
+                ImGui::Text("Tile:");
+                ImGui::Indent(15);
+                static int selected = 0;
+                ImGui::RadioButton("Colored Tile", &selected, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("Textured Tile", &selected, 1);
+                if (selected == 0)
+                    showColorTileSelection();
+                else if (selected == 1)
+                    showTextureTileSelection();
+            }
+
+            void EditingUI::showColorTileSelection() {
+                m_tilemap->getCursor()->tileFactory = m_colorTileFactory;
+                
+                showShaderSelection(m_colorTileFactory);
+
+                static float color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+                ImGui::ColorPicker4("Color", color);
+                m_colorTileFactory->setColor(glm::vec4(color[0], color[1], color[2], color[3]));
+            }
+
+            void EditingUI::showTextureTileSelection() {
+                m_tilemap->getCursor()->tileFactory = m_textureTileFactory;
+
+                showShaderSelection(m_textureTileFactory);
+                showTextureSelection();
+
+                static double frameTime = 0.0;
+                ImGui::InputDouble("Frame time in seconds", &frameTime, 0.1, 1.0);
+                static ImVec2 imageSize = ImVec2(64.0, 64.0);
+                static ImVec4 bg = ImVec4(0, 0, 0, 0);
+                static glm::vec4 textureCoordinates;
+                auto activeTexture = core::Storage<core::graphics::Texture>::global()->get(m_textureTileFactory->getTexture());
+                double  widthStep = static_cast<double>(m_tilemap->getTileSize()) / static_cast<double>(activeTexture->getWidth());
+                double  heightStep = static_cast<double>(m_tilemap->getTileSize()) / static_cast<double>(activeTexture->getHeight());
+                int i = 0;
+                static int selected = -1;
+                for (double y = 1.0 - heightStep; y >= 0.0; y -= heightStep) {
+                    for (double x = 0.0; x <= 1.0 - widthStep; x += widthStep) {
+                        glm::vec4 texCoords = glm::vec4(x, y, x + widthStep, y + heightStep);
+                        ImGui::PushID(i++);
+                        ImVec2 topLeft = ImVec2(texCoords.x, texCoords.w);
+                        ImVec2 bottomRight = ImVec2(texCoords.z, texCoords.y);
+                        ImVec4 tint = (i == selected) ? ImVec4(1.0f, 1.0f, 1.0f, 0.8f) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+                        if (ImGui::ImageButton((void*)(intptr_t)activeTexture->getId(), imageSize, topLeft, bottomRight, -1, bg, tint)) {
+                            textureCoordinates = texCoords;
+                            selected = i;
+                        }
+                        ImGui::PopID();
+                        ImGui::SameLine();
+                    }
+                    ImGui::NewLine();
+                }
+                if (ImGui::Button("Add frame")) {
+                    m_textureTileFactory->addFrame({frameTime, textureCoordinates});
+                }
+                int64_t index = 0;
+                for (const auto frame : m_textureTileFactory->getFrames()) {
+                    ImVec2 topLeft = ImVec2(frame.texPos.x, frame.texPos.w);
+                    ImVec2 bottomRight = ImVec2(frame.texPos.z, frame.texPos.y);
+                    if (ImGui::Button("X")) {
+                        m_textureTileFactory->removeFrame(index);
+                    }
+                    ImGui::SameLine();
+                    ImGui::Image((void*)(intptr_t)activeTexture->getId(), imageSize, topLeft, bottomRight);
+                    ImGui::SameLine();
+                    ImGui::Text("Duration: %f", frame.time);
+                    ImGui::NewLine();
+                    index++;
+                }
+            }
+
+            void EditingUI::showShaderSelection(core::Handle<graphics::TileFactory> factory) {
+                auto globalShaderHandle = core::Storage<core::graphics::Shader>::global();
+                auto selectedShader = globalShaderHandle->get(factory->getShader());
+                if (ImGui::BeginCombo("Shader", selectedShader->getName().c_str())) {
+                    for (auto shaderId : m_tilemap->getShaderIds()) {
+                        bool selected = selectedShader->getId() == shaderId;
+                        auto shader = globalShaderHandle->get(shaderId);
+                        if (ImGui::Selectable(shader->getName().c_str(), selected)) {
+                            factory->setShader(shaderId);
+                        }
+                        if (selected) {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+            }
+
+            void EditingUI::showTextureSelection() {
+                auto globalTextureHandle = core::Storage<core::graphics::Texture>::global();
+                auto selectedTexture = globalTextureHandle->get(m_textureTileFactory->getTexture());
+                if (ImGui::BeginCombo("Texture", selectedTexture->getFilePath().c_str())) {
+                    for (auto textureId : m_tilemap->getTextureIds()) {
+                        bool selected = selectedTexture->getId() == textureId;
+                        auto texture = globalTextureHandle->get(textureId);
+                        if (ImGui::Selectable(texture->getFilePath().c_str(), selected)) {
+                            m_textureTileFactory->setTexture(textureId);
+                        }
+                        if (selected) {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+            }
+
+        }
+    }
+}
+
