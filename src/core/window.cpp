@@ -16,7 +16,14 @@ namespace tme {
 
             // ImGui init
             ImGui::CreateContext();
-            ImGui::StyleColorsDark();
+            ImGuiStyle& style = ImGui::GetStyle();
+            ImGui::StyleColorsClassic(&style);
+            style.FrameRounding = 4;
+            style.WindowRounding = 4;
+            style.GrabRounding = 2;
+            style.IndentSpacing = 4;
+            style.ItemSpacing = ImVec2(10, 8);
+            style.DisplayWindowPadding = ImVec2(10, 10);
 
             ImGuiIO& io = ImGui::GetIO();
             io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
