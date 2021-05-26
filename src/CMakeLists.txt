@@ -2,16 +2,24 @@ set (SRC_FILES
     main.cpp
     core/log.cpp
     core/window.cpp
+    core/layers/layer.cpp
     platform/glfw.cpp
     core/application.cpp
     core/layers/imgui.cpp
-    core/layers/ui.cpp
     core/graphics/common.cpp
     core/graphics/shader.cpp
     core/graphics/vertex.cpp
     core/graphics/index.cpp
     core/graphics/buffer.cpp
     core/graphics/texture.cpp
+    core/graphics/batch.cpp
+    app/graphics/tile.cpp
+    app/layers/map.cpp
+    app/layers/editing.cpp
+    app/layers/ui.cpp
+    app/camera.cpp
+    app/tilemap.cpp
+    app/editor.cpp
 )
 
 # potentially inject platform specific implementations
