@@ -112,7 +112,7 @@ namespace tme {
                 for (double y = 1.0 - heightStep; y >= 0.0; y -= heightStep) {
                     for (double x = 0.0; x <= 1.0 - widthStep; x += widthStep) {
                         glm::vec4 texCoords = glm::vec4(x, y, x + widthStep, y + heightStep);
-                        ImGui::PushID(i++);
+                        ImGui::PushID(i);
                         ImVec2 topLeft = ImVec2(texCoords.x, texCoords.w);
                         ImVec2 bottomRight = ImVec2(texCoords.z, texCoords.y);
                         ImVec4 tint = (i == selected) ? ImVec4(1.0f, 1.0f, 1.0f, 0.8f) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -121,6 +121,7 @@ namespace tme {
                             selected = i;
                         }
                         ImGui::PopID();
+                        ++i;
                         ImGui::SameLine();
                     }
                     ImGui::NewLine();
@@ -128,19 +129,21 @@ namespace tme {
                 if (ImGui::Button("Add frame")) {
                     m_textureTileFactory->addFrame({frameTime, textureCoordinates});
                 }
-                int64_t index = 0;
+                i = 0;
                 for (const auto frame : m_textureTileFactory->getFrames()) {
+                    ImGui::PushID(i);
                     ImVec2 topLeft = ImVec2(frame.texPos.x, frame.texPos.w);
                     ImVec2 bottomRight = ImVec2(frame.texPos.z, frame.texPos.y);
                     if (ImGui::Button("X")) {
-                        m_textureTileFactory->removeFrame(index);
+                        m_textureTileFactory->removeFrame(i);
                     }
                     ImGui::SameLine();
                     ImGui::Image((void*)(intptr_t)activeTexture->getId(), imageSize, topLeft, bottomRight);
                     ImGui::SameLine();
                     ImGui::Text("Duration: %f", frame.time);
                     ImGui::NewLine();
-                    index++;
+                    ImGui::PopID();
+                    ++i;
                 }
             }
 

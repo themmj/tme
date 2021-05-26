@@ -18,6 +18,8 @@ namespace tme {
             /**//**
              * \brief Construct Editor for a tilemap.
              *
+             * Transfers ownership of the Tilemap to the Editor.
+             *
              * @param tilemap Handle to a Tilemap to be edited by the Editor
              */
             Editor(core::Handle<Tilemap> tilemap);
