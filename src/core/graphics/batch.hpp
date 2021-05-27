@@ -305,6 +305,13 @@ namespace tme {
 
                 void render() override;
 
+                /**//**
+                 * \brief Get Handle for local Batch Storage.
+                 *
+                 * @return Handle to the local storage of the batches, should not be stored somewhere
+                 */
+                inline Handle<Storage<Batch>> getBatches() const { return m_batches; }
+
                 std::string toString() const override;
             };
 

@@ -13,6 +13,9 @@ set (SRC_FILES
     core/graphics/buffer.cpp
     core/graphics/texture.cpp
     core/graphics/batch.cpp
+)
+
+set (APP_SRC_FILES
     app/graphics/tile.cpp
     app/graphics/color.cpp
     app/graphics/texture.cpp
@@ -42,7 +45,7 @@ else()
     message(FATAL_ERROR "unsupported platform")
 endif()
 
-add_executable(${BINARY} ${SRC_FILES})
+add_executable(${BINARY} ${SRC_FILES} ${APP_SRC_FILES})
 
 target_include_directories(${BINARY} PUBLIC
     ${INCLUDE_DIRS}

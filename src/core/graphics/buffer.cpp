@@ -74,6 +74,15 @@ namespace tme {
                 return freeSpace;
             }
 
+            std::string Buffer::toString() const {
+                std::stringstream ss;
+                ss << "Buffer(" << getId() << ',';
+                ss << m_type << ',';
+                ss << m_entrySize << ',';
+                ss << m_size << ')';
+                return ss.str();
+            }
+
         }
     }
 }

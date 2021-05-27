@@ -22,7 +22,12 @@ namespace tme {
                     ss << '(' << element.type << ',';
                     ss << element.typeSize << ',';
                     ss << element.count << ',';
-                    ss << element.normalized << ')';
+                    if (element.normalized == GL_TRUE) {
+                        ss << 1;
+                    } else {
+                        ss << 0;
+                    }
+                    ss << ')';
                 }
                 ss << ']';
                 return ss.str();

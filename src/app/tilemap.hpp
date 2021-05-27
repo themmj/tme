@@ -35,27 +35,69 @@ namespace tme {
             bool eraseTile = false;
         };
 
+        /**//**
+         * \brief Central storage for default values.
+         *
+         * Contains i.e. default Shader, Textures..
+         */
         struct Defaults {
+            /**//**
+             * \brief Container for Identifier of default objects.
+             */
             class Container {
                 IdentifierVector m_data;
 
                 public:
+                /**//**
+                 * \brief Construct Container instance.
+                 */
                 Container();
                 ~Container() = default;
 
+                /**//**
+                 * \brief Add id to container.
+                 *
+                 * @param id the Identifier of the default value to be added
+                 */
                 void add(core::Identifier id);
+                /**//**
+                 * \brief Check if value exists inside the container.
+                 *
+                 * @param id the value to be looked up
+                 *
+                 * @return true if the id is found, false otherwise
+                 */
                 bool has(core::Identifier id) const;
+                /**//**
+                 * \brief Iterator for the first element.
+                 *
+                 * @return iterator to the beginning
+                 */
                 inline IdentifierVector::iterator begin() { return m_data.begin(); }
+                /**//**
+                 * \brief Iterator for the last element.
+                 *
+                 * @return iterator to the end
+                 */
                 inline IdentifierVector::iterator end() { return m_data.end(); }
+                /**//**
+                 * \brief Get underlying data store to use in algorithms.
+                 *
+                 * @return underlying data store
+                 */
                 const IdentifierVector& getVector() const { return m_data; }
             };
 
+            /// default shader ids
             Container shaders;
+            /// default texture ids
             Container textures;
 
+            /// get global handle
             static core::Handle<Defaults> instance();
             ~Defaults() = default;
 
+            /// destroy default objects associated with the ids
             void cleanUp();
 
             private:
@@ -89,7 +131,7 @@ namespace tme {
             Tilemap(uint32_t width, uint32_t height, uint32_t tileSize);
             ~Tilemap();
 
-            core::Identifier getId() const override { return m_id; }
+            core::Identifier getId() const override;
             void onEvent(core::events::Event& e) override;
             void render() override;
 

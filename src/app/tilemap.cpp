@@ -61,6 +61,10 @@ namespace tme {
             }
         }
 
+        core::Identifier Tilemap::getId() const {
+            return m_id;
+        }
+
         void Tilemap::onEvent(core::events::Event& e) {
             m_layers.onEvent(e);
         }

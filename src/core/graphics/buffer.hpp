@@ -105,6 +105,8 @@ namespace tme {
                  * @return free space inside the buffer
                  */
                 GLsizeiptr getFreeSpace() const;
+
+                virtual std::string toString() const override;
             };
 
         }
