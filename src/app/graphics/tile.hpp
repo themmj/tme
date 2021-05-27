@@ -2,15 +2,13 @@
 #define _APP_GRAPHICS_TILE_H
 /** @file */
 
-#include <vector>
 #include "core/storage.hpp"
 #include "core/graphics/batch.hpp"
-#include "glm/vec2.hpp"
-#include "glm/vec4.hpp"
 
 namespace tme {
     namespace app {
         namespace graphics {
+
             /**//**
              * \brief Base class for tiles.
              *
@@ -125,114 +123,6 @@ namespace tme {
                 static core::graphics::Batch::Config::Index s_indexConfig();
             };
 
-            /**//**
-             * \brief Tile implementation for colored tiles.
-             *
-             * Should only be created with ColorTileFactory.
-             * All four vertices will have the same color.
-             */
-            class ColorTile final : public Tile {
-                struct Vertex {
-                    glm::vec2 pos;
-                    glm::vec4 color;
-                };
-
-                Vertex m_verticies[4];
-
-                static core::graphics::Batch::Config::Vertex s_vertexConfig();
-
-                public:
-                /**//**
-                 * \brief Construct ColorTile.
-                 *
-                 * Stores the color for every tile but sets all to the same color.
-                 * Could be used as a starting point to create a Tile with different colors on every vertex.
-                 *
-                 * @param id identifier of the tile, should be provided by ColorTileFactory
-                 * @param x position of the tile on x axis in full tiles
-                 * @param y position of the tile on y axis in full tiles
-                 * @param shaderId global Identifier of the Shader to be used
-                 * @param color color of all four vertices
-                 */
-                ColorTile(core::Identifier id, uint32_t x, uint32_t y, core::Identifier shaderId, glm::vec4 color);
-                ~ColorTile() = default;
-
-                core::graphics::Batch::Config getBatchConfig() const override;
-                const void* getVertexData() const override;
-
-                std::string toString() const override;
-            };
-
-            /**//**
-             * \brief Tile implementation for textured tiles.
-             *
-             * Should only be created with TextureTileFactory.
-             * Allows for animations by adding frames.
-             */
-            class TextureTile final : public Tile {
-                public:
-                /**//**
-                 * \brief Animation frame.
-                 *
-                 * A single frame of animation.
-                 * The texture coordinates are in the normalised format
-                 * xMin, yMin, xMax, yMax. The first two elements indicate the bottom left corner
-                 * of the texture and the other two indice the top right corner.
-                 */
-                struct Frame {
-                    /// duration of the frame in seconds
-                    double time;
-                    /// normalised coordinates on the sprite sheet
-                    glm::vec4 texPos;
-                };
-                /// type alias for a vector of frames
-                using Frames = std::vector<Frame>;
-
-                private:
-                struct Vertex {
-                    glm::vec2 pos, texPos;
-                };
-
-                Vertex m_verticies[4];
-                core::Identifier m_textureId;
-                Frames m_frames;
-                size_t m_activeFrame;
-
-                static core::graphics::Batch::Config::Vertex s_vertexConfig();
-
-                public:
-                /**//**
-                 * \brief Construct TextureTile.
-                 *
-                 * Creates a tile for a specific texture with >= 1 frame.
-                 *
-                 * @param id identifier of the tile, should be provided by ColorTileFactory
-                 * @param x position of the tile on x axis in full tiles
-                 * @param y position of the tile on y axis in full tiles
-                 * @param shaderId global Identifier of the Shader to be used
-                 * @param textureId global Identifier of the Texture to be used
-                 * @param frames frames of animation to be used, has to contain at least one
-                 */
-                TextureTile(core::Identifier id, uint32_t x, uint32_t y, core::Identifier shaderId, core::Identifier textureId, const Frames& frames);
-                ~TextureTile() = default;
-
-                /**//**
-                 * \brief Update current frame.
-                 *
-                 * Uses Tile::update to update the internal clock.
-                 * Then updates the frame if the passed time has exceeded the duration of the frame.
-                 *
-                 * @param deltaTime time since the last update in seconds
-                 *
-                 * @return true if the frame has been updated and requires a rerender, false otherwise
-                 */
-                bool update(double deltaTime) override;
-
-                core::graphics::Batch::Config getBatchConfig() const override;
-                const void* getVertexData() const override;
-
-                std::string toString() const override;
-            };
 
             /**//**
              * \brief Base factory class to create tiles.
@@ -293,91 +183,6 @@ namespace tme {
                  * @return global id of the Shader used for future tiles
                  */
                 inline core::Identifier getShader() const { return m_shaderId; }
-            };
-
-            /**//**
-             * \brief TileFactory implementation for colored tiles.
-             *
-             * Additionally stores color.
-             */
-            class ColorTileFactory final : public TileFactory {
-                glm::vec4 m_color;
-
-                public:
-                /**//**
-                 * \brief Construct ColorTileFactory with shader.
-                 *
-                 * @param shaderId global id to the initial Shader to be used for the tiles
-                 */
-                ColorTileFactory(core::Identifier shaderId);
-                ~ColorTileFactory();
-
-                Tile* construct() override;
-
-                /**//**
-                 * \brief Update associated color.
-                 *
-                 * @param color color to be used for future tiles
-                 */
-                void setColor(glm::vec4 color);
-            };
-
-            /**//**
-             * \brief TileFactory implementation for textured tiles.
-             *
-             * Additionally stores texture and animation frames.
-             */
-            class TextureTileFactory final : public TileFactory {
-                TextureTile::Frames m_frames;
-                core::Identifier m_textureId;
-
-                public:
-                /**//**
-                 * \brief Construct TextureTileFactory with shader and texture.
-                 *
-                 * @param shaderId global id to the initial Shader to be used for the tiles
-                 * @param textureId global id to the initial Texture to be used for the tiles
-                 */
-                TextureTileFactory(core::Identifier shaderId, core::Identifier textureId);
-                ~TextureTileFactory();
-
-                Tile* construct() override;
-
-                /**//**
-                 * \brief Update associated texture.
-                 *
-                 * @param textureId global id of the new Texture to be used for future tiles
-                 */
-                void setTexture(core::Identifier textureId);
-                /**//**
-                 * \brief Get global id of associated Texture.
-                 *
-                 * @return global id of the Texture used for future tiles
-                 */
-                inline core::Identifier getTexture() const { return m_textureId; }
-
-                /**//**
-                 * \brief Get frames used for future tiles.
-                 *
-                 * @return reference to vector of animation frames
-                 */
-                inline const std::vector<TextureTile::Frame>& getFrames() const { return m_frames; }
-                /**//**
-                 * \brief Add a Frame of animation.
-                 *
-                 * @param frame the Frame to be added to future tiles' frames
-                 */
-                void addFrame(const TextureTile::Frame& frame);
-                /**//**
-                 * \brief Remove a Frame of animation.
-                 *
-                 * @param frameIndex index of the Frame to be removed
-                 */
-                void removeFrame(int64_t frameIndex);
-                /**//**
-                 * \brief Removes all frames.
-                 */
-                void clearFrames();
             };
 
         }
