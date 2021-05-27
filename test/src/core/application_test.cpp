@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "core/application.hpp"
 #include "core/events/window.hpp"
+#include "core/layers/imgui.hpp"
 #include "platform/context.hpp"
 #include "sigcounter.hpp"
 
@@ -14,7 +15,9 @@ namespace tme {
         class _TestWindowApp final : public WindowApplication {
             int m_iterations = 0;
             public:
-            _TestWindowApp() : WindowApplication("_TestApp") {}
+            _TestWindowApp() : WindowApplication("_TestApp") {
+                m_layers.push<core::layers::Imgui>();
+            }
             ~_TestWindowApp() {}
 
             void render() override {
@@ -22,6 +25,7 @@ namespace tme {
                     events::WindowClose wc;
                     onEvent(wc);
                 }
+                m_layers.render();
                 ++m_iterations;
             }
         };

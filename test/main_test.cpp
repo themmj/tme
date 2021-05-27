@@ -17,6 +17,12 @@ int SignalCounter::assertionFailed = SIGTRAP;
 #include "core/layers/imgui_test.cpp"
 #include "core/storage_test.cpp"
 #include "core/application_test.cpp"
+#include "core/graphics/buffer_test.cpp"
+#include "core/graphics/index_test.cpp"
+#include "core/graphics/vertex_test.cpp"
+#include "core/graphics/texture_test.cpp"
+#include "core/graphics/shader_test.cpp"
+#include "core/graphics/batch_test.cpp"
 
 int main(int argc, char** argv) {
     SignalCounter::instance()->listen(SignalCounter::assertionFailed);

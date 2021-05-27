@@ -90,6 +90,22 @@ namespace tme {
             EXPECT_NE(added.get(), Storage<_ExampleClass>::global()->get(added->getId()).get());
         }
 
+        TEST(TestStorage, HasElement) {
+            auto storage = Storage <_ExampleClass>::localInstance();
+            _ExampleClass* ptr = new _ExampleClass();
+            EXPECT_FALSE(storage->has(ptr->getId()));
+
+            storage->add(ptr);
+            EXPECT_TRUE(storage->has(ptr->getId()));
+        }
+
+        TEST(TestStorage, Iterators) {
+            auto storage = Storage <_ExampleClass>::localInstance();
+            EXPECT_EQ(storage->begin(), storage->end());
+            storage->create();
+            EXPECT_NE(storage->begin(), storage->end());
+        }
+
     }
 }
 

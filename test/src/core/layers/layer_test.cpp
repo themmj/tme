@@ -30,7 +30,7 @@ namespace tme {
                     return true;
                 }
 
-                void render() override {}
+                void render() override { --m_counter; }
 
                 std::string toString() const override {
                     std::stringstream ss;
@@ -56,19 +56,42 @@ namespace tme {
                 EXPECT_EQ(l.toString(), l1.toString());
             }
 
-            TEST(TestLayer, LayerStack) {
-                // the WindowClose event will only be
-                // executed by the top layer
-                // this check if its the last added layer
-                // and if the remaining layer is unchanged
+            TEST(TestLayerStack, Push) {
                 Stack s;
                 s.push<_CounterLayer>(1);
                 s.push<_CounterLayer>(4);
 
+                EXPECT_EQ(s.toString(), "LayerStack( 4 1 )");
+            }
+
+            TEST(TestLayerStack, Pop) {
+                Stack s;
+                s.push<_CounterLayer>(1);
+                s.push<_CounterLayer>(4);
+                s.pop();
+
+                EXPECT_EQ(s.toString(), "LayerStack( 1 )");
+            }
+
+            TEST(TestLayerStack, OnEvent) {
+                Stack s;
+                s.push<_CounterLayer>(1);
+                s.push<_CounterLayer>(4);
+                
                 events::WindowClose wc;
                 s.onEvent(wc);
 
                 EXPECT_EQ(s.toString(), "LayerStack( 5 1 )");
+            }
+
+            TEST(TestLayerStack, Render) {
+                Stack s;
+                s.push<_CounterLayer>(1);
+                s.push<_CounterLayer>(4);
+                
+                s.render();
+
+                EXPECT_EQ(s.toString(), "LayerStack( 3 0 )");
             }
 
         }

@@ -44,7 +44,10 @@ target_link_options(
 
 add_custom_target(test
     COMMAND ${BIN_DIR}/${BINARY}-test
+    WORKING_DIRECTORY ${BIN_DIR}
 )
+
+add_dependencies(test ${BINARY}-test)
 
 add_custom_target(clean-gcno
     COMMAND find . -name "\"*.gcno\"" -type f -delete
