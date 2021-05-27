@@ -2,6 +2,7 @@
 
 #include "app/layers/map.hpp"
 #include "core/events/window.hpp"
+#include "core/exceptions/input.hpp"
 #include "core/layers/layer.hpp"
 #include "core/key.hpp"
 #include "core/storage.hpp"
@@ -42,8 +43,12 @@ namespace tme {
                 }
                 if (m_cursor->inBounds && m_cursor->placeTile) {
                     if (!m_tiles->has(m_cursor->tileFactory->generateId())) {
-                        auto tile = m_tiles->add(m_cursor->tileFactory->construct());
-                        m_batcher.set(tile);
+                        try {
+                            auto tile = m_tiles->add(m_cursor->tileFactory->construct());
+                            m_batcher.set(tile);
+                        } catch(const core::exceptions::InvalidInput& e) {
+                            TME_WARN("could not create tile: {}", e.what());
+                        } CATCH_ALL
                     }
                     return true;
                 }

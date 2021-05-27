@@ -3,6 +3,8 @@
 /** @file */
 
 #include "app/graphics/tile.hpp"
+#include "app/graphics/color.hpp"
+#include "app/graphics/texture.hpp"
 #include "core/layers/layer.hpp"
 #include "core/storage.hpp"
 #include "app/tilemap.hpp"

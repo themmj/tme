@@ -63,12 +63,13 @@ namespace tme {
 
 
             Shader::Shader(Handle<Shader::Stage> vertexStage, Handle<Shader::Stage> fragmentStage)
-                : m_uniformCache() {
+                : m_stages(), m_uniformCache() {
                 TME_ASSERT(vertexStage, "provided invalid vertex stage");
                 TME_ASSERT(fragmentStage, "provided invalid fragment stage");
 
-                m_stageCombination = fragmentStage->getId() | (vertexStage->getId() << 16);
                 m_name = vertexStage->getName() + "|" + fragmentStage->getName();
+                m_stages.insert({Stage::Type::Vertex, vertexStage->getId()});
+                m_stages.insert({Stage::Type::Fragment, fragmentStage->getId()});
 
                 glCall(m_renderingId = glCreateProgram());
                 glCall(glAttachShader(m_renderingId, vertexStage->getId()));
@@ -99,10 +100,18 @@ namespace tme {
             void Shader::cleanUp() {
                 unbind();
                 glCall(glDeleteProgram(m_renderingId));
+                for (const auto stageIter : m_stages) {
+                    Storage<Stage>::global()->destroy(stageIter.second);
+                }
             }
 
             core::Identifier Shader::getId() const {
-                return m_stageCombination;
+                core::Identifier stageCombination = 0;
+                uint32_t step = 32 / static_cast<uint32_t>(m_stages.size());
+                for (const auto stageIter : m_stages) {
+                    stageCombination |= (stageIter.second << step);
+                }
+                return stageCombination;
             }
 
             void Shader::bind() const {
@@ -139,9 +148,8 @@ namespace tme {
 
             std::string Shader::toString() const {
                 std::stringstream ss;
-                ss << "Shader(" << m_renderingId << '|';
-                ss << (m_stageCombination << 16 >> 16) << ',';
-                ss << (m_stageCombination >> 16) << ')';
+                ss << "Shader(" << m_renderingId << ':';
+                ss << m_name << ')';
                 return ss.str();
             }
 

@@ -14,6 +14,9 @@ set (SRC_FILES
     core/graphics/texture.cpp
     core/graphics/batch.cpp
     app/graphics/tile.cpp
+    app/graphics/color.cpp
+    app/graphics/texture.cpp
+    app/layers/background.cpp
     app/layers/map.cpp
     app/layers/editing.cpp
     app/layers/ui.cpp

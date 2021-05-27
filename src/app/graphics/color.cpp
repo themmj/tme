@@ -23,8 +23,8 @@ namespace tme {
                 auto globalShaders = core::Storage<core::graphics::Shader>::global();
                 using StageType = core::graphics::Shader::Stage::Type;
                 static core::Identifier shaderId = globalShaders->create(
-                        globalShaderStages->create(StageType::Vertex, "color", "/home/mmj/development/workspaces/cpp/tme/res/vertex-color.glsl"),
-                        globalShaderStages->create(StageType::Fragment, "color", "/home/mmj/development/workspaces/cpp/tme/res/fragment-color.glsl")
+                        globalShaderStages->create(StageType::Vertex, "color", "../res/vertex-color.glsl"),
+                        globalShaderStages->create(StageType::Fragment, "color", "../res/fragment-color.glsl")
                         )->getId();
                  return shaderId;
             }

@@ -79,7 +79,7 @@ namespace tme {
                 };
 
                 private:
-                core::Identifier m_stageCombination = 0;
+                std::unordered_map<Stage::Type, core::Identifier> m_stages;
                 std::string m_name;
                 std::unordered_map<std::string, GLint> m_uniformCache;
 
@@ -89,8 +89,8 @@ namespace tme {
                  *
                  * Its name is the combination of the names of the provided stages.
                  *
-                 * @param vertexStage handle to shader stage of type Stage::Type::Vertex
-                 * @param fragmentStage handle to shader stage of type Stage::Typ::Fragment
+                 * @param vertexStage owning handle to shader stage of type Stage::Type::Vertex
+                 * @param fragmentStage owning handle to shader stage of type Stage::Typ::Fragment
                  *
                  * @throw exceptions::LinkingError when an error occurs during the linking process of the stages
                  * @throw exceptions::ValidationError when an error occurs during the validation of the shader object

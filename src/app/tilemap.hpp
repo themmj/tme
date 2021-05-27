@@ -3,6 +3,7 @@
 /** @file */
 
 #include <vector>
+#include "app/layers/background.hpp"
 #include "core/storage.hpp"
 #include "core/events/handler.hpp"
 #include "core/graphics/common.hpp"
@@ -11,6 +12,9 @@
 
 namespace tme {
     namespace app {
+
+        /// type alias to shorten a Identifier vector declaration
+        using IdentifierVector = std::vector<core::Identifier>;
 
         /**//**
          * \brief Cursor of a Tilemap.
@@ -31,13 +35,39 @@ namespace tme {
             bool eraseTile = false;
         };
 
+        struct Defaults {
+            class Container {
+                IdentifierVector m_data;
+
+                public:
+                Container();
+                ~Container() = default;
+
+                void add(core::Identifier id);
+                bool has(core::Identifier id) const;
+                inline IdentifierVector::iterator begin() { return m_data.begin(); }
+                inline IdentifierVector::iterator end() { return m_data.end(); }
+                const IdentifierVector& getVector() const { return m_data; }
+            };
+
+            Container shaders;
+            Container textures;
+
+            static core::Handle<Defaults> instance();
+            ~Defaults() = default;
+
+            void cleanUp();
+
+            private:
+            Defaults();
+        };
+
         /**//**
          * \brief Tilemap with multiple layers which can be edited using its cursor.
          *
          * Keeps track of the associated shader and texture ids, its layers and the cursor.
          */
         class Tilemap final : public core::Mappable, public core::events::Handler, public core::graphics::Renderable {
-            using IdentifierVector = std::vector<core::Identifier>;
             core::Identifier m_id;
             uint32_t m_tileSize;
             uint32_t m_width, m_height;
@@ -46,6 +76,7 @@ namespace tme {
             size_t m_layerCount = 0;
             core::layers::Stack m_layers;
             core::Handle<Cursor> m_cursor;
+            core::Handle<layers::Background> m_background;
 
             public:
             /**//**
@@ -127,6 +158,13 @@ namespace tme {
              * \brief Remove MapLayer.
              */
             void removeLayer();
+
+            /**//**
+             * \brief Set background of the map.
+             *
+             * @param color the color the background should have
+             */
+            void setBackground(glm::vec4 color);
         };
 
     }

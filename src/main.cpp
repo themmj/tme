@@ -1,9 +1,9 @@
 /** @file */
 
+#include "core/exceptions/common.hpp"
 #include "core/storage.hpp"
-#include "core/graphics/shader.hpp"
-#include "core/graphics/texture.hpp"
 #include "platform/context.hpp"
+#include "app/tilemap.hpp"
 #include "app/editor.hpp"
 
 /// Program entrypoint.
@@ -12,15 +12,19 @@ int main() {
     tme::core::Log::init();
     TME_INFO("starting application");
 
-    auto editor = tme::core::Storage<tme::app::Editor>::global()->create(tme::core::Storage<tme::app::Tilemap>::global()->create(32, 32, 350));
-    editor->run();
+
+    try {
+        auto editor = tme::core::Storage<tme::app::Editor>::global()->create(tme::core::Storage<tme::app::Tilemap>::global()->create(10, 10, 350));
+        editor->run();
+    } catch (const tme::core::exceptions::Base& e) {
+        TME_CRITICAL("An error occurred during start up.\n {}: {}\nStopping application.", e.type(), e.what());
+        return -1;
+    }
+
 
     TME_INFO("shutting down");
 
     // cleanup logic before the contextHandle destroys the OpenGL context
     tme::core::Storage<tme::app::Editor>::global()->clear();
-    tme::core::Storage<tme::core::graphics::Shader::Stage>::global()->clear();
-    tme::core::Storage<tme::core::graphics::Shader>::global()->clear();
-    tme::core::Storage<tme::core::graphics::Texture>::global()->clear();
     return 0;
 }

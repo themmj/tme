@@ -21,12 +21,17 @@ namespace tme {
             Editing::~Editing() {}
 
             void Editing::render() {
-                for (auto shaderId : m_tilemap->getShaderIds()) {
-                    if (auto shader = core::Storage<core::graphics::Shader>::global()->get(shaderId); shader) {
-                        shader->bind();
-                        shader->setUniformMat4f("u_mvp", m_camera.getMVP());
+                auto bindMVP = [=](IdentifierVector shaders) {
+                    for (auto shaderId : shaders) {
+                        if (auto shader = core::Storage<core::graphics::Shader>::global()->get(shaderId); shader) {
+                            shader->bind();
+                            shader->setUniformMat4f("u_mvp", m_camera.getMVP());
+                        }
                     }
-                }
+                };
+                bindMVP(m_tilemap->getShaderIds());
+                bindMVP(Defaults::instance()->shaders.getVector());
+
                 m_tilemap->render();
             }
 
