@@ -15,7 +15,7 @@ namespace tme {
         /**//**
          * \brief Base class for windows.
          */
-        class Window : public Loggable, Mappable {
+        class Window : public Loggable, public Mappable {
             static bool s_windowCreated;
 
             using EventHandlerPtr = core::events::Handler*;
