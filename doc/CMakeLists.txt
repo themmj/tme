@@ -27,12 +27,26 @@ endif ()
 
 find_program(HPP2PUML_FOUND hpp2plantuml)
 if (HPP2PUML_FOUND)
-    set(PUML_DIR ${CMAKE_SOURCE_DIR}/doc/puml)
-    add_custom_target(doc_puml ALL
+    set(PUML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/puml)
+    add_custom_target(doc-puml ALL
         COMMAND mkdir -p ${PUML_DIR}
-        COMMAND hpp2plantuml -i \"src/**/*.hpp\" -o ${PUML_DIR}/output.puml
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMAND ./generate-plant-uml
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
+
+    find_program(PLANTUML_FOUND plantuml.jar)
+    if (PLANTUML_FOUND)
+        find_path(PLANTUML_PATH plantuml.jar)
+        set(SVG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/svg)
+        add_custom_target(doc-puml-svg ALL
+            COMMAND mkdir -p ${SVG_DIR}
+            COMMAND ./generate-plant-uml-svg ${PLANTUML_PATH}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        )
+    else()
+        message("plantuml.jar needs to be installed to generate SVG files from PUML files of the codebase")
+    endif()
+
 else()
     message("hpp2plantuml needs to be installed to generate PUML of the codebase")
 endif()

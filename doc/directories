@@ -1,0 +1,24 @@
+dirs=()
+dirs+=("src")
+dirs+=("src/app")
+dirs+=("src/app/graphics")
+dirs+=("src/app/layers")
+dirs+=("src/core")
+dirs+=("src/core/events")
+dirs+=("src/core/exceptions")
+dirs+=("src/core/graphics")
+dirs+=("src/core/layers")
+dirs+=("src/platform")
+
+if [ "${PWD##*/}" != "doc" ]; then
+    echo "Did not generate uml files."
+    echo "Make sure to run this script in the tme/doc folder."
+    exit -1
+fi
+
+function run_on_dirs {
+    for dir in "${dirs[@]}"; do
+        $1 "$dir"
+    done
+}
+

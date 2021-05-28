@@ -1,0 +1,13 @@
+#!/bin/bash
+
+plantumlPath="$1"
+
+source ./directories
+
+function generate_puml_svg {
+    mkdir -p "./svg/$1"
+    java -jar "$plantumlPath/plantuml.jar" "./puml/$1/**.puml" -tsvg -o "$PWD/svg/$1"
+}
+
+run_on_dirs generate_puml_svg
+

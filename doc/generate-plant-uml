@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source ./directories
+
+function generate_puml {
+    mkdir -p "./puml/$1"
+    hpp2plantuml -i "../$1/**/*.hpp" -o "./puml/$1/output.puml"
+}
+
+run_on_dirs generate_puml
+
