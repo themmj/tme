@@ -1,0 +1,38 @@
+#!/bin/bash
+
+echo "Installing requirements..."
+
+sudo apt update
+sudo apt install git build-essential cmake doxygen graphviz python3-pip xorg-dev
+
+pip install gcovr
+pip install hpp2plantuml
+export PATH=$HOME/.local/bin:$PATH
+
+echo "To create svgs from plant uml diagrams plantuml.jar has to be downloaded and added to the PATH manually..."
+
+git submodule update --init --recursive
+mkdir -p build
+cd build
+cmake .. -DBUILD_DOC=ON -DBUILD_TESTS=ON -DDEBUG_BUILD=ON -DSPDLOG_ENABLE_PCH=ON
+
+make -j6
+
+echo "Now you can navigate inside the newly created tme/build directory and run"
+echo "  make run"
+echo "      to build and run the tme application"
+echo "  make test"
+echo "      to build and run the tests"
+echo "  make coverage"
+echo "      to build and run tests and create a coverage report"
+echo "      which will be located in tme/test/coverage/coverage.html"
+echo "  make doc-doxygen"
+echo "      to build the doxygen documentation"
+echo "      which will be located in tme/doc/html/index.html"
+echo "  make doc-puml"
+echo "      to build plant uml diagrams for the code"
+echo "      which will be located in tme/doc/puml/"
+echo "  make doc-puml-svg"
+echo "      to build svgs from plant uml diagrams for the code"
+echo "      which will be located in tme/doc/svg/"
+
