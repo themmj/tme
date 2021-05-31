@@ -77,8 +77,10 @@ namespace tme {
 
                 /**//**
                  * \brief Removes top element of the stack.
+                 *
+                 * @return true if it was successful, false if the stack is already empty meaning no success
                  */
-                void pop();
+                bool pop();
 
                 std::string toString() const override;
             };

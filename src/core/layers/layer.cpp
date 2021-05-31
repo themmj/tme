@@ -26,9 +26,12 @@ namespace tme {
                 }
             }
 
-            void Stack::pop() {
-                TME_ASSERT(m_layers.size() != 0, "pop should not be called on an empty stack");
+            bool Stack::pop() {
+                if (m_layers.size() < 1) {
+                    return false;
+                }
                 m_layers.pop_back();
+                return true;
             }
 
             std::string Stack::toString() const {

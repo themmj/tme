@@ -66,11 +66,17 @@ namespace tme {
 
             TEST(TestLayerStack, Pop) {
                 Stack s;
+                bool res;
                 s.push<_CounterLayer>(1);
                 s.push<_CounterLayer>(4);
-                s.pop();
-
+                res = s.pop();
+                EXPECT_TRUE(res);
                 EXPECT_EQ(s.toString(), "LayerStack( 1 )");
+                res = s.pop();
+                EXPECT_TRUE(res);
+                // should be empty now
+                res = s.pop();
+                EXPECT_FALSE(res);
             }
 
             TEST(TestLayerStack, OnEvent) {
