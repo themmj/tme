@@ -22,6 +22,20 @@ target|meaning
 
 # Grading criteria
 
+The following documents the required grading criteria in a structured way. It will present examples to illustrate the
+applied concepts.
+
+IMPORTANT: Building the projects documentation (`make doc-doxygen`) and using it (located in tme/doc/html/index.html) provides the best experience
+for reading this document. It will paste the contents of this README.md into the landing page of the documentation. Additionally it will resolve
+named classes to links to the actual documentation of the classes including different kinds of diagrams (i.e. UML). That way one can just click on the class
+name and get every necessary information about that class without having to open separate code editors or diagram viewers. Using this README in its
+pdf or raw markdown provides a drastically inferior experience.
+
+Note: Diagrams for C++ are only created from header files. Thus relations to other classes found in implementation details of a class' methods are not tracked.
+This is a limitation in the tools available one should be aware of. The best example is the UML for tme::app::graphics::TileFactory and its derived classes.
+The relation of the tme::app::graphics::TextureTileFactory to tme::app::graphics::TextureTile was found by the tools but the relation between
+tme::app::graphics::ColorTileFactory and tme::app::graphics::ColorTile was not.
+
 ## LOC
 
 Statistics for the application code:
