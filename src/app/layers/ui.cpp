@@ -31,7 +31,7 @@ namespace tme {
 
             void EditingUI::render() {
                 ImGui::SetNextWindowSize(ImVec2(550, 1000), ImGuiCond_FirstUseEver);
-                ImGui::Begin("TME Editor");
+                ImGui::Begin("TME Editor", NULL, ImGuiWindowFlags_HorizontalScrollbar);
 
                 showLayerSelection();
                 ImGui::Separator();
