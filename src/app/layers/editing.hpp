@@ -10,6 +10,7 @@
 #include "core/layers/layer.hpp"
 #include "app/tilemap.hpp"
 #include "app/camera.hpp"
+#include "core/window.hpp"
 
 namespace tme {
     namespace app {
@@ -32,8 +33,9 @@ namespace tme {
                  * \brief Construct Editing Layer for Tilemap.
                  *
                  * @param tilemap Handle to the Tilemap that should be edited with this layer
+                 * @param window Handle to the Window in which the tilemap wil be edited
                  */
-                Editing(core::Handle<Tilemap> tilemap);
+                Editing(core::Handle<Tilemap> tilemap, core::Handle<core::Window> window);
                 ~Editing();
 
                 void render() override;

@@ -5,16 +5,20 @@
 namespace tme {
     namespace app {
 
-        Camera::Camera(uint32_t width, uint32_t height) {
+        Camera::Camera(uint32_t width, uint32_t height, uint32_t windowWidth, uint32_t windowHeight) {
             m_position = {0.0f, 0.0f};
-            double baseW = (double)width;
-            double baseH = (double)height;
-            double baseMin;
-            if (baseW < baseH)
-                baseMin = baseW;
-            else
+            double baseW = static_cast<double>(width);
+            double baseH = static_cast<double>(height);
+            double windowW = static_cast<double>(windowWidth);
+            double windowH = static_cast<double>(windowHeight);
+            double ratio = windowW / windowH;
+
+            double baseMin = baseW;
+            if (baseH < baseMin) {
                 baseMin = baseH;
-            m_dimensions.x = baseMin;
+            }
+
+            m_dimensions.x = baseMin * ratio;
             m_dimensions.y = baseMin;
         }
 

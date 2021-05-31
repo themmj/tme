@@ -33,10 +33,12 @@ namespace tme {
             /**//**
              * \brief Construct Camera with initial dimensions.
              *
-             * @param width initial width of the projection
-             * @param height initial height of the projection
+             * @param width initial width for the projection
+             * @param height initial height for the projection
+             * @param windowWidth width of the window to project to
+             * @param windowHeight height of the window to project to
              */
-            Camera(uint32_t width, uint32_t height);
+            Camera(uint32_t width, uint32_t height, uint32_t windowWidth, uint32_t windowHeight);
 
             /**//**
              * \brief Scale the width of the projection.

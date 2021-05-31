@@ -12,11 +12,11 @@ namespace tme {
     namespace app {
         namespace layers {
 
-            Editing::Editing(core::Handle<Tilemap> tilemap)
+            Editing::Editing(core::Handle<Tilemap> tilemap, core::Handle<core::Window> window)
                 : core::layers::Layer("Editing"),
                 Dispatcher(this),
                 m_tilemap(tilemap),
-                m_camera(tilemap->getWidth(), tilemap->getHeight()),
+                m_camera(tilemap->getWidth(), tilemap->getHeight(), window->getWidth(), window->getHeight()),
                 m_cameraMoving(false) {}
             Editing::~Editing() {}
 
