@@ -28,20 +28,18 @@ Statistics for the application code:
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
-src/app/layers/ui.cpp|23|4|205
 src/platform/glfw.hpp|18|60|199
+src/app/layers/ui.cpp|23|4|198
 src/core/graphics/batch.cpp|23|10|168
 src/platform/glfw.cpp|36|16|150
 src/core/key.hpp|9|59|146
 src/core/graphics/shader.cpp|27|1|131
-src/app/layers/editing.cpp|13|5|113
+src/app/layers/editing.cpp|12|5|109
 src/app/graphics/texture.cpp|17|1|106
 src/core/graphics/batch.hpp|33|202|88
 src/core/graphics/vertex.cpp|16|1|88
 src/core/layers/imgui.cpp|12|6|87
-src/app/tilemap.cpp|20|1|80
 src/core/graphics/buffer.cpp|9|2|77
-src/app/tilemap.hpp|22|123|71
 src/core/storage.hpp|23|83|68
 src/app/graphics/tile.cpp|19|1|66
 src/core/graphics/vertex.hpp|19|63|65
@@ -54,27 +52,29 @@ src/core/events/mouse.hpp|19|85|58
 src/app/layers/map.cpp|9|3|57
 src/core/events/window.hpp|20|89|57
 src/core/graphics/shader.hpp|17|83|55
-src/app/graphics/texture.hpp|20|85|53
 src/core/events/key.hpp|16|48|53
+src/app/graphics/texture.hpp|20|87|53
 src/core/application.cpp|11|1|47
-src/core/graphics/texture.hpp|16|33|42
+src/app/tilemap.cpp|12|1|45
+src/app/tilemap.hpp|13|60|44
+src/core/graphics/common.cpp|9|1|42
 src/core/events/event.hpp|17|54|42
 src/app/camera.cpp|13|3|42
+src/core/graphics/texture.hpp|16|33|42
 src/core/layers/layer.hpp|16|35|40
 src/core/graphics/buffer.hpp|13|65|39
-src/core/application.hpp|15|31|37
 src/core/layers/layer.cpp|9|1|37
-src/core/graphics/common.hpp|15|64|36
-src/app/graphics/color.hpp|17|39|36
+src/core/application.hpp|15|31|37
+src/core/graphics/common.hpp|16|72|37
+src/app/graphics/color.hpp|17|41|36
 src/app/layers/ui.hpp|13|12|34
 src/core/log.hpp|9|34|34
 src/app/layers/editing.hpp|10|12|34
 src/app/camera.hpp|15|64|32
 src/core/layers/imgui.hpp|8|12|31
-src/app/editor.cpp|9|2|30
-src/app/layers/map.hpp|10|14|29
-src/core/graphics/common.cpp|7|1|29
+src/app/editor.cpp|9|1|29
 src/core/events/dispatcher.hpp|10|24|29
+src/app/layers/map.hpp|10|14|29
 src/app/layers/background.cpp|5|1|25
 src/core/exceptions/validation.hpp|8|25|25
 src/core/exceptions/common.hpp|7|30|25
@@ -83,15 +83,15 @@ src/app/layers/background.hpp|8|16|21
 src/main.cpp|7|3|20
 src/core/graphics/index.hpp|7|23|19
 src/app/editor.hpp|7|11|17
-src/core/loggable.hpp|6|17|16
 src/namespaces.hpp|15|11|16
-src/core/exceptions/graphics.hpp|6|9|15
+src/core/loggable.hpp|6|17|16
 src/core/exceptions/input.hpp|6|12|15
+src/core/exceptions/graphics.hpp|6|9|15
 src/platform/context.hpp|6|9|14
 src/core/events/handler.hpp|5|9|14
 src/core/log.cpp|4|3|13
 src/core/graphics/gl.hpp|3|1|4
-SUM:|870|1930|3507
+SUM:|855|1878|3447
 
 Statics for the test code:
 
@@ -259,10 +259,10 @@ They allow do decouple the Batcher from the underlying Buffers.
 Aggregates are a cluster of domain objects treated like a singel unit. A single aggregate root is exposed which manages all other components.
 
 The tme::core::graphics::Batcher is the top level part of the graphics abstraction. It contains a list of batches and a mapping table. It only exposes a set and unset
-method which both take in a tme::core::graphics::Batchabe object. Based on this the Batcher will either perform an upsert or an removal of the objects data inside
+method which both take in a tme::core::graphics::Batchable object. Based on this the Batcher will either perform an upsert or an removal of the objects data inside
 one of the Batches it sees fit. The batcher is the aggregate root exposing a set and unset method and manages the corresponding batches and mappings
 accordingly. That way optimal distribution of graphics objects into buffers is completely abstracted and higher level components only have to set and unset the
-tme::core::Batchable objects they want to render.
+tme::core::graphics::Batchable objects they want to render.
 
 ### Repository
 
@@ -331,13 +331,21 @@ Professional|the quality standard of the tested code and test code are the same
 
 ### Coverage
 
-As stated in the setup, inside the build directory a simpel `make coverage` executes all the tests and builds the coverage report inside
+As stated in the setup, inside the build directory a simple `make coverage` executes all the tests and builds the coverage report inside
 test/coverage/coverage.html.
 
 ### Mocks
 
-Mocks were used to verify expected behavior of the tested class. These include Window tests, layers::Stack tests etc.
+Mocks were used to verify expected behavior of the tested class. These include tme::core::Window tests, tme::core::layers::Stack tests etc.
+They are for example used to check how member functions like onEvent are called on tme::core::layers::Layer to ensure handled tme::core::events::Event
+are not passed down to lower layers. 
 
 ## Refactoring
-TODO
+
+By allowing to use the tme::core::Storage class as a Singleton, object pools can be realized. Besides that it was attempted to implement a
+concept of default values. The reason was that it would provide a better user experience if default shaders were available for the different types of Tiles.
+This introduced a lot of duplicate and complex code and resulted in inconsistent life time of pooled objects. The commit [2d03e20e956ad9c2b980e82499c4bdcc0e8f3524](https://github.com/themmj/tme/commit/2d03e20e956ad9c2b980e82499c4bdcc0e8f3524)
+removes the explicit concept of defaults. Instead, the derived Tile types can create a default shader to be used for the tile. All pooled graphics objects are cleared
+before the window is closed to properly clean up. The Codesmells identified were duplicate+complex code and inconsistent life time of objects. The refactoring removed the
+code in question and unified lifetime.
 
