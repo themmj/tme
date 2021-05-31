@@ -30,7 +30,7 @@ namespace tme {
             EditingUI::~EditingUI() {}
 
             void EditingUI::render() {
-                ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
+                ImGui::SetNextWindowSize(ImVec2(550, 1000), ImGuiCond_FirstUseEver);
                 ImGui::Begin("TME Editor");
 
                 showLayerSelection();

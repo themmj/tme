@@ -29,6 +29,9 @@ namespace tme {
 
         void WindowApplication::run() {
             auto window = Storage<Window>::global()->get(m_window);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
             while (m_running) {
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui::NewFrame();
