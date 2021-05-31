@@ -342,6 +342,19 @@ are not passed down to lower layers.
 
 ## Refactoring
 
+During the development multiple refactoring steps had been done. The following describes two of them, why they were necessary and how they affected the problem.
+
+### Separation of window concerns
+
+The tme::core::Window contains a Data struct to store its state like dimensions, vsync, window title etc. Updating parts of this data is exposed by setters.
+Originally they were completely abstract, forcing the derived classes to update the data struct of its base class. This results in duplicate code and
+does not conform to separation of concerns. In commit [b0cf64f7ff0f9774de42771a76bbf3b9cdfbaad8](https://github.com/themmj/tme/commit/b0cf64f7ff0f9774de42771a76bbf3b9cdfbaad8)
+the abstract set<Property>Internal methods were introduced. The original setters are now implemented in the tme::core::Window base class and update the window's
+data struct and call the new internal setters. These internal setters now set the platform specific properties as seen in tme::platform::GlfwWindow. That way
+duplicate code is avoided and the base class is responsible for its data struct instead of the derived classes, properly separating their concerns.
+
+### Graphics defaults vs pooling
+
 By allowing to use the tme::core::Storage class as a Singleton, object pools can be realized. Besides that it was attempted to implement a
 concept of default values. The reason was that it would provide a better user experience if default shaders were available for the different types of Tiles.
 This introduced a lot of duplicate and complex code and resulted in inconsistent life time of pooled objects. The commit [2d03e20e956ad9c2b980e82499c4bdcc0e8f3524](https://github.com/themmj/tme/commit/2d03e20e956ad9c2b980e82499c4bdcc0e8f3524)
