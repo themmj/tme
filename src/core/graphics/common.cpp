@@ -2,9 +2,24 @@
 
 #include "core/graphics/common.hpp"
 
+#include "core/graphics/batch.hpp"
+#include "core/graphics/shader.hpp"
+#include "core/graphics/texture.hpp"
+
 namespace tme {
     namespace core {
         namespace graphics {
+
+            void cleanUp() {
+                Storage<Batch>::global()->clear();
+                Storage<VertexLayout>::global()->clear();
+                Storage<VertexBuffer>::global()->clear();
+                Storage<VertexArray>::global()->clear();
+                Storage<IndexBuffer>::global()->clear();
+                Storage<Shader>::global()->clear();
+                Storage<Shader::Stage>::global()->clear();
+                Storage<Texture>::global()->clear();
+            }
 
             void clearGLErrors() {
                 while (glGetError() != GL_NO_ERROR);

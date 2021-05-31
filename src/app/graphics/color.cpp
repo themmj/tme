@@ -18,7 +18,7 @@ namespace tme {
                 m_verticies[3] = {{1.0f + xf, 1.0f + yf}, {color.r, color.g, color.b, color.a}};
             }
 
-            core::Identifier ColorTile::s_defaultShaderId() {
+            core::Identifier ColorTile::createDefaultShader() {
                 auto globalShaderStages = core::Storage<core::graphics::Shader::Stage>::global();
                 auto globalShaders = core::Storage<core::graphics::Shader>::global();
                 using StageType = core::graphics::Shader::Stage::Type;
@@ -56,7 +56,7 @@ namespace tme {
 
 
             ColorTileFactory::ColorTileFactory()
-                : TileFactory(ColorTile::s_defaultShaderId()), m_color(0.0, 0.0, 0.0, 0.0) {}
+                : TileFactory(ColorTile::createDefaultShader()), m_color(0.0, 0.0, 0.0, 0.0) {}
 
             ColorTileFactory::~ColorTileFactory() {}
 

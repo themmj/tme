@@ -151,24 +151,22 @@ namespace tme {
 
             void EditingUI::showShaderSelection(core::Handle<graphics::TileFactory> factory) {
                 auto globalShaderHandle = core::Storage<core::graphics::Shader>::global();
-                // does not check because default shader should be provided
-                auto selectedShader = globalShaderHandle->get(factory->getShader());
-                if (ImGui::BeginCombo("Shader", selectedShader->getName().c_str())) {
-                    auto selectableLoop = [=](IdentifierVector shaderIds) {
-                        for (auto shaderId : shaderIds) {
-                            bool selected = selectedShader->getId() == shaderId;
-                            auto shader = globalShaderHandle->get(shaderId);
+                // if the factory has no valid shader set, there are no shaders to choose from
+                if (globalShaderHandle->has(factory->getShader())) {
+                    auto selectedShader = globalShaderHandle->get(factory->getShader());
+                    if (ImGui::BeginCombo("Shader", selectedShader->getName().c_str())) {
+                        for (auto iter : *globalShaderHandle) {
+                            auto shader = iter.second;
+                            bool selected = selectedShader->getId() == shader->getId();
                             if (ImGui::Selectable(shader->getName().c_str(), selected)) {
-                                factory->setShader(shaderId);
+                                factory->setShader(shader->getId());
                             }
                             if (selected) {
                                 ImGui::SetItemDefaultFocus();
                             }
                         }
-                    };
-                    selectableLoop(m_tilemap->getShaderIds());
-                    selectableLoop(Defaults::instance()->shaders.getVector());
-                    ImGui::EndCombo();
+                        ImGui::EndCombo();
+                    }
                 }
             }
 
@@ -178,20 +176,16 @@ namespace tme {
                 if (globalTextureHandle->has(m_textureTileFactory->getTexture())) {
                     auto selectedTexture = globalTextureHandle->get(m_textureTileFactory->getTexture());
                     if (ImGui::BeginCombo("Texture", selectedTexture->getFilePath().c_str())) {
-                        auto selectableLoop = [=](IdentifierVector textureIds) {
-                            for (auto textureId : textureIds) {
-                                bool selected = selectedTexture->getId() == textureId;
-                                auto texture = globalTextureHandle->get(textureId);
-                                if (ImGui::Selectable(texture->getFilePath().c_str(), selected)) {
-                                    m_textureTileFactory->setTexture(textureId);
-                                }
-                                if (selected) {
-                                    ImGui::SetItemDefaultFocus();
-                                }
+                        for (auto iter : *globalTextureHandle) {
+                            auto texture = iter.second;
+                            bool selected = selectedTexture->getId() == texture->getId();
+                            if (ImGui::Selectable(texture->getFilePath().c_str(), selected)) {
+                                m_textureTileFactory->setTexture(texture->getId());
                             }
-                        };
-                        selectableLoop(m_tilemap->getTextureIds());
-                        selectableLoop(Defaults::instance()->textures.getVector());
+                            if (selected) {
+                                ImGui::SetItemDefaultFocus();
+                            }
+                        }
                         ImGui::EndCombo();
                     }
                     ImGui::SameLine();
@@ -204,7 +198,6 @@ namespace tme {
                         std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();;
                         try {
                             auto texture = core::Storage<core::graphics::Texture>::global()->create(filePath);
-                            m_tilemap->addTexture(texture->getId());
                             m_textureTileFactory->setTexture(texture->getId());
                         } catch(const core::exceptions::InvalidInput& e) {
                             m_errorOccurred = true;

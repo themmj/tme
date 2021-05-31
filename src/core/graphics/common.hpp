@@ -11,6 +11,16 @@ namespace tme {
         namespace graphics {
 
             /**//**
+             * \brief Clears all object pools of graphics objects.
+             *
+             * This should be called before a window is destroyed to properly clean up all created OpenGL objects.
+             * Failing to call this means that the destructors of the objects are called when the program
+             * terminates. This will result in undefined behavior because the OpenGL context has been destroyed
+             * at that point.
+             */
+            void cleanUp();
+
+            /**//**
              * \brief Clears previous OpenGL errors.
              *
              * Clears OpenGL errors that have occurred until now. That way

@@ -1,6 +1,7 @@
 /** @file */
 
 #include "app/editor.hpp"
+#include "core/graphics/common.hpp"
 #include "core/layers/imgui.hpp"
 #include "core/storage.hpp"
 #include "app/layers/ui.hpp"
@@ -16,9 +17,6 @@ namespace tme {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            // might throw
-            tme::app::Defaults::instance()->shaders.add(tme::app::graphics::ColorTile::s_defaultShaderId());
-            tme::app::Defaults::instance()->shaders.add(tme::app::graphics::TextureTile::s_defaultShaderId());
             m_tilemap->setBackground({1.0f, 1.0f, 1.0f, 0.5f});
 
             m_layers.push<layers::Editing>(m_tilemap);
@@ -28,7 +26,7 @@ namespace tme {
 
         Editor::~Editor() {
             core::Storage<Tilemap>::global()->destroy(m_tilemap->getId());
-            Defaults::instance()->cleanUp();
+            core::graphics::cleanUp();
         }
 
         void Editor::render() {

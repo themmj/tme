@@ -27,7 +27,7 @@ namespace tme {
                 m_verticies[3] = {{1.0f + xf, 1.0f + yf}, {frame.texPos.z, frame.texPos.w}};
             }
 
-            core::Identifier TextureTile::s_defaultShaderId() {
+            core::Identifier TextureTile::createDefaultShader() {
                 auto globalShaderStages = core::Storage<core::graphics::Shader::Stage>::global();
                 auto globalShaders = core::Storage<core::graphics::Shader>::global();
                 using StageType = core::graphics::Shader::Stage::Type;
@@ -93,7 +93,7 @@ namespace tme {
 
 
             TextureTileFactory::TextureTileFactory(core::Identifier textureId)
-                : TileFactory(TextureTile::s_defaultShaderId()), m_frames(), m_textureId(textureId) {}
+                : TileFactory(TextureTile::createDefaultShader()), m_frames(), m_textureId(textureId) {}
 
             TextureTileFactory::~TextureTileFactory() {}
 

@@ -46,9 +46,11 @@ namespace tme {
                 /**//**
                  * \brief Get global Identifier of a default shader for the tile.
                  *
+                 * Creates the default shader once. Always returns its id from that point onwards.
+                 *
                  * @return global Shader Identifier 
                  */
-                static core::Identifier s_defaultShaderId();
+                static core::Identifier createDefaultShader();
 
                 core::graphics::Batch::Config getBatchConfig() const override;
                 const void* getVertexData() const override;
