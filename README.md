@@ -20,6 +20,12 @@ target|meaning
 `doc-puml`|create plant uml diagrams located in tme/doc/puml
 `doc-puml-svg`|create svg files from plant uml diagrams located in tme/doc/svg
 
+To generate svg files from the plant uml diagrams [plantuml.jar](https://plantuml.com/download) has to be in the PATH of the system when initializing CMake.
+If it was not in the PATH originally and has been added after the setup, running the `setup` once again should add `doc-puml-svg`
+to the available make targets and also build them. Both the plant uml files and svg files (located in the tme/doc/puml and tme/doc/svg
+directory respectively) are created for every folder in the tme/src folder. That way diagrams are created for individual systems and
+the bigger picture.
+
 # Grading criteria
 
 The following documents the required grading criteria in a structured way. It will present examples to illustrate the
@@ -59,8 +65,8 @@ src/app/graphics/tile.cpp|19|1|66
 src/core/graphics/vertex.hpp|19|63|65
 src/core/graphics/texture.cpp|16|1|64
 src/core/window.cpp|12|2|62
-src/app/graphics/tile.hpp|23|110|60
 src/core/window.hpp|28|103|60
+src/app/graphics/tile.hpp|23|110|60
 src/app/graphics/color.cpp|14|1|59
 src/core/events/mouse.hpp|19|85|58
 src/app/layers/map.cpp|9|3|57
@@ -68,44 +74,46 @@ src/core/events/window.hpp|20|89|57
 src/core/graphics/shader.hpp|17|83|55
 src/core/events/key.hpp|16|48|53
 src/app/graphics/texture.hpp|20|87|53
-src/core/application.cpp|11|1|47
+src/app/layers/menu.cpp|14|1|53
+src/core/application.cpp|12|1|49
 src/app/tilemap.cpp|12|1|45
+src/app/camera.cpp|15|3|44
 src/app/tilemap.hpp|13|60|44
 src/core/graphics/common.cpp|9|1|42
-src/core/events/event.hpp|17|54|42
-src/app/camera.cpp|13|3|42
 src/core/graphics/texture.hpp|16|33|42
-src/core/layers/layer.hpp|16|35|40
+src/core/events/event.hpp|17|54|42
+src/app/editor.cpp|8|1|41
+src/core/layers/layer.hpp|16|37|40
+src/core/layers/layer.cpp|9|1|40
 src/core/graphics/buffer.hpp|13|65|39
-src/core/layers/layer.cpp|9|1|37
-src/core/application.hpp|15|31|37
 src/core/graphics/common.hpp|16|72|37
+src/core/application.hpp|15|31|37
 src/app/graphics/color.hpp|17|41|36
-src/app/layers/ui.hpp|13|12|34
+src/app/layers/editing.hpp|10|13|35
 src/core/log.hpp|9|34|34
-src/app/layers/editing.hpp|10|12|34
-src/app/camera.hpp|15|64|32
+src/app/layers/ui.hpp|13|12|34
+src/app/camera.hpp|15|66|32
 src/core/layers/imgui.hpp|8|12|31
-src/app/editor.cpp|9|1|29
-src/core/events/dispatcher.hpp|10|24|29
 src/app/layers/map.hpp|10|14|29
+src/core/events/dispatcher.hpp|10|24|29
 src/app/layers/background.cpp|5|1|25
 src/core/exceptions/validation.hpp|8|25|25
 src/core/exceptions/common.hpp|7|30|25
 src/core/graphics/index.cpp|4|1|22
 src/app/layers/background.hpp|8|16|21
+src/app/editor.hpp|9|19|21
 src/main.cpp|7|3|20
+src/app/layers/menu.hpp|9|12|20
 src/core/graphics/index.hpp|7|23|19
-src/app/editor.hpp|7|11|17
-src/namespaces.hpp|15|11|16
 src/core/loggable.hpp|6|17|16
-src/core/exceptions/input.hpp|6|12|15
+src/namespaces.hpp|15|11|16
 src/core/exceptions/graphics.hpp|6|9|15
-src/platform/context.hpp|6|9|14
+src/core/exceptions/input.hpp|6|12|15
 src/core/events/handler.hpp|5|9|14
+src/platform/context.hpp|6|9|14
 src/core/log.cpp|4|3|13
 src/core/graphics/gl.hpp|3|1|4
-SUM:|855|1878|3447
+SUM:|882|1904|3544
 
 Statics for the test code:
 
@@ -114,8 +122,8 @@ File|blank|comment|code
 test/src/core/graphics/batch_test.cpp|39|8|167
 test/src/core/graphics/buffer_test.cpp|22|7|103
 test/src/core/storage_test.cpp|28|1|82
+test/src/core/layers/layer_test.cpp|21|3|81
 test/src/core/events/key_test.cpp|14|0|76
-test/src/core/layers/layer_test.cpp|22|2|75
 test/src/core/graphics/vertex_test.cpp|15|0|74
 test/src/platform/glfw_test.cpp|11|9|64
 test/src/core/events/window_test.cpp|12|2|59
@@ -133,7 +141,7 @@ test/src/core/loggable_test.cpp|6|0|23
 test/src/core/layers/imgui_test.cpp|5|0|19
 test/src/core/graphics/index_test.cpp|5|0|15
 test/src/core/log_test.cpp|3|0|12
-SUM:|272|33|1128
+SUM:|271|34|1134
 
 Both tables were created with `cloc` (github.com/AlDanial/cloc v 1.81  T=0.04 s (2149.5 files/s, 195801.2 lines/s)).
 
