@@ -14,7 +14,7 @@ int main() {
 
 
     try {
-        auto editor = tme::core::Storage<tme::app::Editor>::global()->create(tme::core::Storage<tme::app::Tilemap>::global()->create(10, 10, 350));
+        auto editor = tme::core::Storage<tme::app::Editor>::global()->create();
         editor->run();
     } catch (const tme::core::exceptions::Base& e) {
         TME_CRITICAL("An error occurred during start up.\n {}: {}\nStopping application.", e.type(), e.what());

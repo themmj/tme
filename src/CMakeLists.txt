@@ -20,6 +20,7 @@ set (APP_SRC_FILES
     app/graphics/color.cpp
     app/graphics/texture.cpp
     app/layers/background.cpp
+    app/layers/menu.cpp
     app/layers/map.cpp
     app/layers/editing.cpp
     app/layers/ui.cpp
